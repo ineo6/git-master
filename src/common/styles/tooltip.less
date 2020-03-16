@@ -1,0 +1,208 @@
+.master-tooltip {
+  position: relative;
+}
+
+.master-tooltip:after {
+  z-index: 1000000;
+  padding: .5em .75em;
+  font: normal normal 11px/1.5 -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  -webkit-font-smoothing: subpixel-antialiased;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: break-word;
+  white-space: pre;
+  content: attr(aria-label);
+  background: #1b1f23;
+  border-radius: 3px
+}
+
+.master-tooltip:after, .master-tooltip:before {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  opacity: 0
+}
+
+.master-tooltip:before {
+  z-index: 1000001;
+  width: 0;
+  height: 0;
+  color: #1b1f23;
+  content: "";
+  border: 6px solid transparent
+}
+
+@keyframes tooltip-appear {
+  0% {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+.master-tooltip:active:after, .master-tooltip:active:before, .master-tooltip:focus:after, .master-tooltip:focus:before, .master-tooltip:hover:after, .master-tooltip:hover:before {
+  display: inline-block;
+  text-decoration: none;
+  animation-name: tooltip-appear;
+  animation-duration: .1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+  animation-delay: .4s
+}
+
+.master-tooltip-no-delay:active:after, .master-tooltip-no-delay:active:before, .master-tooltip-no-delay:focus:after, .master-tooltip-no-delay:focus:before, .master-tooltip-no-delay:hover:after, .master-tooltip-no-delay:hover:before {
+  animation-delay: 0s
+}
+
+.master-tooltip-multiline:active:after, .master-tooltip-multiline:focus:after, .master-tooltip-multiline:hover:after {
+  display: table-cell
+}
+
+.master-tooltip-s:after, .master-tooltip-se:after, .master-tooltip-sw:after {
+  top: 100%;
+  right: 50%;
+  margin-top: 6px
+}
+
+.master-tooltip-s:before, .master-tooltip-se:before, .master-tooltip-sw:before {
+  top: auto;
+  right: 50%;
+  bottom: -7px;
+  margin-right: -6px;
+  border-bottom-color: #1b1f23
+}
+
+.master-tooltip-se:after {
+  right: auto;
+  left: 50%;
+  margin-left: -16px
+}
+
+.master-tooltip-sw:after {
+  margin-right: -16px
+}
+
+.master-tooltip-n:after, .master-tooltip-ne:after, .master-tooltip-nw:after {
+  right: 50%;
+  bottom: 100%;
+  margin-bottom: 6px
+}
+
+.master-tooltip-n:before, .master-tooltip-ne:before, .master-tooltip-nw:before {
+  top: -7px;
+  right: 50%;
+  bottom: auto;
+  margin-right: -6px;
+  border-top-color: #1b1f23
+}
+
+.master-tooltip-ne:after {
+  right: auto;
+  left: 50%;
+  margin-left: -16px
+}
+
+.master-tooltip-nw:after {
+  margin-right: -16px
+}
+
+.master-tooltip-n:after, .master-tooltip-s:after {
+  transform: translateX(50%)
+}
+
+.master-tooltip-w:after {
+  right: 100%;
+  bottom: 50%;
+  margin-right: 6px;
+  transform: translateY(50%)
+}
+
+.master-tooltip-w:before {
+  top: 50%;
+  bottom: 50%;
+  left: -7px;
+  margin-top: -6px;
+  border-left-color: #1b1f23
+}
+
+.master-tooltip-e:after {
+  bottom: 50%;
+  left: 100%;
+  margin-left: 6px;
+  transform: translateY(50%)
+}
+
+.master-tooltip-e:before {
+  top: 50%;
+  right: -7px;
+  bottom: 50%;
+  margin-top: -6px;
+  border-right-color: #1b1f23
+}
+
+.master-tooltip-align-right-1:after, .master-tooltip-align-right-2:after {
+  right: 0;
+  margin-right: 0
+}
+
+.master-tooltip-align-right-1:before {
+  right: 10px
+}
+
+.master-tooltip-align-right-2:before {
+  right: 15px
+}
+
+.master-tooltip-align-left-1:after, .master-tooltip-align-left-2:after {
+  left: 0;
+  margin-left: 0
+}
+
+.master-tooltip-align-left-1:before {
+  left: 5px
+}
+
+.master-tooltip-align-left-2:before {
+  left: 10px
+}
+
+.master-tooltip-multiline:after {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 250px;
+  word-wrap: break-word;
+  white-space: pre-line;
+  border-collapse: initial
+}
+
+.master-tooltip-multiline.master-tooltip-n:after, .master-tooltip-multiline.master-tooltip-s:after {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%)
+}
+
+.master-tooltip-multiline.master-tooltip-e:after, .master-tooltip-multiline.master-tooltip-w:after {
+  right: 100%
+}
+
+@media screen and (min-width: 0\0
+) {
+  .master-tooltip-multiline:after {
+    width: 250px
+  }
+}
+
+.master-tooltip-sticky:after, .master-tooltip-sticky:before {
+  display: inline-block
+}
+
+.master-tooltip-sticky.master-tooltip-multiline:after {
+  display: table-cell
+}

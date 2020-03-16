@@ -1,0 +1,77 @@
+{
+  "pluginDesc": {
+    "message": "Git code tree. Support GitHub notifications and git file history"
+  },
+  "welcome_tip": {
+    "message": "Hi there, this is GitMaster. Move mouse over this button to display the code tree. You can also press the\n          shortkey <kbd>cmd shift s</kbd> (or <kbd>ctrl shift s</kbd>)."
+  },
+  "token_storage_tip": {
+    "message": "Token is stored in local storage"
+  },
+  "config_sidebar_hover": {
+    "message": "Show sidebar on hover"
+  },
+  "config_show_icons": {
+    "message": "Show file-type icons"
+  },
+  "name": {
+    "message": "Git Master"
+  },
+  "short_name": {
+    "message": "GitMaster"
+  },
+  "config_pr_show": {
+    "message": "Show pull request changes"
+  },
+  "config_lazyload": {
+    "message": "Lazy-load code tree"
+  },
+  "config_speed_tip": {
+    "message": "Speed up large repositories"
+  },
+  "apply_settings": {
+    "message": "Apply settings"
+  },
+  "pin_sidebar_tip": {
+    "message": "Pin this sidebar"
+  },
+  "unpin_sidebar_tip": {
+    "message": "Unpin this sidebar"
+  },
+  "generate_token_tip": {
+    "message": "Generate new token"
+  },
+  "setting": {
+    "message": "Settings"
+  },
+  "search_file": {
+    "message": "Search files"
+  },
+  "sidebar_toggle": {
+    "message": "Toggle"
+  },
+  "notify_github_host_tip": {
+    "message": "Specify the root URL to your GitHub Enterprise."
+  },
+  "notify_github_token_tip": {
+    "message": " For public repositories,\n            <a\n              href=\"https://github.com/settings/tokens/new?scopes=notifications&description=Notifier for GitHub extension\"\n            >\n              &nbsp;create a token&nbsp;\n            </a>\n            with the <strong>notifications</strong> permission and specify it."
+  },
+  "notify_github_token_private_tip": {
+    "message": " If you want notifications for private repositories, you'll need to\n            <a\n              href=\"https://github.com/settings/tokens/new?scopes=notifications,repo&description=Notifier for GitHub extension\"\n            >\n              create\n              a token\n            </a>\n            \n            with the\n            <strong>notifications</strong>\n            \n            and\n            <strong>repo</strong>\n            \n            permissions."
+  },
+  "notify_github_issue": {
+    "message": "Only show unread count for issues I'm participating in"
+  },
+  "notify_github_desktop": {
+    "message": "Show desktop notifications"
+  },
+  "notify_github_sound": {
+    "message": "Enable notification sound"
+  },
+  "notify_github_reuse_tab":{
+    "message": "Reuse notifications tabs when possible"
+  },
+  "notify_github_update_count":{
+    "message": "Update notification count after opening a notification"
+  }
+}

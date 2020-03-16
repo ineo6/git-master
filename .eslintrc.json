@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "magic/react",
+    "magic/typescript"
+  ],
+  "globals": {
+    "$": true,
+    "location": true,
+    "chrome": true,
+    "TEMPLATE": true,
+    "safari": true
+  },
+  "rules": {
+    "no-bitwise": 0
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "pluginDesc": {
+    "message": "Git代码目录树浏览工具，支持GitHub通知，Git文件历史可视化。"
+  },
+  "welcome_tip": {
+    "message": "点此即可查看代码树。快捷键\n<kbd>cmd shift s</kbd> (或 <kbd>ctrl shift s</kbd>)。"
+  },
+  "token_storage_tip": {
+    "message": "Token仅会保存在本地"
+  },
+  "config_sidebar_hover": {
+    "message": "侧边栏悬浮显示"
+  },
+  "config_show_icons": {
+    "message": "显示文件图标"
+  },
+  "name": {
+    "message": "Git Master"
+  },
+  "short_name": {
+    "message": "GitMaster"
+  },
+  "config_pr_show": {
+    "message": "展示 pull request 代码变动"
+  },
+  "config_lazyload": {
+    "message": "懒加载"
+  },
+  "config_speed_tip": {
+    "message": "优化大型仓库加载"
+  },
+  "apply_settings": {
+    "message": "保存设置"
+  },
+  "pin_sidebar_tip": {
+    "message": "钉住侧边栏"
+  },
+  "unpin_sidebar_tip": {
+    "message": "取消固定"
+  },
+  "generate_token_tip": {
+    "message": "生成token"
+  },
+  "setting": {
+    "message": "设置"
+  },
+  "search_file": {
+    "message": "搜索文件"
+  },
+  "sidebar_toggle": {
+    "message": "换边"
+  },
+  "notify_github_host_tip": {
+    "message": "如果使用GitHub Enterprise，请在这里输入该域名。"
+  },
+  "notify_github_token_tip": {
+    "message": "公开仓库只需 <a href=\"https://github.com/settings/tokens/new?scopes=notifications&description=Git Master extension\">创建token</a>，并勾选 <strong>notifications</strong> 权限。"
+  },
+  "notify_github_token_private_tip": {
+    "message": "如果想要接收私人仓库的通知，需要<a href=\"https://github.com/settings/tokens/new?scopes=notifications,repo&description=Git Master extension\">点此</a> 创建带有 <strong>notifications</strong> 和 <strong>repo</strong> 权限的token。"
+  },
+  "notify_github_issue": {
+    "message": "仅显示与我有关的未读消息"
+  },
+  "notify_github_desktop": {
+    "message": "桌面通知"
+  },
+  "notify_github_sound": {
+    "message": "通知声效"
+  },
+  "notify_github_reuse_tab":{
+    "message": "复用通知Tabs"
+  },
+  "notify_github_update_count":{
+    "message": "打开通知后更新通知数量"
+  }
+}

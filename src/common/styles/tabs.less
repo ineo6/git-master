@@ -1,0 +1,122 @@
+@import './theme';
+
+@tab-prefix-cls: ~'@{master-prefix}-tabs';
+
+.@{tab-prefix-cls} {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
+  position: relative;
+  overflow: hidden;
+
+
+  &-bar {
+    margin: 0 0 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+    outline: none;
+    -webkit-transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  }
+
+  &-ink-bar {
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    z-index: 1;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 0;
+    height: 2px;
+    background-color: #1890ff;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+  }
+
+  &-ink-bar-animated {
+    -webkit-transition: width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  &-nav-container {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-bottom: -1px;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.5715;
+    white-space: nowrap;
+    -webkit-transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+
+
+  &-nav {
+    position: relative;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    .@{tab-prefix-cls}-tab {
+      position: relative;
+      display: inline-block;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      height: 100%;
+      width: 45px;
+      margin: 0 32px 0 0;
+      padding: 12px 0;
+      text-decoration: none;
+      cursor: pointer;
+      -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .@{tab-prefix-cls}-tab-active {
+      color: #1890ff;
+      font-weight: 500;
+    }
+  }
+
+  &-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-transition: margin-left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: margin-left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    will-change: margin-left;
+    width: 100%;
+
+    > .@{tab-prefix-cls}-tabpane {
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      width: 100%;
+      opacity: 1;
+      -webkit-transition: opacity 0.45s;
+      transition: opacity 0.45s;
+    }
+  }
+}

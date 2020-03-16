@@ -1,0 +1,79 @@
+@import "../styles/_reset.css";
+
+html {
+  min-width: 550px;
+  overflow-x: hidden;
+}
+
+:root {
+  --github-green: #28a745;
+  --github-red: #cb2431;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+}
+
+p {
+  margin-top: 0.25em;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+h2,
+h3,
+h4 {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+hr {
+  margin: 1rem -1rem;
+  border: none;
+  border-bottom: solid #d3d3d3 1px;
+}
+
+.small {
+  font-size: 0.875em;
+}
+
+label {
+  display: flex;
+  width: 100%;
+  margin: 0.5em 0 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+label input[type='checkbox'] {
+  margin-right: 0.5em;
+}
+
+input {
+  font-family: inherit;
+}
+
+input[type='url'],
+input[type='text'] {
+  display: block;
+  width: 100%;
+  padding: 0.25em;
+}
+
+input:not([type='checkbox']):not(:placeholder-shown):valid {
+  color: var(--github-green);
+  border: 1px solid var(--github-green);
+}
+
+input:not([type='checkbox']):invalid {
+  color: var(--github-red);
+  border: 1px solid;
+}
+
+input[type='text'][name='token'] {
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  width: 35ch; /* Show only a part of the token */
+}
