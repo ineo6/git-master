@@ -1,6 +1,6 @@
 import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
-import { EVENT, STORE } from '../core.constants';
+import { DICT, EVENT, STORE } from '../core.constants';
 import { parseGitmodules } from '../util.misc';
 import { sendMessageToContentScriptByPostMessage } from '../util.ext';
 import { isButtonInsertedGitlab } from '../history';
@@ -59,6 +59,10 @@ class Gitlab extends PjaxAdapter {
     });
 
     this.initHistory();
+  }
+
+  whoami() {
+    return DICT.GITLAB;
   }
 
   initHistory() {

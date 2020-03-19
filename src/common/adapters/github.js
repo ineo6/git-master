@@ -1,6 +1,6 @@
 import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
-import { EVENT, STORE } from '../core.constants';
+import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp, parseGitmodules } from '../util.misc';
 import octotree from '../core.api';
 import { isButtonInsertedGithub } from '../history';
@@ -90,6 +90,10 @@ class GitHub extends PjaxAdapter {
     });
 
     this.initHistory();
+  }
+
+  whoami() {
+    return DICT.GITHUB;
   }
 
   initHistory() {

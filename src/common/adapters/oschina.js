@@ -1,6 +1,6 @@
 import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
-import { EVENT, STORE } from '../core.constants';
+import { DICT, EVENT, STORE } from '../core.constants';
 import { isSafari, isValidTimeStamp } from '../util.misc';
 import octotree from '../core.api';
 
@@ -66,6 +66,10 @@ class Oschina extends PjaxAdapter {
       attributeFilter: ['class'],
       attributeOldValue: true,
     });
+  }
+
+  whoami() {
+    return DICT.OSCHINA;
   }
 
   // @override

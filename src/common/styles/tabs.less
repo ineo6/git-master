@@ -62,7 +62,6 @@
   }
 
 
-
   &-nav {
     position: relative;
     display: inline-block;
@@ -89,6 +88,12 @@
       cursor: pointer;
       -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+
+    .@{tab-prefix-cls}-tab-disabled,
+    .@{tab-prefix-cls}-tab-disabled:hover {
+      color: rgba(0, 0, 0, 0.25);
+      cursor: not-allowed;
     }
 
     .@{tab-prefix-cls}-tab-active {
