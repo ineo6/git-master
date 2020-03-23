@@ -16,7 +16,7 @@ const manifestInput = {
   description: '__MSG_pluginDesc__',
   homepage_url: 'https://github.com/ineo6/git-master',
 
-  permissions: ['activeTab', 'storage', 'alarms'],
+  permissions: ['activeTab', 'storage', 'alarms', 'https://api.github.com/*'],
 
   optional_permissions: [
     '<all_urls>',
