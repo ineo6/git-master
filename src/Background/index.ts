@@ -1,4 +1,4 @@
-import { browser, WebNavigation } from 'webextension-polyfill-ts';
+import { browser } from 'webextension-polyfill-ts';
 import delay from 'delay';
 import optionsStorage from './options-storage';
 import localStore from './lib/local-store';
@@ -8,8 +8,6 @@ import { getNotificationCount, getTabUrl } from './lib/api';
 import { renderCount, renderError, renderWarning } from './lib/badge';
 import { checkNotifications, openNotification } from './lib/notifications-service';
 import { isChrome, isNotificationTargetPage } from './util';
-
-let injectionHookRegistered = false;
 
 browser.runtime.onInstalled.addListener((): void => {
   console.log('extension installed');
@@ -126,88 +124,6 @@ async function addHandlers() {
   }
 }
 
-function registerInjectionHook() {
-  if (!injectionHookRegistered && browser.webNavigation) {
-    injectionHookRegistered = true;
-    browser.webNavigation.onCommitted.addListener(webNavigationCommit);
-  }
-}
-
-async function injectContentScript(tabId: number) {
-
-  registerInjectionHook();
-
-  if (!tabId) {
-    return;
-  }
-  let tabInfo = await browser.tabs.get(tabId);
-
-  let { url } = tabInfo;
-
-  if (!url) {
-    try {
-      const execResult = await browser.tabs.executeScript(tabId, {
-        code: 'window.location.href;',
-        runAt: 'document_start',
-      });
-
-      if (execResult[0]) {
-        url = execResult[0];
-      } else {
-        return;
-      }
-    } catch (e) {
-      return;
-    }
-  }
-
-  if (!url) return;
-
-  const domain = `${(new URL(url)).origin}/*`;
-
-  if (!domain.toLowerCase().startsWith('http')) {
-    return;
-  }
-
-  const hasPermission = await browser.permissions.contains({
-    origins: [domain],
-  });
-
-  if (!hasPermission) {
-    return;
-  }
-
-  const manifest = browser.runtime.getManifest();
-
-  // @ts-ignore
-  for (const depPkgUri of manifest.content_scripts) {
-    const {
-      all_frame: allFrame,
-      run_at: runAt,
-      css,
-      js,
-    } = depPkgUri;
-
-    for (const cssItem of css) {
-      // eslint-disable-next-line no-await-in-loop
-      await browser.tabs.insertCSS(tabId, {
-        file: cssItem,
-        allFrames: allFrame,
-        runAt: runAt,
-      });
-    }
-
-    for (const jsItem of js) {
-      // eslint-disable-next-line no-await-in-loop
-      await browser.tabs.executeScript(tabId, {
-        file: jsItem,
-        allFrames: allFrame,
-        runAt: runAt,
-      });
-    }
-  }
-}
-
 // @ts-ignore
 window.injectContentScript = injectContentScript;
 
@@ -219,14 +135,6 @@ async function onMessage(message: {
     await addHandlers();
     await update();
   }
-}
-
-async function webNavigationCommit(details: WebNavigation.OnCommittedDetailsType) {
-  if (details.frameId !== 0) {
-    return;
-  }
-
-  await injectContentScript(details.tabId);
 }
 
 function init() {
@@ -246,8 +154,6 @@ function init() {
   }
 
   browser.browserAction.onClicked.addListener(handleBrowserActionClick);
-
-  registerInjectionHook();
 
   addHandlers();
   update();

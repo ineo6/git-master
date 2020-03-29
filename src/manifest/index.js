@@ -16,12 +16,10 @@ const manifestInput = {
   description: '__MSG_pluginDesc__',
   homepage_url: 'https://github.com/ineo6/git-master',
 
-  permissions: ['activeTab', 'storage', 'alarms', 'https://api.github.com/*'],
+  permissions: ['tabs', 'activeTab', 'storage', 'alarms', 'https://api.github.com/*'],
 
   optional_permissions: [
     '<all_urls>',
-    'webNavigation',
-    'tabs',
     'notifications',
   ],
 
@@ -40,7 +38,7 @@ const manifestInput = {
   },
 
   __firefox__applications: {
-    gecko: { id: '{754FB1AD-CC3B-4856-B6A0-7786F8CA9D17}' },
+    gecko: { id: 'arklove@qq.com' },
   },
 
   __chrome__minimum_chrome_version: '49',
@@ -54,7 +52,7 @@ const manifestInput = {
       48: 'assets/icons/favicon-48.png',
       128: 'assets/icons/favicon-128.png',
     },
-    default_title: 'tiny title',
+    default_title: 'GitMaster',
     '__chrome|opera__chrome_style': false,
     __firefox__browser_style: false,
   },
@@ -74,12 +72,7 @@ const manifestInput = {
   content_scripts: [
     {
       run_at: 'document_start',
-      matches: [
-        'https://github.com/*',
-        'https://gitlab.com/*',
-        '*://git.oschina.net/*',
-        '*://gitee.com/*',
-      ],
+      matches: ['http://*/*', 'https://*/*'],
       js: ['js/contentScript.bundle.js'],
       css: [
         'css/contentScript.css',

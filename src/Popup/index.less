@@ -1,11 +1,12 @@
 @import "../styles/_reset.css";
+@import "../common/libs/master-font";
 
 #popup {
   width: 270px;
 
   .popup-option {
     height: 30px;
-    padding: 4px 24px;
+    padding: 4px 10px;
     font-size: 14px;
     line-height: 1.5715;
     border-bottom: 1px solid #f0f0f0;
@@ -16,9 +17,24 @@
     }
   }
 
+  .popup-title {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+
+    font-size: 14px;
+    padding: 8px;
+    height: 40px;
+    line-height: 24px;
+  }
+
+  .notify {
+    margin-right: 15px;
+  }
+
   .site-logo {
     height: 18px;
     width: 18px;
-    margin: 0 5px;
+    margin: 0 10px 0 5px;
   }
 }

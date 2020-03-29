@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { browser } from 'webextension-polyfill-ts';
 import { DICT, STORE } from '../common/core.constants';
 import extStore from '../common/core.storage';
+import Badge from '../components/Badge';
+import { getTabUrl } from '../Background/lib/api';
+import { openTab } from '../Background/lib/tabs-service';
 
 function getStoreKey(type: number) {
   let storeKey = '';
@@ -45,35 +48,11 @@ async function toggleSite(type: number, active: boolean, load: boolean = false) 
   // todo catch error
 
   if (active) {
-    browser.permissions.remove({
-      permissions: ['webNavigation', 'tabs'],
-      origins: [`${domain}/`],
-    });
-
     hasChange = true;
     urlArr = urlArr.filter((url: string) => url != domain);
   } else {
-    const isContained = await browser.permissions.contains({
-      permissions: ['webNavigation', 'tabs'],
-      origins: [`${domain}/`],
-    });
-
-    let granted = false;
-
-    if (!isContained) {
-      granted = await browser.permissions.request({
-        permissions: ['webNavigation', 'tabs'],
-        origins: [`${domain}/`],
-      });
-    } else {
-      // request same domain with different type
-      granted = true;
-    }
-
-    if (granted) {
-      hasChange = true;
-      urlArr.push(domain);
-    }
+    hasChange = true;
+    urlArr.push(domain);
   }
 
   await extStore.set(storeKey, urlArr.join('\n'));
@@ -83,18 +62,7 @@ async function toggleSite(type: number, active: boolean, load: boolean = false) 
   console.log('load hasChange', load, hasChange);
 
   if (load && hasChange) {
-    const bg = browser.extension.getBackgroundPage();
-    console.log('bg', bg);
-    fetch(`http://192.168.199.127:9001/log?t=${JSON.stringify(currentTab)}`);
-    console.log('currentTab', currentTab);
-    if (active) {
-      await browser.tabs.reload(currentTab.id);
-    } else {
-      // @ts-ignore
-      await bg.injectContentScript(currentTab.id);
-
-      await browser.tabs.reload(currentTab.id);
-    }
+    await browser.tabs.reload(currentTab.id);
   }
 }
 
@@ -141,6 +109,13 @@ const Popup = () => {
     setDefaultSite,
   ] = useState(false);
 
+
+  const [
+    badgeCount,
+    setBadgeCount,
+  ] = useState(null);
+
+
   // @ts-ignore
   useEffect(async () => {
     const tabs = await browser.tabs.query({
@@ -149,7 +124,9 @@ const Popup = () => {
     });
 
     // @ts-ignore
-    const currentTabUrl = tabs[0].url || '';
+    const currentTab = tabs[0] || {};
+
+    const currentTabUrl = currentTab.url || '';
 
     const isGitHubActive = await isCurrentTabActive(currentTabUrl, DICT.GITHUB);
     const isGitLabActive = await isCurrentTabActive(currentTabUrl, DICT.GITLAB);
@@ -159,14 +136,33 @@ const Popup = () => {
     setType(isGitHubActive || isGitLabActive || isGiteeActive);
     setDefaultSite(isDefault);
 
+    const badgeText = await browser.browserAction.getBadgeText({
+      tabId: currentTab.id,
+    });
+
+    setBadgeCount(badgeText);
+
     return () => {
     };
   }, []);
 
+  const handleGitHubNotify = async function() {
+    await openTab(await getTabUrl());
+  };
+
   return (
     <section id="popup">
       {/* eslint-disable-next-line camelcase */}
-      <div className='popup-option'>{short_name}</div>
+      <div className='popup-title'>
+        <div>{short_name}</div>
+        <div className="notify">
+          <Badge count={badgeCount}>
+            <a onClick={handleGitHubNotify}>
+              <i className="masterfont master-icon-github" />
+            </a>
+          </Badge>
+        </div>
+      </div>
       {!defaultSite ? (
         <>
           <div className='popup-option'>
@@ -184,9 +180,9 @@ const Popup = () => {
                 setType(type === DICT.GITHUB ? 0 : DICT.GITHUB);
               }}
             >
-              <span>{type === DICT.GITHUB ? 'Disable' : 'Enable'}</span>
               <img className="site-logo" src='../assets/github.png' alt='github' />
-              <span>Github on this domain</span>
+              <span>{type === DICT.GITHUB ? 'Disable' : 'Enable'}</span>
+              <span>&nbsp;&nbsp;Github</span>
             </a>
           </div>
           <div className='popup-option'>
@@ -204,9 +200,9 @@ const Popup = () => {
                 setType(type === DICT.GITLAB ? 0 : DICT.GITLAB);
               }}
             >
-              <span>{type === DICT.GITLAB ? 'Disable' : 'Enable'}</span>
               <img className="site-logo" src='../assets/gitlab.png' alt='gitlab' />
-              <span>GitLab on this domain</span>
+              <span>{type === DICT.GITLAB ? 'Disable' : 'Enable'}</span>
+              <span>&nbsp;&nbsp;GitLab</span>
             </a>
           </div>
           <div className='popup-option'>
@@ -225,9 +221,9 @@ const Popup = () => {
                 setType(type === DICT.OSCHINA ? 0 : DICT.OSCHINA);
               }}
             >
-              <span>{type === DICT.OSCHINA ? 'Disable' : 'Enable'}</span>
               <img className="site-logo" src='../assets/gitee.png' alt='gitee' />
-              <span>Gitee on this domain</span>
+              <span>{type === DICT.OSCHINA ? 'Disable' : 'Enable'}</span>
+              <span>&nbsp;&nbsp;Gitee</span>
             </a>
           </div>
         </>
