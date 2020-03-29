@@ -4,6 +4,7 @@ import { browser } from 'webextension-polyfill-ts';
 import octotree from './core.api';
 import { i18n, injectCustomJs } from './util.ext';
 import TreeView from './view.tree';
+import RepoView from './view.repo';
 import OptionsView from './view.options';
 import HelpPopup from './view.help';
 import ErrorView from './view.error';
@@ -96,6 +97,7 @@ class Main {
     const $spinner = this.$sidebar.find('.gitmaster-spin');
     this.$pinner = this.$sidebar.find('.gitmaster-pin');
     this.treeView = new TreeView($dom, adapter);
+    this.repoView = new RepoView(this.$document, adapter);
     const optsView = new OptionsView($dom, adapter, this.$sidebar);
     const helpPopup = new HelpPopup($dom);
     this.errorView = new ErrorView($dom);

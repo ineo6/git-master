@@ -74,5 +74,34 @@ export function deXss(str) {
     .html();
 }
 
+export function convertSizeToHumanReadableFormat(bytes) {
+  if (bytes === 0) {
+    return {
+      size: 0,
+      measure: 'Bytes',
+    };
+  }
+
+  bytes *= 1024;
+
+  const K = 1024;
+  const MEASURE = ['', 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(K));
+
+  return {
+    // eslint-disable-next-line no-restricted-properties
+    size: parseFloat((bytes / Math.pow(K, i)).toFixed(2)),
+    measure: MEASURE[i],
+  };
+}
+
+export function getFileSizeAndUnit(data) {
+  let formatBytes = convertSizeToHumanReadableFormat(data.size);
+  let size = formatBytes.size;
+  let unit = formatBytes.measure;
+
+  return size + ' ' + unit;
+}
+
 window.isSafari = isSafari;
 window.isValidTimeStamp = isValidTimeStamp;

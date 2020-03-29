@@ -8,6 +8,10 @@ import { getNotificationCount, getTabUrl } from './lib/api';
 import { renderCount, renderError, renderWarning } from './lib/badge';
 import { checkNotifications, openNotification } from './lib/notifications-service';
 import { isChrome, isNotificationTargetPage } from './util';
+import { MessageType } from '../common/core.constants';
+
+let currentUrl = '';
+let tabId: number;
 
 browser.runtime.onInstalled.addListener((): void => {
   console.log('extension installed');
@@ -124,8 +128,32 @@ async function addHandlers() {
   }
 }
 
-// @ts-ignore
-window.injectContentScript = injectContentScript;
+function handleUrlLoad() {
+  browser.webRequest.onCompleted.addListener(
+    function(details) {
+      const parsedUrl = new URL(details.url);
+
+      if (currentUrl && currentUrl.indexOf(parsedUrl.pathname) > -1 && tabId) {
+        browser.tabs.sendMessage(tabId, { type: MessageType.PAGE_RENDERED });
+      }
+    },
+    { urls: ['*://*.github.com/*'] },
+  );
+
+  browser.webNavigation.onHistoryStateUpdated.addListener(
+    details => {
+      tabId = details.tabId;
+      currentUrl = details.url;
+    },
+    {
+      url: [
+        {
+          hostSuffix: 'github.com',
+        },
+      ],
+    },
+  );
+}
 
 async function onMessage(message: {
   type: String,
@@ -157,6 +185,7 @@ function init() {
 
   addHandlers();
   update();
+  handleUrlLoad();
 }
 
 init();

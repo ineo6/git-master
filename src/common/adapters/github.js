@@ -168,12 +168,7 @@ class GitHub extends PjaxAdapter {
     }
   }
 
-  // @override
-  async getRepoFromPath(currentRepo, token, cb) {
-    if (!await octotree.shouldShowOctotree()) {
-      return cb();
-    }
-
+  async getRepoData(currentRepo, token, cb) {
     // (username)/(reponame)[/(type)][/(typeId)]
     // eslint-disable-next-line no-useless-escape
     const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
@@ -266,6 +261,30 @@ class GitHub extends PjaxAdapter {
         cb(null, repo);
       });
     }
+  }
+
+  async getRepoDataWrap(currentRepo, token) {
+    return new Promise((resolve, reject) => {
+      this.getRepoData(currentRepo, token, (error, result) => {
+
+        if (!error) {
+          resolve(result);
+        }
+        if (typeof error === 'string') {
+          reject(new Error(error));
+        }
+        reject(error);
+      });
+    });
+  }
+
+  // @override
+  async getRepoFromPath(currentRepo, token, cb) {
+    if (!await octotree.shouldShowOctotree()) {
+      return cb();
+    }
+
+    this.getRepoData(currentRepo, token, cb);
   }
 
   // @override
@@ -404,6 +423,65 @@ class GitHub extends PjaxAdapter {
       if (err) return cb(err);
       const data = atob(res.content.replace(/\n/g, ''));
       cb(null, parseGitmodules(data));
+    });
+  }
+
+  async loadRepoData(path, isRepoMetaData = false) {
+    const token = await this.getAccessToken();
+
+    const repo = await this.getRepoDataWrap(false, token);
+
+    if (repo) {
+      const data = await this._getContent(path, {
+        repo,
+        token,
+        isRepoMetaData,
+      });
+
+      return {
+        repo,
+        contentData: data,
+      };
+    }
+  }
+
+  getContentPath() {
+    let str = window.location.href;
+    let result = str.match(/.*[bt][lr][oe][be]\/[^//]+\/(.*)/); // blob/tree :D
+    return result && result.length && result[1];
+  }
+
+  async _getContent(path, opts) {
+    const host =
+      window.location.protocol + '//' + (window.location.host === 'github.com' ? 'api.github.com' : window.location.host + '/api/v3');
+    const url = `${host}/repos/${opts.repo.username}/${opts.repo.reponame}`;
+
+    const contentPath = path || this.getContentPath() || '';
+
+    let contentParams = '';
+
+    const branch = encodeURIComponent(decodeURIComponent(opts.repo.branch));
+
+    if (!opts.isRepoMetaData) {
+      contentParams = '/contents/' + contentPath + '?ref=' + branch;
+    }
+
+    const cfg = {
+      url: `${url}${contentParams}`,
+      method: 'GET',
+      cache: false,
+    };
+
+    if (opts.token) {
+      cfg.headers = { Authorization: 'token ' + opts.token };
+    }
+
+    return new Promise((resolve, reject) => {
+      $.ajax(cfg)
+        .done((data, textStatus, jqXHR) => {
+          resolve(data, jqXHR);
+        })
+        .fail((jqXHR) => this._handleError(cfg, jqXHR, reject));
     });
   }
 

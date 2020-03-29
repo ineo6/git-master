@@ -11,6 +11,7 @@
     "safari": true
   },
   "rules": {
-    "no-bitwise": 0
+    "no-bitwise": 0,
+    "prefer-arrow-callback": "off"
   }
 }

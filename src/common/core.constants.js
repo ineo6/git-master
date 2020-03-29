@@ -65,6 +65,10 @@ export const EVENT = {
   REPO_LOADED: 'gitmaster:repoLoaded',
 };
 
+export const MessageType = {
+  PAGE_RENDERED: 'pageRendered',
+};
+
 window.STORE = STORE;
 window.DEFAULTS = DEFAULTS;
 window.EVENT = EVENT;
