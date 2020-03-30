@@ -264,6 +264,10 @@ class GitHub extends PjaxAdapter {
   }
 
   async getRepoDataWrap(currentRepo, token) {
+    if (!await octotree.shouldShowOctotree()) {
+      return;
+    }
+
     return new Promise((resolve, reject) => {
       this.getRepoData(currentRepo, token, (error, result) => {
 
@@ -432,9 +436,8 @@ class GitHub extends PjaxAdapter {
     const repo = await this.getRepoDataWrap(false, token);
 
     if (repo) {
-      const data = await this._getContent(path, {
+      const data = await this.getContent(path, {
         repo,
-        token,
         isRepoMetaData,
       });
 
@@ -451,7 +454,7 @@ class GitHub extends PjaxAdapter {
     return result && result.length && result[1];
   }
 
-  async _getContent(path, opts) {
+  async getContent(path, opts) {
     const host =
       window.location.protocol + '//' + (window.location.host === 'github.com' ? 'api.github.com' : window.location.host + '/api/v3');
     const url = `${host}/repos/${opts.repo.username}/${opts.repo.reponame}`;
@@ -472,8 +475,10 @@ class GitHub extends PjaxAdapter {
       cache: false,
     };
 
-    if (opts.token) {
-      cfg.headers = { Authorization: 'token ' + opts.token };
+    const token = await this.getAccessToken();
+
+    if (token) {
+      cfg.headers = { Authorization: 'token ' + token };
     }
 
     return new Promise((resolve, reject) => {

@@ -13,7 +13,9 @@ class RepoView {
 
     browser.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
       if (request && request.type === MessageType.PAGE_RENDERED) {
-        this.show();
+        setTimeout(() => {
+          this.show();
+        }, 10);
       }
     });
   }
@@ -28,17 +30,51 @@ class RepoView {
     });
   }
 
+  getDownloadUrl(fileInfo) {
+    // name: "composer.json"
+    // path: "plugin-update/composer.json"
+    // sha: "8d1d4d31a4f5681aaab735c997a806779f1a09bd"
+    // size: 630
+    // url: "https://api.github.com/repos/ineo6/wp-video/contents/plugin-update/composer.json?ref=master"
+    // html_url: "https://github.com/ineo6/wp-video/blob/master/plugin-update/composer.json"
+    // git_url: "https://api.github.com/repos/ineo6/wp-video/git/blobs/8d1d4d31a4f5681aaab735c997a806779f1a09bd"
+    // download_url: "https://raw.githubusercontent.com/ineo6/wp-video/master/plugin-update/composer.json"
+    // type: "file"
+    // content: "ew0KCSJuYW1lIjogInlhaG5pcy1lbHN0cy9wbHVnaW4tdXBkYXRlLWNoZWNr↵ZXIiLA0KCSJ0eXBlIjogImxpYnJhcnkiLA0KCSJkZXNjcmlwdGlvbiI6ICJB↵IGN1c3RvbSB1cGRhdGUgY2hlY2tlciBmb3IgV29yZFByZXNzIHBsdWdpbnMu↵IFVzZWZ1bCBpZiB5b3UgY2FuJ3QgaG9zdCB5b3VyIHBsdWdpbiBpbiB0aGUg↵b2ZmaWNpYWwgV1AgcGx1Z2luIHJlcG9zaXRvcnkgYnV0IHN0aWxsIHdhbnQg↵aXQgdG8gc3VwcG9ydCBhdXRvbWF0aWMgcGx1Z2luIHVwZGF0ZXMuIiwNCgki↵a2V5d29yZHMiOiBbIndvcmRwcmVzcyIsICJwbHVnaW4gdXBkYXRlcyIsICJh↵dXRvbWF0aWMgdXBkYXRlcyJdLA0KCSJob21lcGFnZSI6ICJodHRwczovL2dp↵dGh1Yi5jb20vWWFobmlzRWxzdHMvcGx1Z2luLXVwZGF0ZS1jaGVja2VyLyIs↵DQoJImxpY2Vuc2UiOiAiTUlUIiwNCgkiYXV0aG9ycyI6IFsNCgkJew0KCQkJ↵Im5hbWUiOiAiWWFobmlzIEVsc3RzIiwNCgkJCSJlbWFpbCI6ICJ3aGl0ZXNo↵YWRvd0B3LXNoYWRvdy5jb20iLA0KCQkJImhvbWVwYWdlIjogImh0dHA6Ly93↵LXNoYWRvdy5jb20vIiwNCgkJCSJyb2xlIjogIkRldmVsb3BlciINCgkJfQ0K↵CV0sDQoJInJlcXVpcmUiOiB7DQoJCSJwaHAiOiAiPj01LjIuMCINCgl9DQp9↵"
+    // encoding: "base64"
+
+    // username: "ineo6"
+    // reponame: "wp-video"
+    // branch: "7980d054e5"
+    // displayBranch: null
+    // pullNumber: null
+
+    let downUrl = fileInfo.download_url;
+
+    if (this.repo && fileInfo) {
+      const path = `gh/${this.repo.username}/${this.repo.reponame}@${this.repo.branch}/${fileInfo.path}`;
+
+      const downUrlObj = new URL(path, 'https://cdn.jsdelivr.net');
+
+      downUrl = downUrlObj.href;
+    }
+
+    return downUrl;
+  }
+
   onPathContentFetchedForBtns(data) {
     let formattedFileSize = getFileSizeAndUnit(data);
 
     this.removeDom('.master-file-clipboard');
     this.removeDom('.master-file-download');
 
+    const downloadUrl = this.getDownloadUrl(data);
+
     let btnGroupHtml = `
       <button aria-label="Copy file contents to clipboard" class="master-file-clipboard btn btn-sm BtnGroup-item file-clipboard-button tooltipped tooltipped-s js-enhanced-github-copy-btn" data-copied-hint="Copied!" type="button" click="selectText()" data-clipboard-target="tbody">
         Copy File
       </button>
-      <a href="${data.download_url}" download="${data.name}"
+      <a href="${downloadUrl}" download="${data.name}"
         aria-label="(Alt/Option/Ctrl + Click) to download File" class="master-file-download btn btn-sm BtnGroup-item file-download-button tooltipped tooltipped-s">
         <span style="margin-right: 5px;">${formattedFileSize}</span>
         <svg class="octicon octicon-cloud-download" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16">
@@ -127,6 +163,8 @@ class RepoView {
       if (data[i].type === 'file') {
         let formattedFileSize = getFileSizeAndUnit(data[i]);
 
+        const downloadUrl = this.getDownloadUrl(data[i]);
+
         // eslint-disable-next-line max-len
         let html = `
           <td class="download js-enhanced-github-download-btn" 
@@ -134,7 +172,7 @@ class RepoView {
             <span style="margin-right: 5px;">
               ${formattedFileSize}
             </span>
-            <a href="${data[i].download_url}"
+            <a href="${downloadUrl}"
              title="(Alt/Option/Ctrl + Click) to download File" 
              aria-label="(Alt/Option/Ctrl + Click) to download File"
               class="tooltipped tooltipped-nw"
@@ -159,10 +197,10 @@ class RepoView {
       // instantiate copy to clipborad
       new Clipboard('.master-file-clipboard'); // eslint-disable-line no-new
 
-      const result = await this.adapter.loadRepoData(this.getContentPath());
+      const result = await this.loadRepoData(this.getContentPath());
 
-      if (result && result.contentData) {
-        this.onPathContentFetchedForBtns(result.contentData);
+      if (result) {
+        this.onPathContentFetchedForBtns(result);
       }
     }
   }
@@ -173,10 +211,10 @@ class RepoView {
     let elems = document.querySelectorAll('tr.js-navigation-item > td.age');
 
     if (elems.length && elems.length === links.length) {
-      const result = await this.adapter.loadRepoData();
+      const result = await this.loadRepoData();
 
-      if (result && result.contentData) {
-        this.onPathContentFetched(result.contentData);
+      if (result) {
+        this.onPathContentFetched(result);
       }
     }
   }
@@ -217,11 +255,17 @@ class RepoView {
   }
 
   async show() {
-    if (!this.repoSize) {
-      const result = await this.adapter.loadRepoData('', true);
+    const token = await this.adapter.getAccessToken();
 
-      if (result && result.contentData) {
-        this.repoSize = result.contentData.size;
+    const repo = await this.adapter.getRepoDataWrap(false, token);
+
+    this.repo = repo;
+
+    if (!this.repoSize) {
+      const result = await this.loadRepoData('', true);
+
+      if (result) {
+        this.repoSize = result.size;
       } else {
         return;
       }
@@ -230,6 +274,15 @@ class RepoView {
     this.appendRepoSizeElement();
     this.addCopyAndDownloadButton();
     this.addFileSizeAndDownloadLink();
+  }
+
+  async loadRepoData(path, isRepoMetaData) {
+    const data = await this.adapter.getContent(path, {
+      repo: this.repo,
+      isRepoMetaData,
+    });
+
+    return data;
   }
 }
 
