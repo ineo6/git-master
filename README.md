@@ -11,6 +11,7 @@
 
 - Git file tree (GitHub && GitLab && Gitee)
 - File search
+- Show GitHub repo size and file download support
 - GitHub notifications
 - Browse the history of files (GitHub && GitLab)
 
