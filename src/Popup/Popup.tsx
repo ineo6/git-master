@@ -140,6 +140,7 @@ const Popup = () => {
       tabId: currentTab.id,
     });
 
+    // @ts-ignore
     setBadgeCount(badgeText);
 
     return () => {

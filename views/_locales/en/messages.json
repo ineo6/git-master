@@ -73,5 +73,11 @@
   },
   "notify_github_update_count":{
     "message": "Update notification count after opening a notification"
+  },
+  "download_url_use_mirror":{
+    "message": "Use jsDelivr"
+  },
+  "download_url_use_mirror_desc":{
+    "message": "Download GitHub file via jsDelivr。"
   }
 }

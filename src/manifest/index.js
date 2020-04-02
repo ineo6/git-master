@@ -61,7 +61,7 @@ const manifestInput = {
 
   options_ui: {
     page: 'options.html',
-    __chrome__chrome_style: true,
+    __chrome__chrome_style: false,
   },
 
   background: {

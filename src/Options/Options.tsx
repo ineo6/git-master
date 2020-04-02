@@ -1,37 +1,128 @@
 import React from 'react';
 import { browser } from 'webextension-polyfill-ts';
+import Switch from 'rc-switch';
 
-import optionsStorage from '../Background/options-storage';
+import optionsStorage, { storageName } from '../Background/options-storage';
 import './styles.less';
 import { requestPermission } from '../Background/lib/permissions-service';
 import Message from './Message';
+import Section from './Section';
+import SectionOption from './SectionOption';
 
-class Options extends React.Component<any, any> {
-  form: any;
+import 'rc-switch/assets/index.css';
 
-  componentDidMount(): void {
-    optionsStorage.syncForm(this.form);
+interface OptionsState {
+  token: string;
+  rootUrl: string;
+  playNotifSound: boolean;
+  showDesktopNotif: boolean
+  onlyParticipating: boolean;
+  reuseTabs: boolean;
+  updateCountOnNavigation: boolean;
+  useJsDelivr: boolean;
+}
 
-    this.form.addEventListener('options-sync:form-synced', () => {
-      browser.runtime.sendMessage({
-        type: 'update',
-      });
-    });
+class Options extends React.Component<any, OptionsState> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      token: '',
+      rootUrl: '',
+      playNotifSound: false,
+      showDesktopNotif: true,
+      onlyParticipating: false,
+      reuseTabs: false,
+      updateCountOnNavigation: false,
+      useJsDelivr: false,
+    };
   }
 
-  handleNotifyInputChange = async (event: any) => {
-    const inputElement = event.target;
-    if (inputElement.checked) {
-      inputElement.checked = await requestPermission(inputElement.dataset.requestPermission);
+  form: any;
 
-      // Programatically changing input value does not trigger input events, so save options manually
-      optionsStorage.set({
-        [inputElement.name]: inputElement.checked,
-      });
+  async componentDidMount() {
+    const optionData = await optionsStorage.getAll();
+
+    this.setState(optionData);
+
+    // 监听storage变化
+
+    browser.storage.onChanged.addListener(this._handleStorageChangeOnForm);
+  }
+
+  _handleStorageChangeOnForm(changes: any, areaName: any) {
+    if (areaName === 'sync' &&
+      changes[storageName] &&
+      (!document.hasFocus() || !this.form.contains(document.activeElement)) // Avoid applying changes while the user is editing a field
+    ) {
+      console.log(changes[storageName]);
     }
+  }
+
+  saveField = (fieldName: string, fieldValue: any) => {
+    const updateData = { [fieldName]: fieldValue };
+
+    // @ts-ignore
+    this.setState(updateData);
+
+    // Programatically changing input value does not trigger input events, so save options manually
+    optionsStorage.set(updateData);
+
+    browser.runtime.sendMessage({
+      type: 'update',
+    });
+  };
+
+  handleNotifyInputChange = async (checked: boolean) => {
+    let isChecked = checked;
+
+    if (isChecked) {
+      isChecked = await requestPermission('notifications');
+    }
+
+    this.saveField('showDesktopNotif', isChecked);
+  };
+
+  handleParticipatingChange = (checked: boolean) => {
+    this.saveField('onlyParticipating', checked);
+  };
+
+  handleSoundChange = (checked: boolean) => {
+    this.saveField('playNotifSound', checked);
+  };
+
+  handleReuseTabsChange = (checked: boolean) => {
+    this.saveField('reuseTabs', checked);
+  };
+
+  handleTabUpdateChange = (checked: boolean) => {
+    this.saveField('updateCountOnNavigation', checked);
+  };
+
+  handleUseJsDelivrChange = (checked: boolean) => {
+    this.saveField('useJsDelivr', checked);
+  };
+
+  handleTokenChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    this.saveField('token', e.target.value);
+  };
+
+  handleUrlChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    this.saveField('rootUrl', e.target.value);
   };
 
   render() {
+    const {
+      rootUrl,
+      token,
+      onlyParticipating,
+      showDesktopNotif,
+      playNotifSound,
+      reuseTabs,
+      updateCountOnNavigation,
+      useJsDelivr,
+    } = this.state;
+
     return (
       <form
         id="options-form"
@@ -39,69 +130,98 @@ class Options extends React.Component<any, any> {
           this.form = ins;
         }}
       >
-        <section>
-          <h3>API Access</h3>
+        <Section title="GitHub Notifications">
+          <SectionOption
+            title="Root URL"
+            description={<p className="small"><Message i18n='notify_github_host_tip' /></p>}
+          >
+            <label>
+              <input
+                className="master-input github-url"
+                value={rootUrl}
+                onChange={this.handleUrlChange}
+                type="url"
+                name="rootUrl"
+                placeholder="e.g. https://github.yourco.com/"
+              />
+            </label>
+          </SectionOption>
 
-          <label>
-            <h4>Root URL</h4>
-            <input type="url" name="rootUrl" placeholder="e.g. https://github.yourco.com/" />
-          </label>
-          <p className="small"><Message i18n='notify_github_host_tip' /></p>
+          <SectionOption
+            title="Token"
+            description={(
+              <>
+                <p className="small">
+                  <Message i18n='notify_github_token_tip' />
+                </p>
+                <p className="small">
+                  <Message i18n='notify_github_token_private_tip' />
+                </p>
+              </>
+            )}
+          >
+            <label>
+              <input
+                value={token}
+                onChange={this.handleTokenChange}
+                type="text"
+                name="token"
+                className="master-input github-token"
+                placeholder="a1b2c3d4e5f6g7h8i9j0a1b2c3d4e5f6g7h8i9j0"
+                pattern="[a-z\d]{40}"
+                spellCheck="false"
+              />
+            </label>
+          </SectionOption>
 
-          <label>
-            <h4>Token</h4>
-            <input
-              type="text"
-              name="token"
-              placeholder="a1b2c3d4e5f6g7h8i9j0a1b2c3d4e5f6g7h8i9j0"
-              pattern="[a-z\d]{40}"
-              spellCheck="false"
+          <SectionOption title={<Message i18n='notify_github_issue' />} layout="horizontal">
+            <Switch
+              checked={onlyParticipating}
+              onClick={this.handleParticipatingChange}
             />
-          </label>
-          <p className="small">
-            <Message i18n='notify_github_token_tip' />
-          </p>
-          <p className="small">
-            <Message i18n='notify_github_token_private_tip' />
-          </p>
-        </section>
+          </SectionOption>
 
-        <hr />
-
-        <section>
-          <h3>Notifications</h3>
-          <label>
-            <input type="checkbox" name="onlyParticipating" />
-            <Message i18n='notify_github_issue' />
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              name="showDesktopNotif"
-              data-request-permission="notifications"
+          <SectionOption title={<Message i18n='notify_github_desktop' />} layout="horizontal">
+            <Switch
+              checked={showDesktopNotif}
               onClick={this.handleNotifyInputChange}
             />
-            <Message i18n='notify_github_desktop' />
-          </label>
-          <label>
-            <input type="checkbox" name="playNotifSound" />
-            <Message i18n='notify_github_sound' />
-          </label>
-        </section>
+          </SectionOption>
 
-        <hr />
+          <SectionOption title={<Message i18n='notify_github_sound' />} layout="horizontal">
+            <Switch
+              checked={playNotifSound}
+              onClick={this.handleSoundChange}
+            />
+          </SectionOption>
 
-        <section>
-          <h3>Tab</h3>
-          <label>
-            <input type="checkbox" name="reuseTabs" data-request-permission="tabs" />
-            <Message i18n='notify_github_reuse_tab' />
-          </label>
-          <label>
-            <input type="checkbox" name="updateCountOnNavigation" data-request-permission="tabs" />
-            <Message i18n='notify_github_update_count' />
-          </label>
-        </section>
+          <SectionOption title={<Message i18n='notify_github_reuse_tab' />} layout="horizontal">
+            <Switch
+              checked={reuseTabs}
+              onClick={this.handleReuseTabsChange}
+            />
+          </SectionOption>
+
+          <SectionOption title={<Message i18n='notify_github_update_count' />} layout="horizontal">
+            <Switch
+              checked={updateCountOnNavigation}
+              onClick={this.handleTabUpdateChange}
+            />
+          </SectionOption>
+        </Section>
+
+        <Section title="其他">
+          <SectionOption
+            title={<Message i18n='download_url_use_mirror' />}
+            layout="horizontal"
+            description={<Message i18n='download_url_use_mirror_desc' />}
+          >
+            <Switch
+              checked={useJsDelivr}
+              onClick={this.handleUseJsDelivrChange}
+            />
+          </SectionOption>
+        </Section>
       </form>
     );
   }

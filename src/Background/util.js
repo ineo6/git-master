@@ -1,4 +1,7 @@
+import { browser } from 'webextension-polyfill-ts';
 import { getHostname } from './lib/api';
+
+const isExtensionContext = typeof browser === 'object' && browser && typeof browser.extension === 'object';
 
 export function isChrome() {
   return navigator.userAgent.includes('Chrome');
@@ -24,4 +27,10 @@ export async function isNotificationTargetPage(url) {
 
   // Issue, PR, commit paths, and per-repo notifications
   return /^(((issues|pull)\/\d+(\/(commits|files))?)|(commit\/.*)|(notifications$))/.test(repoPath);
+}
+
+export function isBackgroundPage() {
+  return isExtensionContext &&
+    browser.extension.getBackgroundPage &&
+    browser.extension.getBackgroundPage() === window;
 }

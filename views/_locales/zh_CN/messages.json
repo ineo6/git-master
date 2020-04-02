@@ -57,7 +57,7 @@
     "message": "公开仓库只需 <a href=\"https://github.com/settings/tokens/new?scopes=notifications&description=Git Master extension\">创建token</a>，并勾选 <strong>notifications</strong> 权限。"
   },
   "notify_github_token_private_tip": {
-    "message": "如果想要接收私人仓库的通知，需要<a href=\"https://github.com/settings/tokens/new?scopes=notifications,repo&description=Git Master extension\">点此</a> 创建带有 <strong>notifications</strong> 和 <strong>repo</strong> 权限的token。"
+    "message": "如果想要接收私人仓库的通知，需要 <a href=\"https://github.com/settings/tokens/new?scopes=notifications,repo&description=Git Master extension\">点此</a> 创建带有 <strong>notifications</strong> 和 <strong>repo</strong> 权限的token。"
   },
   "notify_github_issue": {
     "message": "仅显示与我有关的未读消息"
@@ -68,10 +68,16 @@
   "notify_github_sound": {
     "message": "通知声效"
   },
-  "notify_github_reuse_tab":{
+  "notify_github_reuse_tab": {
     "message": "复用通知Tabs"
   },
-  "notify_github_update_count":{
+  "notify_github_update_count": {
     "message": "打开通知后更新通知数量"
+  },
+  "download_url_use_mirror": {
+    "message": "下载使用 jsDelivr"
+  },
+  "download_url_use_mirror_desc": {
+    "message": "下载GitHub文件使用jsDelivr"
   }
 }

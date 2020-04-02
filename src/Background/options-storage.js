@@ -1,4 +1,6 @@
-import OptionsSync from 'webext-options-sync';
+import OptionsSync from './webext-options-sync';
+
+export const storageName = 'options';
 
 const optionsStorage = new OptionsSync({
   defaults: {
@@ -9,10 +11,12 @@ const optionsStorage = new OptionsSync({
     onlyParticipating: false,
     reuseTabs: false,
     updateCountOnNavigation: false,
+    useJsDelivr: false,
   },
   migrations: [
     OptionsSync.migrations.removeUnused,
   ],
+  storageName,
 });
 
 export default optionsStorage;

@@ -2,14 +2,14 @@ import { browser } from 'webextension-polyfill-ts';
 import Clipboard from 'clipboard';
 import { convertSizeToHumanReadableFormat, getFileSizeAndUnit } from './util.misc';
 import { MessageType } from './core.constants';
+import optionsStorage from '../Background/options-storage';
 
 class RepoView {
   constructor($dom, adapter) {
     this.adapter = adapter;
 
     this.repoSize = 0;
-
-    this.show();
+    this.useJsDelivr = false;
 
     browser.runtime.onMessage.addListener((request, _sender, _sendResponse) => {
       if (request && request.type === MessageType.PAGE_RENDERED) {
@@ -18,6 +18,16 @@ class RepoView {
         }, 10);
       }
     });
+  }
+
+  async init() {
+    await this.show();
+
+    const options = await optionsStorage.getAll();
+
+    if (options) {
+      this.useJsDelivr = !!options.useJsDelivr;
+    }
   }
 
   removeDom(selector) {
@@ -31,27 +41,10 @@ class RepoView {
   }
 
   getDownloadUrl(fileInfo) {
-    // name: "composer.json"
-    // path: "plugin-update/composer.json"
-    // sha: "8d1d4d31a4f5681aaab735c997a806779f1a09bd"
-    // size: 630
-    // url: "https://api.github.com/repos/ineo6/wp-video/contents/plugin-update/composer.json?ref=master"
-    // html_url: "https://github.com/ineo6/wp-video/blob/master/plugin-update/composer.json"
-    // git_url: "https://api.github.com/repos/ineo6/wp-video/git/blobs/8d1d4d31a4f5681aaab735c997a806779f1a09bd"
-    // download_url: "https://raw.githubusercontent.com/ineo6/wp-video/master/plugin-update/composer.json"
-    // type: "file"
-    // content: "ew0KCSJuYW1lIjogInlhaG5pcy1lbHN0cy9wbHVnaW4tdXBkYXRlLWNoZWNr↵ZXIiLA0KCSJ0eXBlIjogImxpYnJhcnkiLA0KCSJkZXNjcmlwdGlvbiI6ICJB↵IGN1c3RvbSB1cGRhdGUgY2hlY2tlciBmb3IgV29yZFByZXNzIHBsdWdpbnMu↵IFVzZWZ1bCBpZiB5b3UgY2FuJ3QgaG9zdCB5b3VyIHBsdWdpbiBpbiB0aGUg↵b2ZmaWNpYWwgV1AgcGx1Z2luIHJlcG9zaXRvcnkgYnV0IHN0aWxsIHdhbnQg↵aXQgdG8gc3VwcG9ydCBhdXRvbWF0aWMgcGx1Z2luIHVwZGF0ZXMuIiwNCgki↵a2V5d29yZHMiOiBbIndvcmRwcmVzcyIsICJwbHVnaW4gdXBkYXRlcyIsICJh↵dXRvbWF0aWMgdXBkYXRlcyJdLA0KCSJob21lcGFnZSI6ICJodHRwczovL2dp↵dGh1Yi5jb20vWWFobmlzRWxzdHMvcGx1Z2luLXVwZGF0ZS1jaGVja2VyLyIs↵DQoJImxpY2Vuc2UiOiAiTUlUIiwNCgkiYXV0aG9ycyI6IFsNCgkJew0KCQkJ↵Im5hbWUiOiAiWWFobmlzIEVsc3RzIiwNCgkJCSJlbWFpbCI6ICJ3aGl0ZXNo↵YWRvd0B3LXNoYWRvdy5jb20iLA0KCQkJImhvbWVwYWdlIjogImh0dHA6Ly93↵LXNoYWRvdy5jb20vIiwNCgkJCSJyb2xlIjogIkRldmVsb3BlciINCgkJfQ0K↵CV0sDQoJInJlcXVpcmUiOiB7DQoJCSJwaHAiOiAiPj01LjIuMCINCgl9DQp9↵"
-    // encoding: "base64"
-
-    // username: "ineo6"
-    // reponame: "wp-video"
-    // branch: "7980d054e5"
-    // displayBranch: null
-    // pullNumber: null
-
     let downUrl = fileInfo.download_url;
 
-    if (this.repo && fileInfo) {
+    // use jsdelivr cdn
+    if (this.repo && fileInfo && this.useJsDelivr) {
       const path = `gh/${this.repo.username}/${this.repo.reponame}@${this.repo.branch}/${fileInfo.path}`;
 
       const downUrlObj = new URL(path, 'https://cdn.jsdelivr.net');

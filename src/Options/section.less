@@ -1,0 +1,77 @@
+.section {
+  margin-bottom: 25px;
+  overflow: hidden;
+
+  .section-title {
+    font-size: 16px;
+    //color: #fff;
+    line-height: 32px;
+    margin-bottom: 10px;
+  }
+
+  .section-content {
+    border-radius: 3px;
+    background: #fff;
+    border: 1px solid #dddddd;
+
+    .section-option {
+      font-size: 14px;
+      padding: 0 20px;
+      border-bottom: 1px solid #e8e8e8;
+      overflow: hidden;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .label {
+        font-weight: 500;
+
+        .desc {
+          line-height: 20px;
+          font-size: 13px;
+          color: #9aa0a6;
+          //max-width: 450px;
+          font-weight: 400;
+        }
+      }
+
+      &-horizontal {
+        line-height: 49px;
+        height: 49px;
+
+        .label {
+          float: left;
+        }
+
+        .action-area {
+          float: right;
+        }
+
+        .hasDesc {
+          height: auto;
+        }
+      }
+
+      &-vertical {
+        .label {
+          line-height: 49px;
+        }
+
+        .action-area {
+          padding-bottom: 10px;
+        }
+      }
+
+      &-hasDesc {
+        height: auto;
+
+        .label {
+          line-height: 20px;
+          margin-top: 15px;
+          padding-bottom: 15px;
+        }
+      }
+    }
+  }
+}

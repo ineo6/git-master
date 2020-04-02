@@ -1,8 +1,8 @@
 @import "../styles/_reset.css";
 
-html {
-  min-width: 550px;
-  overflow-x: hidden;
+body, html {
+  width: 100%;
+  height: 100%;
 }
 
 :root {
@@ -13,6 +13,7 @@ html {
 body {
   font-family: system-ui, sans-serif;
   font-size: 14px;
+  color: rgba(0, 0, 0, .85);
 }
 
 p {
@@ -55,25 +56,59 @@ input {
   font-family: inherit;
 }
 
-input[type='url'],
-input[type='text'] {
-  display: block;
-  width: 100%;
-  padding: 0.25em;
+.github-url {
 }
 
-input:not([type='checkbox']):not(:placeholder-shown):valid {
-  color: var(--github-green);
-  border: 1px solid var(--github-green);
-}
-
-input:not([type='checkbox']):invalid {
-  color: var(--github-red);
-  border: 1px solid;
-}
-
-input[type='text'][name='token'] {
+.github-token {
   font-family: Consolas, monospace;
   font-size: 12px;
-  width: 35ch; /* Show only a part of the token */
 }
+
+#options-root {
+  width: 680px;
+  padding: 15px 0 25px;
+  margin: 0 20px;
+}
+
+.master-input {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 11px;
+  color: #000000;
+  font-size: 14px;
+  line-height: 1.5715;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+
+  .placeholder()
+}
+
+// Placeholder text
+.placeholder(@color: '#bfbfbf') {
+  // Firefox
+  &::-moz-placeholder {
+    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+  }
+
+  &::placeholder {
+    color: @color;
+  }
+
+  &:placeholder-shown {
+    text-overflow: ellipsis;
+  }
+}
+
