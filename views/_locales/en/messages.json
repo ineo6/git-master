@@ -78,6 +78,9 @@
     "message": "Use jsDelivr"
   },
   "download_url_use_mirror_desc":{
-    "message": "Download GitHub file via jsDelivr。"
+    "message": "Download GitHub file via jsDelivr CDN。"
+  },
+  "github_notifications": {
+    "message": "GitHub Notifications"
   }
 }

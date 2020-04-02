@@ -130,7 +130,7 @@ class Options extends React.Component<any, OptionsState> {
           this.form = ins;
         }}
       >
-        <Section title="GitHub Notifications">
+        <Section title={<Message i18n='github_notifications' />}>
           <SectionOption
             title="Root URL"
             description={<p className="small"><Message i18n='notify_github_host_tip' /></p>}

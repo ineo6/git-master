@@ -78,6 +78,9 @@
     "message": "下载使用 jsDelivr"
   },
   "download_url_use_mirror_desc": {
-    "message": "下载GitHub文件使用jsDelivr"
+    "message": "下载GitHub文件使用jsDelivr加速"
+  },
+  "github_notifications": {
+    "message": "GitHub 通知"
   }
 }
