@@ -67,7 +67,9 @@ class GitHub extends PjaxAdapter {
   }
 
   // @override
-  init($sidebar) {
+  init($sidebar, repoView) {
+    repoView.init();
+
     super.init($sidebar);
 
     // Fix #151 by detecting when page layout is updated.

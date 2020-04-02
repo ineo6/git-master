@@ -164,7 +164,7 @@ class Main {
 
     this.$document.trigger(EVENT.SIDEBAR_HTML_INSERTED);
 
-    adapter.init(this.$sidebar);
+    adapter.init(this.$sidebar, this.repoView);
     await helpPopup.init();
 
     await octotree.activate(
