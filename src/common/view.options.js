@@ -5,6 +5,8 @@ import { parallel } from './util.misc';
 class OptionsView {
   constructor($dom, adapter, $sidebar) {
     this.adapter = adapter;
+    this.whoami = adapter.whoami();
+
     this.$toggler = $dom.find('.gitmaster-settings')
       .click(this.toggle);
 
@@ -22,8 +24,11 @@ class OptionsView {
     this.$view.find('a.gitmaster-create-token')
       .attr('href', this.adapter.getCreateTokenUrl());
 
-    this.$view.find('.master-tabs-tab')
-      .click(this.handleTabClick);
+    // this.$view.find('.master-tabs-tab')
+    //   .click(this.handleTabClick);
+
+    // init default
+    this.setTab(this.whoami - 1);
 
     this.loadElements();
 
@@ -67,20 +72,24 @@ class OptionsView {
 
   handleTabClick(e) {
     const current = $(this);
-    const width = current.outerWidth(true);
     const index = current.index();
 
-    current
-      .siblings()
-      .removeClass('master-tabs-tab-active');
+    this.setTab(index);
+  }
 
-    current.addClass('master-tabs-tab-active');
 
-    const link = $('.master-tabs-ink-bar');
-    const content = $('.master-tabs-content');
+  setTab(index) {
+    const current = this.$view.find(`.master-tabs-tab:eq(${index})`);
+    const width = current.outerWidth(true);
+
+    current.removeClass('master-tabs-tab-disabled')
+      .addClass('master-tabs-tab-active');
+
+    const link = this.$view.find('.master-tabs-ink-bar');
+    const content = this.$view.find('.master-tabs-content');
 
     link.css({
-      transform: `translate3d(${index * width}px, 0px, 0px)`,
+      transform: `translate3d(${index * 77}px, 0px, 0px)`,
     });
 
     content.css({
