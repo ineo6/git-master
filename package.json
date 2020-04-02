@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
+    "classnames": "^2.2.6",
     "clipboard": "^2.0.6",
     "delay": "^4.3.0",
     "html2js": "^0.2.0",
@@ -30,9 +31,9 @@
     "jquery-pjax": "^2.0.1",
     "jquery-ui": "^1.12.1",
     "jstree": "^3.3.9",
+    "rc-switch": "^1.9.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "webext-options-sync": "^1.2.2",
     "webextension-polyfill-ts": "^0.12.0"
   },
   "devDependencies": {
@@ -41,6 +42,7 @@
     "@babel/plugin-transform-destructuring": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
+    "@types/classnames": "^2.2.10",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/webpack": "^4.41.6",

@@ -3,3 +3,5 @@ dist/
 extension/
 .yarn/
 .pnp.js
+typings
+**/*.d.ts
