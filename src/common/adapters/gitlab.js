@@ -3,7 +3,6 @@ import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { parseGitmodules } from '../util.misc';
 import { sendMessageToContentScriptByPostMessage } from '../util.ext';
-import { isButtonInsertedGitlab } from '../history';
 import octotree from '../core.api';
 
 const GL_RESERVED_USER_NAMES = [
@@ -31,8 +30,6 @@ class Gitlab extends PjaxAdapter {
           type: 'gitlab',
           handle: 'highlight',
         });
-
-        this.initHistory();
       });
   }
 
@@ -57,16 +54,10 @@ class Gitlab extends PjaxAdapter {
       attributeFilter: ['class'],
       attributeOldValue: true,
     });
-
-    this.initHistory();
   }
 
   whoami() {
     return DICT.GITLAB;
-  }
-
-  initHistory() {
-    isButtonInsertedGitlab(document.URL);
   }
 
   // @override

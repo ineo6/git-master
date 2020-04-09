@@ -61,6 +61,8 @@ const manifestInput = {
 
   options_ui: {
     page: 'options.html',
+    open_in_tab: true,
+    browser_style: false,
     __chrome__chrome_style: false,
   },
 

@@ -26,9 +26,9 @@ export const STORE = {
 };
 
 export const DICT = {
-  GITHUB: 1,
-  GITLAB: 2,
-  OSCHINA: 3,
+  GITHUB: 'github',
+  GITLAB: 'gitlab',
+  OSCHINA: 'gitee',
 };
 
 export const DEFAULTS = {

@@ -62,13 +62,11 @@ const GH_RESERVED_REPO_NAMES = ['followers', 'following', 'repositories'];
 class GitHub extends PjaxAdapter {
   constructor() {
     super(GH_PJAX_CONTAINER_SEL);
-
-    document.addEventListener('pjax:end', () => this.initHistory());
   }
 
   // @override
   init($sidebar, repoView) {
-    repoView.init();
+    repoView && repoView.init();
 
     super.init($sidebar);
 
@@ -90,16 +88,10 @@ class GitHub extends PjaxAdapter {
       attributeFilter: ['class'],
       attributeOldValue: true,
     });
-
-    this.initHistory();
   }
 
   whoami() {
     return DICT.GITHUB;
-  }
-
-  initHistory() {
-    isButtonInsertedGithub(document.URL);
   }
 
   // @override

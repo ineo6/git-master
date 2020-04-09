@@ -55,6 +55,11 @@ class Adapter {
               transform(item);
             }
 
+            // If lazy load and has parent, prefix with parent path
+            if (node && node.path) {
+              item.path = node.path + '/' + item.path;
+            }
+
             const path = item.path;
             const type = item.type;
             const index = path.lastIndexOf('/');

@@ -12,6 +12,16 @@
   },
   "rules": {
     "no-bitwise": 0,
-    "prefer-arrow-callback": "off"
+    "prefer-arrow-callback": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }
