@@ -5,7 +5,7 @@ import { parallel } from './util.misc';
 class OptionsView {
   constructor($dom, adapter, $sidebar) {
     this.adapter = adapter;
-    this.whoami = adapter.whoami();
+    this.whoami = adapter ? adapter.whoami() : '';
 
     this.$toggler = $dom.find('.gitmaster-settings')
       .click(this.toggle);

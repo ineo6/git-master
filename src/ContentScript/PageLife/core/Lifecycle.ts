@@ -1,7 +1,8 @@
 import { EventEmitter2 } from 'eventemitter2';
 import onDomReady from 'dom-loaded';
 import GitMaster from './GitMaster';
-import { Plugin } from '../interfaces';
+import { Plugin } from '../../interfaces';
+import adapter from './adapter';
 
 class Lifecycle extends EventEmitter2 {
   ctx: GitMaster;
@@ -21,14 +22,18 @@ class Lifecycle extends EventEmitter2 {
       this.ctx.output = [];
 
       // lifecycle main
-      // await this.beforeDocumentLoaded(this.ctx);
+      await this.beforeDocumentLoaded(this.ctx);
 
       await onDomReady;
 
       await this.detect(this.ctx);
-      await this.documentLoaded(this.ctx);
-      await this.inject(this.ctx);
-      await this.afterProcess(this.ctx);
+
+      if (this.ctx.currentAdapter) {
+        await this.documentLoaded(this.ctx);
+        await this.inject(this.ctx);
+        await this.afterProcess(this.ctx);
+      }
+
       return this.ctx;
     } catch (e) {
       this.ctx.log.warn('failed');
@@ -60,14 +65,8 @@ class Lifecycle extends EventEmitter2 {
     this.ctx.log.info('detect...');
     this.ctx.emit('detect', ctx);
     let type = ctx.getConfig('picBed.current') || 'default';
-    let adapter = this.ctx.helper.adapter.get(type);
 
-    if (!adapter) {
-      type = 'default';
-      adapter = this.ctx.helper.adapter.get('default');
-      ctx.log.warn(`Can't find uploader - ${type}, swtich to default uploader - smms`);
-    }
-    await adapter.handle(ctx);
+    await adapter(ctx);
     for (let i in ctx.output) {
       ctx.output[i].type = type;
     }

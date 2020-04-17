@@ -1,8 +1,13 @@
 {
-  "extends": [
-    "magic/react",
-    "magic/typescript"
-  ],
+  "extends": ["magic/react", "magic/typescript"],
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".ts", ".js", ".jsx", ".json"]
+      }
+    }
+  },
   "globals": {
     "$": true,
     "location": true,

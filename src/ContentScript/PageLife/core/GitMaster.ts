@@ -7,8 +7,7 @@ import LifecyclePlugins from '../lib/LifecyclePlugins';
 import PluginLoader from '../lib/PluginLoader';
 import Logger from '../lib/Logger';
 import Storage from '../lib/Storage';
-import adapter from '../plugins/adapter';
-import { Config, Helper, ImgInfo } from '../interfaces';
+import { Config, Helper, ImgInfo } from '../../interfaces';
 
 function bind(obj: any, eventStr: string, callback: Function) {
   if (obj.addEventListener) {
@@ -42,7 +41,7 @@ class GitMaster extends EventEmitter2 {
 
   currentAdapter: any;
 
-  event = {
+  eventKey = {
     pjaxEnd: 'pjac-end',
   };
 
@@ -51,7 +50,6 @@ class GitMaster extends EventEmitter2 {
     this.output = [];
     this.input = [];
     this.helper = {
-      adapter: new LifecyclePlugins('adapter', this),
       beforeDocumentLoadedPlugins: new LifecyclePlugins('beforeDocumentLoadedPlugins', this),
       documentLoadedPlugins: new LifecyclePlugins('documentLoadedPlugins', this),
       injectPlugins: new LifecyclePlugins('injectPlugins', this),
@@ -61,12 +59,11 @@ class GitMaster extends EventEmitter2 {
     this.log = new Logger(this);
     this.storage = new Storage(this);
 
-    this.on('notification', (notice) => {
+    this.on('notification', notice => {
       console.error(notice);
     });
 
     this.initConfig();
-    this.init();
   }
 
   setCurrentPluginName(name: string): void {
@@ -83,7 +80,7 @@ class GitMaster extends EventEmitter2 {
     this.config = {};
   }
 
-  init(): any {
+  async init(): any {
     try {
       // load self plugins
       this.pluginLoader = new PluginLoader(this);
@@ -91,23 +88,24 @@ class GitMaster extends EventEmitter2 {
 
       this.initEvents();
 
-      adapter(this);
-
       this.setCurrentPluginName(null);
 
       // load third-party plugins
       this.pluginLoader.load();
       this.lifecycle = new Lifecycle(this);
+
+      await this.lifecycle.start([]);
     } catch (e) {
-      this.emit('uploadProgress', -1);
       this.log.error(e);
+      this.emit('failed', e);
       throw e;
     }
   }
 
   initEvents(): void {
+    const ctx = this;
     bind(document, 'pjax:end', () => {
-      this.emit(this.event.pjaxEnd, this);
+      ctx.emit(ctx.eventKey.pjaxEnd, ctx);
     });
   }
 
@@ -145,16 +143,6 @@ class GitMaster extends EventEmitter2 {
       // @ts-ignore
       set(this.config, name, config[name]);
     });
-  }
-
-  async upload(): Promise<void | string | Error> {
-    try {
-      await this.lifecycle.start([]);
-    } catch (e) {
-      this.log.error(e);
-      this.emit('failed', e);
-      throw e;
-    }
   }
 }
 

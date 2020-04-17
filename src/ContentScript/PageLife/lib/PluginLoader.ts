@@ -1,5 +1,5 @@
 import GitMaster from '../core/GitMaster';
-import Plugins from '../feature';
+import Plugins from '../../feature';
 
 class PluginLoader {
   ctx: GitMaster;

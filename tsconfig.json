@@ -42,7 +42,11 @@
     "pretty": true,
     "newLine": "lf",
     "stripInternal": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "baseUrl": ".",
+    "paths":{
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*",

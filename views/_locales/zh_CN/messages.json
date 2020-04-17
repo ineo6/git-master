@@ -82,5 +82,20 @@
   },
   "github_notifications": {
     "message": "GitHub 通知"
+  },
+  "download_folder_notify": {
+    "message": "$count$ files will probably failed. Continue or not!",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "download_folder_process": {
+    "message": "Downloading"
+  },
+  "download_folder_fetch": {
+    "message": "Fetching Info"
   }
 }

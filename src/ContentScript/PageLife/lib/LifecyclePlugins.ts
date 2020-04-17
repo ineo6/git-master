@@ -1,10 +1,10 @@
 import GitMaster from '../core/GitMaster';
-import { Plugin } from '../interfaces';
+import {Plugin} from '../../interfaces';
 
 function maoToArray(mapData: Map<string, Plugin>) {
   const arr: any = [];
 
-  mapData.forEach(function(value: string, key: any) {
+  mapData.forEach(function (value: string, key: any) {
     arr.push([key, value]);
   });
 
@@ -53,11 +53,24 @@ class LifecyclePlugins {
     }
   }
 
+  scopeEnable(scope: string[]) {
+    if (scope) {
+      if (scope.length) {
+        return scope.indexOf(LifecyclePlugins.currentAdapterName) >= 0;
+      }
+    }
+
+    return true;
+  }
+
   registerLoadEvent(plugin: any) {
-    console.log(plugin.load);
-    this.ctx.on('pjaxEnd', function(ctx) {
-      plugin.handle(ctx);
-    });
+    if (plugin.repeatOnAjax) {
+      this.ctx.on(this.ctx.eventKey.pjaxEnd, (ctx) => {
+        if (this.scopeEnable(plugin.scope)) {
+          plugin.handle(ctx);
+        }
+      });
+    }
   }
 
   unregister(pluginName: string): void {
@@ -76,13 +89,7 @@ class LifecyclePlugins {
   getList(): Plugin[] {
     const filterMap: Map<string, Plugin> = new Map(
       maoToArray(this.list).filter(([k, v]) => {
-        if (v.scope) {
-          if (v.scope.length) {
-            return v.scope.indexOf(LifecyclePlugins.currentAdapterName) >= 0;
-          }
-        }
-
-        return true;
+        return this.scopeEnable(v.scope);
       }),
     );
 

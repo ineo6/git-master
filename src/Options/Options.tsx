@@ -1,10 +1,10 @@
 import React from 'react';
-import { browser } from 'webextension-polyfill-ts';
+import {browser} from 'webextension-polyfill-ts';
 import Switch from 'rc-switch';
 
-import optionsStorage, { storageName } from '../Background/options-storage';
+import optionsStorage, {storageName} from '../Background/options-storage';
 import './styles.less';
-import { requestPermission } from '../Background/lib/permissions-service';
+import {requestPermission} from '@/Background/lib/permissions-service';
 import Message from './Message';
 import Section from './Section';
 import SectionOption from './SectionOption';
@@ -60,7 +60,7 @@ class Options extends React.Component<any, OptionsState> {
   }
 
   saveField = (fieldName: string, fieldValue: any) => {
-    const updateData = { [fieldName]: fieldValue };
+    const updateData = {[fieldName]: fieldValue};
 
     // @ts-ignore
     this.setState(updateData);
@@ -130,6 +130,9 @@ class Options extends React.Component<any, OptionsState> {
           this.form = ins;
         }}
       >
+        <div className="header">
+          <h1>GitMaster</h1>
+        </div>
         <Section title={<Message i18n='github_notifications' />}>
           <SectionOption
             title="Root URL"

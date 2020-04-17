@@ -56,8 +56,12 @@ class Adapter {
             }
 
             // If lazy load and has parent, prefix with parent path
+            // gitlab default is lazyload
+            // so gitlab url should not append parent path
             if (node && node.path) {
-              item.path = node.path + '/' + item.path;
+              if (!item.path.startsWith(node.path)) {
+                item.path = node.path + '/' + item.path;
+              }
             }
 
             const path = item.path;
@@ -111,7 +115,7 @@ class Adapter {
                   .split('/')
                   .map(encodeURIComponent)
                   .join('/');
-                const url = this._getItemHref(repo, type, encodedPath, opts.encodedBranch);
+                const url = this.getItemHref(repo, type, encodedPath, opts.encodedBranch);
                 item.a_attr = {
                   href: url,
                   'data-download-url': url,
@@ -282,6 +286,12 @@ class Adapter {
   }
 
   /**
+   * Returns repo meta info
+   * @api public
+   */
+  getContent(token, cb) {}
+
+  /**
    * Selects the file at a specific path.
    * @api public
    */
@@ -290,9 +300,9 @@ class Adapter {
       // Smooth scroll to diff file on PR page
       if (path.match(/#diff-\d+$/)) {
         const index = +path.split('-')
-          .slice(-1)[0] + 1;
+          .slice(-1)[0];
 
-        const matchDom = $(`#files .file:nth-of-type(${index})`);
+        const matchDom = $('#files .file').eq(index);
 
         if (matchDom.length) {
           $('html, body')
@@ -387,9 +397,9 @@ class Adapter {
 
   /**
    * Returns item's href value.
-   * @api protected
+   * @api public
    */
-  _getItemHref(repo, type, encodedPath, encodedBranch) {
+  getItemHref(repo, type, encodedPath, encodedBranch) {
     return `/${repo.username}/${repo.reponame}/${type}/${encodedBranch}/${encodedPath}`;
   }
 

@@ -1,6 +1,6 @@
 import GitMaster from '../../core/GitMaster';
-import { PluginConfig } from '../../interfaces';
-import CodeTree from '../../codeTree';
+import { PluginConfig } from '../../../interfaces';
+import CodeTree from '../../../codeTree';
 
 const handle = async (ctx: GitMaster): Promise<GitMaster> => {
   try {
@@ -8,15 +8,16 @@ const handle = async (ctx: GitMaster): Promise<GitMaster> => {
 
     const adapter = await codeTree.init();
 
-    ctx.setCurrentAdapter(adapter.whoami(), adapter);
+    if (adapter) {
+      ctx.setCurrentAdapter(adapter.whoami(), adapter);
+    }
 
     return ctx;
   } catch (err) {
     ctx.emit('notification', {
-      title: '上传失败',
-      body: '服务端出错，请重试',
+      title: '初始化失败',
+      body: '',
     });
-    console.log(err)
     throw err;
   }
 };

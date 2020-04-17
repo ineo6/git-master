@@ -147,12 +147,6 @@ class OptionsSync<TOptions extends Options> {
       return;
     }
 
-    const { installType } = await browser.management.getSelf();
-    // Chrome doesn't run `onInstalled` when launching the browser with a pre-loaded development extension #25
-    if (installType !== 'development') {
-      await new Promise(resolve => browser.runtime.onInstalled.addListener(resolve));
-    }
-
     const options = await this._getAll();
     const initial = JSON.stringify(options);
 

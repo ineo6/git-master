@@ -1,5 +1,5 @@
 import GitMaster from '../core/GitMaster';
-import optionsStorage from '../../Background/options-storage';
+import optionsStorage from '../../../Background/options-storage';
 
 class Storage {
   level: {

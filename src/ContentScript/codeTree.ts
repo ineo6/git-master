@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import key from 'key';
 import { browser } from 'webextension-polyfill-ts';
+import { ADDON_CLASS, DICT, EVENT, PINNED_CLASS, SHOW_CLASS, STORE } from '@/common/core.constants';
 import octotree from '../common/core.api';
 
 import TreeView from '../common/view.tree';
@@ -8,7 +9,6 @@ import OptionsView from '../common/view.options';
 import HelpPopup from '../common/view.help';
 import ErrorView from '../common/view.error';
 import extStore from '../common/core.storage';
-import { ADDON_CLASS, DICT, EVENT, PINNED_CLASS, SHOW_CLASS, STORE } from '../common/core.constants';
 import GitHub from '../common/adapters/github';
 import Gitlab from '../common/adapters/gitlab';
 import Oschina from '../common/adapters/oschina';
@@ -105,12 +105,16 @@ class CodeTree {
 
   hasError: any;
 
+  repoMeta: any = {};
+
   async init() {
     const adapter = await createAdapter();
 
     this.adapter = adapter;
 
-    await this.loadExtension(adapter);
+    if (adapter) {
+      await this.loadExtension(adapter);
+    }
 
     return adapter;
   }
@@ -291,6 +295,17 @@ class CodeTree {
         } else {
           // Sidebar not visible (because it's not pinned), show the toggler
           this.$toggler.show();
+        }
+
+        // fetch repo data
+        const metaData = await this.adapter.getContent('', {
+          repo: repo,
+          isRepoMetaData: true,
+        });
+
+        if (metaData) {
+          this.repoMeta = metaData;
+          window.RepoMeta = metaData;
         }
       } else {
         // Not a repo or not to be shown in this page

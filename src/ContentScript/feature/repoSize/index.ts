@@ -1,4 +1,4 @@
-import GitMaster from '../../core/GitMaster';
+import GitMaster from '../../PageLife/core/GitMaster';
 import RepoView from './RepoView';
 
 export default (ctx: GitMaster) => {
@@ -11,7 +11,7 @@ export default (ctx: GitMaster) => {
       },
       config: [],
       scope: ['github'],
-      load: [ctx.event.pjaxEnd],
+      repeatOnAjax: true,
     });
   };
   return {

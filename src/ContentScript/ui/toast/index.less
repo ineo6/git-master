@@ -1,0 +1,114 @@
+.gm-toast-container {
+  position: sticky;
+  z-index: 1055;
+  top: 0
+}
+
+.gm-toast-wrapper {
+  position: absolute;
+  z-index: 1055;
+  top: 0;
+  right: 0;
+  margin: 5px
+}
+
+.gm-toast-container > .gm-toast-wrapper > .gm-toast {
+  background-color: rgb(255, 255, 255);
+  border-top: none;
+}
+
+.gm-toast-container > .gm-toast-wrapper > .gm-toast > .gm-toast-header strong {
+  padding-right: 20px;
+}
+
+
+.gm-toast-close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .5;
+  margin-left: 8px;
+  margin-bottom: 4px;
+}
+
+.gm-toast-close:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.gm-toast-close:not(:disabled):not(.disabled):hover, .gm-toast-close:not(:disabled):not(.disabled):focus {
+  opacity: .75;
+}
+
+button.gm-toast-close {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+a.gm-toast-close.disabled {
+  pointer-events: none;
+}
+
+.gm-toast {
+  max-width: 450px;
+  min-width: 350px;
+  overflow: hidden;
+  font-size: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  border-radius: 0.25rem;
+}
+
+.gm-toast:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.gm-toast.showing {
+  opacity: 1;
+}
+
+.gm-toast.show {
+  display: block;
+  opacity: 1;
+}
+
+.gm-toast.hide {
+  display: none;
+}
+
+.gm-toast-header {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  color: #6c757d;
+  background-color: rgba(255, 255, 255, 0.85);
+  background-clip: padding-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.gm-toast-header .mr-auto {
+  margin-right: 50px;
+}
+
+.gm-toast-header .gm-toast-default-img{
+  margin-right: .5rem;
+  border-radius: .25rem;
+}
+
+.gm-toast-body {
+  padding: 0.75rem;
+}

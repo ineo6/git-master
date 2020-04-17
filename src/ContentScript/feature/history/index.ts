@@ -1,4 +1,4 @@
-import GitMaster from '../../core/GitMaster';
+import GitMaster from '../../PageLife/core/GitMaster';
 import { isButtonInsertedGithub, isButtonInsertedGitlab } from './history';
 
 export default (ctx: GitMaster) => {
@@ -9,7 +9,7 @@ export default (ctx: GitMaster) => {
       },
       config: [],
       scope: ['github'],
-      load: [ctx.event.pjaxEnd],
+      repeatOnAjax:true,
     });
 
     ctx.helper.documentLoadedPlugins.register('gitlab-history', {
@@ -18,7 +18,7 @@ export default (ctx: GitMaster) => {
       },
       config: [],
       scope: ['gitlab'],
-      load: [ctx.event.pjaxEnd],
+      repeatOnAjax:true,
     });
   };
   return {

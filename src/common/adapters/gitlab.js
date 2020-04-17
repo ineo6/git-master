@@ -66,6 +66,11 @@ class Gitlab extends PjaxAdapter {
   }
 
   // @override
+  getItemHref(repo, type, encodedPath, encodedBranch) {
+    return `/${repo.username}/${repo.reponame}/${type}/${encodedBranch}/${encodedPath}`;
+  }
+
+  // @override
   async shouldLoadEntireTree(repo) {
     const isLoadingPr = await extStore.get(STORE.PR) && repo.pullNumber;
     if (isLoadingPr) {

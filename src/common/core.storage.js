@@ -1,3 +1,4 @@
+import {browser} from 'webextension-polyfill-ts';
 import { DEFAULTS, EVENT, STORE } from './core.constants';
 import { isSafari, promisify } from './util.misc';
 
@@ -15,9 +16,9 @@ class ExtStore {
     this._tempChanges = {};
 
     if (!this._isSafari) {
-      this._setInExtensionStorage = promisify(chrome.storage.local, 'set');
-      this._getInExtensionStorage = promisify(chrome.storage.local, 'get');
-      this._removeInExtensionStorage = promisify(chrome.storage.local, 'remove');
+      this._setInExtensionStorage = browser.storage.local.set;
+      this._getInExtensionStorage = browser.storage.local.get;
+      this._removeInExtensionStorage = browser.storage.local.remove;
     }
 
     // Initialize default values
@@ -44,7 +45,7 @@ class ExtStore {
     });
 
     if (!this._isSafari) {
-      chrome.storage.onChanged.addListener((changes) => {
+      browser.storage.onChanged.addListener((changes) => {
         Object.entries(changes)
           .forEach(([key, change]) => {
             if (this._isOctotreeKey(key)) {

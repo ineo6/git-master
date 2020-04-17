@@ -1,11 +1,11 @@
 import GitMaster from '../PageLife/core/GitMaster';
-import { i18n } from '@/common/util.ext';
+import {injectCustomJs} from '@/common/util.ext';
 
 export default (ctx: GitMaster) => {
   const register = () => {
-    ctx.helper.afterPlugins.register('i18n', {
+    ctx.helper.documentLoadedPlugins.register('injectCustomJs', {
       async handle() {
-        i18n();
+        injectCustomJs();
       },
     });
   };

@@ -92,6 +92,7 @@ module.exports = {
       'webextension-polyfill-ts': path.resolve(path.join(__dirname, 'node_modules', 'webextension-polyfill-ts')),
       key: path.resolve(path.join(__dirname, './src/common/libs/keymaster.js')),
       FileIcons: path.join(__dirname, './src/common/libs/file-icons.js'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
 
@@ -182,6 +183,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
+      'window.jQuery': 'jquery',
       'jquery-pjax': 'jquery-pjax',
       jstree: 'jstree',
       key: 'key',

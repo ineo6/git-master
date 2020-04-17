@@ -14,7 +14,8 @@ export function injectCustomJs(jsPath) {
   document.body.appendChild(temp);
 }
 
-const pageId = 'content';
+// eslint-disable-next-line
+var pageId = 'content';
 
 window.addEventListener('message', (e) => {
   if (e.data.from === pageId) {

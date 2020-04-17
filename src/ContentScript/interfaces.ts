@@ -1,5 +1,8 @@
-import GitMaster from './core/GitMaster'
-import LifecyclePlugins from './lib/LifecyclePlugins'
+import GitMaster from './PageLife/core/GitMaster'
+import LifecyclePlugins from './PageLife/lib/LifecyclePlugins'
+
+export type Lit = string | number | boolean | undefined | null | void | {};
+export const tuple = <T extends Lit[]>(...args: T) => args;
 
 /**
  * for plugin config
@@ -9,6 +12,7 @@ interface PluginConfig {
   type: string
   required: boolean
   default?: any
+
   [propName: string]: any
 }
 
@@ -16,24 +20,10 @@ interface PluginConfig {
  * for lifecycle plugins
  */
 interface Helper {
-  adapter: LifecyclePlugins
   beforeDocumentLoadedPlugins: LifecyclePlugins
   documentLoadedPlugins: LifecyclePlugins
   injectPlugins: LifecyclePlugins
   afterPlugins: LifecyclePlugins
-}
-
-/**
- * for uploading image info
- */
-interface ImgInfo {
-  buffer?: Buffer
-  base64Image?: string
-  fileName?: string
-  width?: number
-  height?: number
-  extname?: string
-  [propName: string]: any
 }
 
 /**
@@ -47,7 +37,8 @@ interface Config {
  * for plugin
  */
 interface Plugin {
-  handle (ctx: GitMaster): void | Promise<any>
+  handle(ctx: GitMaster): void | Promise<any>
+
   [propName: string]: any
 }
 
@@ -57,14 +48,6 @@ interface Plugin {
 interface Result {
   code: string | number
   data: string
-}
-
-/**
- * for transformer - path
- */
-interface ImgSize {
-  width: number
-  height: number
 }
 
 /**
@@ -89,14 +72,35 @@ interface ClipboardImage {
   isExistFile: boolean
 }
 
+const FileTypes = tuple('submodule', 'file', 'directory');
+
+export type FileType = typeof FileTypes[number];
+
+export interface IGitHubFile {
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: object;
+  type: string;
+  _links: ILinks;
+}
+
+export interface ILinks {
+  self: string;
+  git: string;
+  html: string;
+}
+
 export {
   PluginConfig,
-  ImgInfo,
   Config,
   Helper,
   Plugin,
   Result,
-  ImgSize,
   Options,
   ClipboardImage
 }

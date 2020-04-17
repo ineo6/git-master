@@ -2,8 +2,7 @@ import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp, parseGitmodules } from '../util.misc';
-import octotree from '../core.api';
-import { isButtonInsertedGithub } from '../history';
+import * as githubDetect from './pageDetect/github';
 
 // When Github page loads at repo path e.g. https://github.com/jquery/jquery, the HTML tree has
 // <main id="js-repo-pjax-container"> to contain server-rendered HTML in response of pjax.
@@ -63,6 +62,8 @@ class GitHub extends PjaxAdapter {
   constructor() {
     super(GH_PJAX_CONTAINER_SEL);
   }
+
+  detect = githubDetect;
 
   // @override
   init($sidebar, repoView) {
@@ -262,13 +263,12 @@ class GitHub extends PjaxAdapter {
   }
 
   async getRepoDataWrap(currentRepo, token) {
-    if (!await octotree.shouldShowOctotree()) {
+    if (!githubDetect.shouldShowOctotree()) {
       return;
     }
 
     return new Promise((resolve, reject) => {
       this.getRepoData(currentRepo, token, (error, result) => {
-
         if (!error) {
           resolve(result);
         }
@@ -282,7 +282,7 @@ class GitHub extends PjaxAdapter {
 
   // @override
   async getRepoFromPath(currentRepo, token, cb) {
-    if (!await octotree.shouldShowOctotree()) {
+    if (!githubDetect.shouldShowOctotree()) {
       return cb();
     }
 

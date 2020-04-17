@@ -1,3 +1,5 @@
+import { browser } from 'webextension-polyfill-ts';
+
 export function isSafari() {
   return typeof safari !== 'undefined' && safari.self && typeof safari.self.addEventListener === 'function';
 }
@@ -12,11 +14,11 @@ export function promisify(fn, method) {
     throw new Error(`promisify: fn does not have ${method} method`);
   }
 
-  return function(...args) {
+  return function (...args) {
     return new Promise(((resolve, reject) => {
       fn[method](...args, (res) => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
+        if (browser.runtime.lastError) {
+          reject(browser.runtime.lastError);
         } else {
           resolve(res);
         }

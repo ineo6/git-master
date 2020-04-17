@@ -1,6 +1,6 @@
-let pageId = 'inject';
+let gmPageId = 'inject';
 
-const tools = {
+const gmTrigger = {
   gitlab: {
     highlight: function() {
       $('.js-syntax-highlight')
@@ -12,7 +12,7 @@ const tools = {
 };
 
 function executeHandle(type, handle) {
-  const handles = tools[type];
+  const handles = gmTrigger[type];
 
   switch (handle) {
     case 'highlight':
@@ -28,7 +28,7 @@ function invokeContentScript(code) {
   window.postMessage({
     cmd: 'invoke',
     code: code,
-    from: pageId,
+    from: gmPageId,
   }, '*');
 }
 
@@ -37,12 +37,12 @@ function sendMessageToContentScriptByPostMessage(data) {
   window.postMessage({
     cmd: 'message',
     data: data,
-    from: pageId,
+    from: gmPageId,
   }, '*');
 }
 
 window.addEventListener('message', function(e) {
-  if (e.data.from === pageId) {
+  if (e.data.from === gmPageId) {
     return;
   }
 
