@@ -22,6 +22,12 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "magic-lint --staged --eslint --prettier --fix",
+      "commit-msg": "magic-lint --commit"
+    }
+  },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
     "antd": "^4.1.2",
