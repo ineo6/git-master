@@ -1,3 +1,5 @@
+import {getRepoPath} from './util';
+
 const GH_RESERVED_USER_NAMES = [
   'about',
   'account',
@@ -50,6 +52,13 @@ export const isRawPage = function () {
   return $(GH_RAW_CONTENT).length >= 1;
 }
 
+// export const isRepo = (): boolean => /^[^/]+\/[^/]+/.test(getCleanPathname()) &&
+//   !reservedNames.includes(getOwnerAndRepo().ownerName!) &&
+//   !isNotifications() &&
+//   !isDashboard() &&
+//   !isGist() &&
+//   !isRepoSearch();
+
 export const isRepo = function () {
   // (username)/(reponame)[/(type)][/(typeId)]
   const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
@@ -79,3 +88,5 @@ export const shouldShowOctotree = function () {
 }
 
 // 判断是否是文件夹或者文件
+
+export const isSingleFile = (): boolean => String(getRepoPath()).startsWith('blob/');

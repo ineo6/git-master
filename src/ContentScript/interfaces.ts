@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import GitMaster from './PageLife/core/GitMaster'
 import LifecyclePlugins from './PageLife/lib/LifecyclePlugins'
 
@@ -7,7 +9,7 @@ export const tuple = <T extends Lit[]>(...args: T) => args;
 /**
  * for plugin config
  */
-interface PluginConfig {
+export interface PluginConfig {
   name: string
   type: string
   required: boolean
@@ -19,7 +21,7 @@ interface PluginConfig {
 /**
  * for lifecycle plugins
  */
-interface Helper {
+export interface Helper {
   beforeDocumentLoadedPlugins: LifecyclePlugins
   documentLoadedPlugins: LifecyclePlugins
   injectPlugins: LifecyclePlugins
@@ -29,31 +31,23 @@ interface Helper {
 /**
  * for config options
  */
-interface Config {
+export interface Config {
   [propName: string]: any
 }
 
 /**
  * for plugin
  */
-interface Plugin {
+export interface Plugin {
   handle(ctx: GitMaster): void | Promise<any>
 
   [propName: string]: any
 }
 
 /**
- * for spawn output
- */
-interface Result {
-  code: string | number
-  data: string
-}
-
-/**
  * for initUtils
  */
-interface Options {
+export interface Options {
   template: string // template name
   dest: string // destination for template to generate
   hasSlash: boolean // check if is officail template
@@ -62,14 +56,6 @@ interface Options {
   offline: boolean // check if use offline mode
   tmp: string // cache template
   project: string // project name
-}
-
-/**
- * for clipboard image
- */
-interface ClipboardImage {
-  imgPath: string
-  isExistFile: boolean
 }
 
 const FileTypes = tuple('submodule', 'file', 'directory');
@@ -93,14 +79,4 @@ export interface ILinks {
   self: string;
   git: string;
   html: string;
-}
-
-export {
-  PluginConfig,
-  Config,
-  Helper,
-  Plugin,
-  Result,
-  Options,
-  ClipboardImage
 }

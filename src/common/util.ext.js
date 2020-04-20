@@ -22,7 +22,6 @@ window.addEventListener('message', (e) => {
     return;
   }
 
-  console.log('content收到消息：', e.data);
   if (e.data && e.data.cmd === 'invoke') {
     eval('(' + e.data.code + ')');
   } else if (e.data && e.data.cmd === 'message') {

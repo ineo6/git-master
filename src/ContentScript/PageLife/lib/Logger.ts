@@ -17,28 +17,17 @@ class Logger {
     this.ctx = ctx;
   }
 
+  // @ts-ignore
   protected handleLog(type: string, msg: string | Error): string | Error | undefined {
-    // if configPath is invalid then this.ctx.config === undefined
-    // if not then check config.silent
     if (this.ctx.getConfig() === undefined || !this.ctx.getConfig('silent')) {
-      let log = `[GitMaster ${type.toUpperCase()}]: `;
-      log += msg;
-
-      if (type === 'success') {
-        console.log(log);
-      } else {
-        // @ts-ignore
-        console[type](log);
-      }
 
       this.handleWriteLog(type, msg, this.ctx);
 
       return msg;
-    } else {
     }
   }
 
-  protected handleWriteLog(type: string, msg: string | Error, ctx?: GitMaster): void {
+  protected handleWriteLog(type: string, msg: string | Error, _ctx?: GitMaster): void {
     try {
       const logLevel = this.ctx.getConfig('settings.logLevel');
 
@@ -48,7 +37,13 @@ class Logger {
         if (typeof msg === 'object' && type === 'error') {
           log += `\n------Error Stack Begin------\n${JSON.stringify(msg.stack)}\n-------Error Stack End-------`;
         }
-        console.log(log);
+
+        if (type === 'success') {
+          console.log(log);
+        } else {
+          // @ts-ignore
+          console[type](log);
+        }
       }
     } catch (e) {
       console.log(e);

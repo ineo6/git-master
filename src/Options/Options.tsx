@@ -1,21 +1,20 @@
 import React from 'react';
 import {browser} from 'webextension-polyfill-ts';
 import Switch from 'rc-switch';
-
-import optionsStorage, {storageName} from '../Background/options-storage';
-import './styles.less';
+import optionsStorage from '@/Background/options-storage';
 import {requestPermission} from '@/Background/lib/permissions-service';
 import Message from './Message';
 import Section from './Section';
 import SectionOption from './SectionOption';
 
+import './styles.less';
 import 'rc-switch/assets/index.css';
 
 interface OptionsState {
   token: string;
   rootUrl: string;
   playNotifSound: boolean;
-  showDesktopNotif: boolean
+  showDesktopNotif: boolean;
   onlyParticipating: boolean;
   reuseTabs: boolean;
   updateCountOnNavigation: boolean;
@@ -44,19 +43,6 @@ class Options extends React.Component<any, OptionsState> {
     const optionData = await optionsStorage.getAll();
 
     this.setState(optionData);
-
-    // 监听storage变化
-
-    browser.storage.onChanged.addListener(this._handleStorageChangeOnForm);
-  }
-
-  _handleStorageChangeOnForm(changes: any, areaName: any) {
-    if (areaName === 'sync' &&
-      changes[storageName] &&
-      (!document.hasFocus() || !this.form.contains(document.activeElement)) // Avoid applying changes while the user is editing a field
-    ) {
-      console.log(changes[storageName]);
-    }
   }
 
   saveField = (fieldName: string, fieldValue: any) => {
@@ -112,31 +98,26 @@ class Options extends React.Component<any, OptionsState> {
   };
 
   render() {
-    const {
-      rootUrl,
-      token,
-      onlyParticipating,
-      showDesktopNotif,
-      playNotifSound,
-      reuseTabs,
-      updateCountOnNavigation,
-      useJsDelivr,
-    } = this.state;
+    const {rootUrl, token, onlyParticipating, showDesktopNotif, playNotifSound, reuseTabs, updateCountOnNavigation, useJsDelivr} = this.state;
 
     return (
       <form
         id="options-form"
-        ref={(ins) => {
+        ref={ins => {
           this.form = ins;
         }}
       >
         <div className="header">
-          <h1>GitMaster</h1>
+          <h1>Git Master</h1>
         </div>
-        <Section title={<Message i18n='github_notifications' />}>
+        <Section title={<Message i18n="github_notifications" />}>
           <SectionOption
             title="Root URL"
-            description={<p className="small"><Message i18n='notify_github_host_tip' /></p>}
+            description={
+              <div className="small">
+                <Message i18n="notify_github_host_tip" />
+              </div>
+            }
           >
             <label>
               <input
@@ -152,16 +133,16 @@ class Options extends React.Component<any, OptionsState> {
 
           <SectionOption
             title="Token"
-            description={(
+            description={
               <>
-                <p className="small">
-                  <Message i18n='notify_github_token_tip' />
-                </p>
-                <p className="small">
-                  <Message i18n='notify_github_token_private_tip' />
-                </p>
+                <div className="small">
+                  <Message i18n="notify_github_token_tip" />
+                </div>
+                <div className="small">
+                  <Message i18n="notify_github_token_private_tip" />
+                </div>
               </>
-            )}
+            }
           >
             <label>
               <input
@@ -177,52 +158,34 @@ class Options extends React.Component<any, OptionsState> {
             </label>
           </SectionOption>
 
-          <SectionOption title={<Message i18n='notify_github_issue' />} layout="horizontal">
-            <Switch
-              checked={onlyParticipating}
-              onClick={this.handleParticipatingChange}
-            />
+          <SectionOption title={<Message i18n="notify_github_issue" />} layout="horizontal">
+            <Switch checked={onlyParticipating} onClick={this.handleParticipatingChange} />
           </SectionOption>
 
-          <SectionOption title={<Message i18n='notify_github_desktop' />} layout="horizontal">
-            <Switch
-              checked={showDesktopNotif}
-              onClick={this.handleNotifyInputChange}
-            />
+          <SectionOption title={<Message i18n="notify_github_desktop" />} layout="horizontal">
+            <Switch checked={showDesktopNotif} onClick={this.handleNotifyInputChange} />
           </SectionOption>
 
-          <SectionOption title={<Message i18n='notify_github_sound' />} layout="horizontal">
-            <Switch
-              checked={playNotifSound}
-              onClick={this.handleSoundChange}
-            />
+          <SectionOption title={<Message i18n="notify_github_sound" />} layout="horizontal">
+            <Switch checked={playNotifSound} onClick={this.handleSoundChange} />
           </SectionOption>
 
-          <SectionOption title={<Message i18n='notify_github_reuse_tab' />} layout="horizontal">
-            <Switch
-              checked={reuseTabs}
-              onClick={this.handleReuseTabsChange}
-            />
+          <SectionOption title={<Message i18n="notify_github_reuse_tab" />} layout="horizontal">
+            <Switch checked={reuseTabs} onClick={this.handleReuseTabsChange} />
           </SectionOption>
 
-          <SectionOption title={<Message i18n='notify_github_update_count' />} layout="horizontal">
-            <Switch
-              checked={updateCountOnNavigation}
-              onClick={this.handleTabUpdateChange}
-            />
+          <SectionOption title={<Message i18n="notify_github_update_count" />} layout="horizontal">
+            <Switch checked={updateCountOnNavigation} onClick={this.handleTabUpdateChange} />
           </SectionOption>
         </Section>
 
         <Section title="其他">
           <SectionOption
-            title={<Message i18n='download_url_use_mirror' />}
+            title={<Message i18n="download_url_use_mirror" />}
             layout="horizontal"
-            description={<Message i18n='download_url_use_mirror_desc' />}
+            description={<Message i18n="download_url_use_mirror_desc" />}
           >
-            <Switch
-              checked={useJsDelivr}
-              onClick={this.handleUseJsDelivrChange}
-            />
+            <Switch checked={useJsDelivr} onClick={this.handleUseJsDelivrChange} />
           </SectionOption>
         </Section>
       </form>

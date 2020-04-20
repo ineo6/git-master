@@ -1,4 +1,4 @@
-import { EventEmitter2 } from 'eventemitter2';
+import {EventEmitter2} from 'eventemitter2';
 import get from 'lodash.get';
 import set from 'lodash.set';
 import unset from 'lodash.unset';
@@ -7,7 +7,7 @@ import LifecyclePlugins from '../lib/LifecyclePlugins';
 import PluginLoader from '../lib/PluginLoader';
 import Logger from '../lib/Logger';
 import Storage from '../lib/Storage';
-import { Config, Helper, ImgInfo } from '../../interfaces';
+import {Config, Helper} from '../../interfaces';
 
 function bind(obj: any, eventStr: string, callback: Function) {
   if (obj.addEventListener) {
@@ -15,7 +15,7 @@ function bind(obj: any, eventStr: string, callback: Function) {
     obj.addEventListener(eventStr, callback, false);
   } else {
     //IE8以下兼容方式;手动添加on
-    obj.attachEvent('on' + eventStr, function() {
+    obj.attachEvent('on' + eventStr, function () {
       //在匿名函数中调用回调函数
       callback.call(obj);
     });
@@ -33,10 +33,6 @@ class GitMaster extends EventEmitter2 {
 
   storage: Storage;
 
-  output: ImgInfo[];
-
-  input: any[];
-
   pluginLoader: PluginLoader | undefined;
 
   currentAdapter: any;
@@ -47,8 +43,6 @@ class GitMaster extends EventEmitter2 {
 
   constructor() {
     super();
-    this.output = [];
-    this.input = [];
     this.helper = {
       beforeDocumentLoadedPlugins: new LifecyclePlugins('beforeDocumentLoadedPlugins', this),
       documentLoadedPlugins: new LifecyclePlugins('documentLoadedPlugins', this),
@@ -80,7 +74,7 @@ class GitMaster extends EventEmitter2 {
     this.config = {};
   }
 
-  async init(): any {
+  async init(): Promise<any> {
     try {
       // load self plugins
       this.pluginLoader = new PluginLoader(this);
@@ -88,13 +82,13 @@ class GitMaster extends EventEmitter2 {
 
       this.initEvents();
 
-      this.setCurrentPluginName(null);
+      this.setCurrentPluginName('');
 
       // load third-party plugins
       this.pluginLoader.load();
       this.lifecycle = new Lifecycle(this);
 
-      await this.lifecycle.start([]);
+      await this.lifecycle.start();
     } catch (e) {
       this.log.error(e);
       this.emit('failed', e);

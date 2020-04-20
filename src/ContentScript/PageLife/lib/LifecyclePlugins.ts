@@ -4,7 +4,7 @@ import {Plugin} from '../../interfaces';
 function maoToArray(mapData: Map<string, Plugin>) {
   const arr: any = [];
 
-  mapData.forEach(function (value: string, key: any) {
+  mapData.forEach((value: Plugin, key: string) => {
     arr.push([key, value]);
   });
 
@@ -46,6 +46,7 @@ class LifecyclePlugins {
     if (LifecyclePlugins.currentPlugin) {
       // maybe null
       if (this.pluginIdMap.has(LifecyclePlugins.currentPlugin)) {
+        // @ts-ignore
         this.pluginIdMap.get(LifecyclePlugins.currentPlugin).push(id);
       } else {
         this.pluginIdMap.set(LifecyclePlugins.currentPlugin, [id]);
@@ -54,7 +55,7 @@ class LifecyclePlugins {
   }
 
   scopeEnable(scope: string[]) {
-    if (scope) {
+    if (scope && LifecyclePlugins.currentAdapterName) {
       if (scope.length) {
         return scope.indexOf(LifecyclePlugins.currentAdapterName) >= 0;
       }
@@ -75,7 +76,7 @@ class LifecyclePlugins {
 
   unregister(pluginName: string): void {
     if (this.pluginIdMap.has(pluginName)) {
-      const pluginList = this.pluginIdMap.get(pluginName);
+      const pluginList = this.pluginIdMap.get(pluginName) || [];
       pluginList.forEach((plugin: string) => {
         this.list.delete(plugin);
       });
@@ -88,7 +89,7 @@ class LifecyclePlugins {
 
   getList(): Plugin[] {
     const filterMap: Map<string, Plugin> = new Map(
-      maoToArray(this.list).filter(([k, v]) => {
+      maoToArray(this.list).filter(([, v]: [string, Plugin]) => {
         return this.scopeEnable(v.scope);
       }),
     );

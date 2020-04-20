@@ -1,10 +1,24 @@
 {
-  "extends": ["magic/react", "magic/typescript"],
+  "extends": [
+    "magic/react",
+    "magic/typescript"
+  ],
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [["@", "./src"]],
-        "extensions": [".ts", ".js", ".jsx", ".json"]
+        "map": [
+          [
+            "@",
+            "./src"
+          ]
+        ],
+        "extensions": [
+          ".ts",
+          ".tsx",
+          ".js",
+          ".jsx",
+          ".json"
+        ]
       }
     }
   },

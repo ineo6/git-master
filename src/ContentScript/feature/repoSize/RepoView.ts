@@ -1,14 +1,13 @@
-import Clipboard from 'clipboard';
 import JSZip from 'jszip';
 import saveFile from 'save-file';
 import {browser} from 'webextension-polyfill-ts';
 import {convertSizeToHumanReadableFormat, getFileSizeAndUnit} from '@/common/util.misc';
-import {FileType, IGitHubFile} from '@/ContentScript/interfaces';
+import {IGitHubFile} from '@/ContentScript/interfaces';
 
 // @ts-ignore
 const saveFileSync = saveFile.saveSync;
 
-function updateStatus(status: string) {
+function updateStatus(_status: string) {
   // console.log(status);
 }
 
@@ -71,34 +70,6 @@ class RepoView {
 
   getDownloadUrl(fileInfo: any) {
     return this.resolveUrl(fileInfo.download_url, fileInfo.path)
-  }
-
-  onPathContentFetchedForBtns(data: any) {
-    let formattedFileSize = getFileSizeAndUnit(data);
-
-    this.removeDom('.master-file-clipboard');
-    this.removeDom('.master-file-download');
-
-    const downloadUrl = this.getDownloadUrl(data);
-
-    let btnGroupHtml = `
-      <button aria-label="Copy file contents to clipboard" 
-      class="master-file-clipboard btn btn-sm BtnGroup-item file-clipboard-button tooltipped tooltipped-s" 
-      data-copied-hint="Copied!" type="button" data-clipboard-target="tbody">
-        Copy File
-      </button>
-      <a href="${downloadUrl}" download="${data.name}"
-        aria-label="(Alt/Option/Ctrl + Click) to download File"
-        class="master-file-download btn btn-sm BtnGroup-item file-download-button tooltipped tooltipped-s">
-        <span style="margin-right: 5px;">${formattedFileSize}</span>
-        <svg class="octicon octicon-cloud-download" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16">
-          <path d="M9 12h2l-3 3-3-3h2V7h2v5zm3-8c0-.44-.91-3-4.5-3C5.08 1 3 2.92 3 5 1.02 5 0 6.52 0 8c0 1.53 1 3 3 3h3V9.7H3C1.38 9.7 1.3 8.28 1.3 8c0-.17.05-1.7 1.7-1.7h1.3V5c0-1.39 1.56-2.7 3.2-2.7 2.55 0 3.13 1.55 3.2 1.8v1.2H12c.81 0 2.7.22 2.7 2.2 0 2.09-2.25 2.2-2.7 2.2h-2V11h2c2.08 0 4-1.16 4-3.5C16 5.06 14.08 4 12 4z"></path>
-        </svg>
-      </a>`;
-
-    let btnGroup = document.querySelectorAll('.BtnGroup:not(.d-md-none)')[0];
-
-    btnGroup.insertAdjacentHTML('beforeend', btnGroupHtml);
   }
 
   sortOn(arr: any[], key: string) {
@@ -172,14 +143,14 @@ class RepoView {
 
     let elems = $('tr.js-navigation-item');
 
-    elems.each((i, domItem) => {
+    elems.each((_i, domItem) => {
       const item = $(domItem);
 
       // directory submodule file
-      const fileType: FileType = item.find('td.icon>svg').attr('aria-label') || '';
+      const fileType: string | undefined = item.find('td.icon>svg').attr('aria-label');
       const fileTitleDom = item.find('td.content .js-navigation-open');
 
-      let fileTitle: string | '' = fileTitleDom.length > 0 ? fileTitleDom.attr('title') : '';
+      let fileTitle: string | undefined = fileTitleDom.length > 0 ? fileTitleDom.attr('title') : '';
 
       if (fileTitleDom.find('span.text-gray-light').length) {
         // some hidden dir
@@ -190,9 +161,9 @@ class RepoView {
         }
       }
 
-      const matchFile = fileObj[fileTitle];
+      const matchFile = fileObj[fileTitle || ''];
 
-      if (fileType === 'file') {
+      if (matchFile && fileType === 'file') {
         let formattedFileSize = getFileSizeAndUnit(matchFile);
 
         const downloadUrl = this.getDownloadUrl(matchFile);
@@ -215,7 +186,7 @@ class RepoView {
           </td>`;
 
         item.append(html);
-      } else if (fileType === 'directory') {
+      } else if (matchFile && fileType === 'directory') {
         // eslint-disable-next-line max-len
         let html = `
           <td class="download js-enhanced-github-download-btn" 
@@ -245,22 +216,36 @@ class RepoView {
 
     $('.gm-download-folder').on('click', function () {
       const dataSet = this.dataset;
-      repoCtx.downloadFolder(repoCtx.repo, repoCtx.token, dataSet.htmlurl);
+      repoCtx.downloadFolder(repoCtx.repo, dataSet.htmlurl);
     })
   }
 
   // button list
   async addCopyAndDownloadButton() {
-    let btnGroup = document.querySelectorAll('.BtnGroup:not(.d-md-none)')[0];
+    let btnGroup = $('.BtnGroup.flex-shrink-0');
 
-    if (btnGroup && window.location.href && window.location.href.indexOf('blob/') > -1) {
-      // instantiate copy to clipborad
-      new Clipboard('.master-file-clipboard'); // eslint-disable-line no-new
-
+    if (btnGroup.length && this.adapter.detect.isSingleFile()) {
       const result = await this.loadRepoData(this.getContentPath());
 
       if (result) {
-        this.onPathContentFetchedForBtns(result);
+        let formattedFileSize = getFileSizeAndUnit(result);
+
+        this.removeDom('.master-file-download');
+
+        const downloadUrl = this.getDownloadUrl(result);
+
+        let btnGroupHtml = `<a href="${downloadUrl}" download="${result.name}"
+        aria-label="(Alt/Option/Ctrl + Click) to download File"
+        class="master-file-download btn btn-sm BtnGroup-item file-download-button tooltipped tooltipped-s">
+        <span style="margin-right: 5px;">${formattedFileSize}</span>
+        <svg class="octicon octicon-cloud-download" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+          <path d="M9 12h2l-3 3-3-3h2V7h2v5zm3-8c0-.44-.91-3-4.5-3C5.08 1 3 2.92 3 5 1.02 5 0 6.52 0 8c0 1.53 1 3 3 3h3V9.7H3C1.38 9.7 1.3 8.28 1.3 8c0-.17.05-1.7 1.7-1.7h1.3V5c0-1.39 1.56-2.7 3.2-2.7 2.55 0 3.13 1.55 3.2 1.8v1.2H12c.81 0 2.7.22 2.7 2.2 0 2.09-2.25 2.2-2.7 2.2h-2V11h2c2.08 0 4-1.16 4-3.5C16 5.06 14.08 4 12 4z"></path>
+        </svg>
+      </a>`;
+
+        btnGroup.each(function (_index: number, item: HTMLElement) {
+          $(item).append(btnGroupHtml);
+        });
       }
     }
   }
@@ -343,7 +328,7 @@ class RepoView {
       this.appendRepoSizeElement();
       this.addCopyAndDownloadButton();
       this.addFileSizeAndDownloadLink();
-      await this.createFolderDownload(repo, token);
+      await this.createFolderDownload(repo);
     }
   }
 
@@ -375,8 +360,8 @@ class RepoView {
     const controller = new AbortController();
 
     const fetchPublicFile = async (file: any) => {
-      console.log(file);
-      const resolvedUrl = this.resolveUrl(`https://raw.githubusercontent.com/${repo.username}/${repo.reponame}/${repo.branch}/${file.path}`, file.path);
+      const resolvedUrl = this.resolveUrl(`https://raw.githubusercontent.com/${repo.username}/${repo.reponame}/${repo.branch}/${file.path}`,
+        file.path);
 
       const response = await fetch(resolvedUrl, {
         signal: controller.signal,
@@ -432,18 +417,22 @@ class RepoView {
     const download = async (file: any) => {
       let blob: unknown;
 
-      if (window.RepoMeta.private) {
-        blob = await fetchPrivateFile(file);
-      } else {
-        blob = await fetchPublicFile(file);
+      try {
+        if (window.RepoMeta.private) {
+          blob = await fetchPrivateFile(file);
+        } else {
+          blob = await fetchPublicFile(file);
+        }
+
+        downloaded++;
+        updateStatus(`Downloading (${downloaded}/${files.length}) files…`);
+
+        zip.file(file.path.replace(dir + '/', ''), blob, {
+          binary: true,
+        });
+      } catch (e) {
+        updateStatus(`Download ${file.path} failed`);
       }
-
-      downloaded++;
-      updateStatus(`Downloading (${downloaded}/${files.length}) files…`);
-
-      zip.file(file.path.replace(dir + '/', ''), blob, {
-        binary: true,
-      });
     };
 
     await Promise.all(files.map(download));
@@ -460,7 +449,15 @@ class RepoView {
     updateStatus(`Downloaded ${downloaded} files! Done!`);
   }
 
-  downloadFolder(repo: any, token: string, targetPath?: string) {
+  async refreshToken() {
+    const token = await this.adapter.getAccessToken();
+
+    this.token = token;
+
+    return token;
+  }
+
+  async downloadFolder(repo: any, targetPath?: string) {
     const encodedBranch = encodeURIComponent(decodeURIComponent(repo.branch));
     const path = encodedBranch + '?recursive=1';
 
@@ -472,12 +469,12 @@ class RepoView {
       delay: 0,
     });
 
+    const token = await this.refreshToken();
+
     this.adapter._getTree(path, {
       repo,
       token,
     }, (_error: any, result: any) => {
-      let toDownload = true;
-
       // @ts-ignore
       $.toast.remove(fetchInfoToastKey);
 
@@ -497,25 +494,22 @@ class RepoView {
           }
         }
 
-        if (files.length >= this.folderDownloadSize) {
-          // eslint-disable-next-line no-restricted-globals
-          toDownload = confirm(browser.i18n.getMessage('download_folder_notify', [files.length]));
-        }
-
-        if (toDownload) {
+        if (files.length <= this.folderDownloadSize) {
           this.batchDownload(repo, files, directory);
+        } else {
+          alert(browser.i18n.getMessage('download_folder_notify'));
         }
       }
     });
   }
 
-  async createFolderDownload(repo: any, token: string) {
+  async createFolderDownload(repo: any) {
     const buttonGroup = $('.file-navigation .BtnGroup.float-right');
 
     const downloadBtn = $('<a class="btn btn-sm BtnGroup-item">Download </a>');
 
     downloadBtn.on('click', () => {
-      this.downloadFolder(repo, token);
+      this.downloadFolder(repo);
     });
 
     if (buttonGroup) {

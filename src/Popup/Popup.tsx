@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { browser } from 'webextension-polyfill-ts';
-import { DICT, STORE } from '../common/core.constants';
-import extStore from '../common/core.storage';
-import Badge from '../components/Badge';
-import { getTabUrl } from '../Background/lib/api';
-import { openTab } from '../Background/lib/tabs-service';
+import React, {useEffect, useState} from 'react';
+import {browser} from 'webextension-polyfill-ts';
+import {DICT, STORE} from '@/common/core.constants';
+import extStore from '@/common/core.storage';
+import Badge from '@/components/Badge';
+import {getTabUrl} from '@/Background/lib/api';
+import {openTab} from '@/Background/lib/tabs-service';
 
-function getStoreKey(type: number) {
+function getStoreKey(type: string) {
   let storeKey = '';
 
   switch (type) {
@@ -26,7 +26,7 @@ function getStoreKey(type: number) {
   return storeKey;
 }
 
-async function toggleSite(type: number, active: boolean, load: boolean = false) {
+async function toggleSite(type: string, active: boolean, load: boolean = false) {
   const tabs = await browser.tabs.query({
     active: true,
     currentWindow: true,
@@ -74,10 +74,13 @@ function isDefaultSite(url: string) {
   const giteeUrl = ['git.oschina.net', 'gitee.com'];
   const chromeTabUrl = ['newtab'];
 
-  return githubUrl.indexOf(urlObj.host) >= 0 || gitlabUrl.indexOf(urlObj.host) >= 0 || giteeUrl.indexOf(urlObj.host) >= 0 || chromeTabUrl.indexOf(urlObj.host) >= 0;
+  return githubUrl.indexOf(urlObj.host) >= 0 ||
+    gitlabUrl.indexOf(urlObj.host) >= 0 ||
+    giteeUrl.indexOf(urlObj.host) >= 0 ||
+    chromeTabUrl.indexOf(urlObj.host) >= 0;
 }
 
-async function isCurrentTabActive(url: string, type: number) {
+async function isCurrentTabActive(url: string, type: string) {
   // @ts-ignore
   const domain = `${new URL(url).origin}`;
 
@@ -92,17 +95,17 @@ async function isCurrentTabActive(url: string, type: number) {
     }
   }
 
-  return 0;
+  return '';
 }
 
 // eslint-disable-next-line camelcase
-const { short_name } = browser.runtime.getManifest();
+const {short_name: shortName} = browser.runtime.getManifest();
 
 const Popup = () => {
   const [
     type,
     setType,
-  ] = useState(0);
+  ] = useState('');
 
   const [
     defaultSite,
@@ -147,15 +150,14 @@ const Popup = () => {
     };
   }, []);
 
-  const handleGitHubNotify = async function() {
+  const handleGitHubNotify = async function () {
     await openTab(await getTabUrl());
   };
 
   return (
     <section id="popup">
-      {/* eslint-disable-next-line camelcase */}
       <div className='popup-title'>
-        <div>{short_name}</div>
+        <div>{shortName}</div>
         <div className="notify">
           <Badge count={badgeCount}>
             <a onClick={handleGitHubNotify}>
@@ -178,7 +180,7 @@ const Popup = () => {
                 }
 
                 toggleSite(DICT.GITHUB, type === DICT.GITHUB, true);
-                setType(type === DICT.GITHUB ? 0 : DICT.GITHUB);
+                setType(type === DICT.GITHUB ? '' : DICT.GITHUB);
               }}
             >
               <img className="site-logo" src='../assets/github.png' alt='github' />
@@ -198,7 +200,7 @@ const Popup = () => {
                 }
 
                 toggleSite(DICT.GITLAB, type === DICT.GITLAB, true);
-                setType(type === DICT.GITLAB ? 0 : DICT.GITLAB);
+                setType(type === DICT.GITLAB ? '' : DICT.GITLAB);
               }}
             >
               <img className="site-logo" src='../assets/gitlab.png' alt='gitlab' />
@@ -219,7 +221,7 @@ const Popup = () => {
 
                 toggleSite(DICT.OSCHINA, type === DICT.OSCHINA, true);
 
-                setType(type === DICT.OSCHINA ? 0 : DICT.OSCHINA);
+                setType(type === DICT.OSCHINA ? '' : DICT.OSCHINA);
               }}
             >
               <img className="site-logo" src='../assets/gitee.png' alt='gitee' />

@@ -10,6 +10,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const ExtensionReloader = require('webpack-extension-reloader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { argv } =  require('yargs');
 
 const manifestInput = require('./src/manifest');
 
@@ -36,6 +37,21 @@ const extensionReloaderPlugin =
       this.apply = () => {
       };
     };
+
+const analyzerPlugin = function () {
+  if (nodeEnv === 'production' && !!argv.analyzer) {
+    // eslint-disable-next-line global-require
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    return new BundleAnalyzerPlugin({
+      analyzerPort: 9191
+    })
+  } else {
+    return () => {
+      this.apply = () => {
+      };
+    }
+  }
+};
 
 const getExtensionFileType = browser => {
   if (browser === 'opera') {
@@ -238,6 +254,7 @@ module.exports = {
     }]),
     // plugin to enable browser reloading in development mode
     extensionReloaderPlugin,
+    analyzerPlugin(),
   ],
 
   optimization: {

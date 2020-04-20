@@ -12,15 +12,9 @@ class Lifecycle extends EventEmitter2 {
     this.ctx = ctx;
   }
 
-  async start(input: any[]): Promise<GitMaster> {
+  // @ts-ignore
+  async start(): Promise<GitMaster> {
     try {
-      // images input
-      if (!Array.isArray(input)) {
-        throw new Error('Input must be an array.');
-      }
-      this.ctx.input = input;
-      this.ctx.output = [];
-
       // lifecycle main
       await this.beforeDocumentLoaded(this.ctx);
 
@@ -64,12 +58,9 @@ class Lifecycle extends EventEmitter2 {
   private async detect(ctx: GitMaster): Promise<GitMaster> {
     this.ctx.log.info('detect...');
     this.ctx.emit('detect', ctx);
-    let type = ctx.getConfig('picBed.current') || 'default';
 
     await adapter(ctx);
-    for (let i in ctx.output) {
-      ctx.output[i].type = type;
-    }
+
     return ctx;
   }
 

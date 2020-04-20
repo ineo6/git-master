@@ -191,11 +191,17 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   selectFile(path) {
-    const $pjaxContainer = $(GL_PJAX_CONTAINER_SEL);
-    super.selectFile(path, {
-      $pjaxContainer: $pjaxContainer,
-      fragment: GL_PJAX_CONTAINER_SEL,
-    });
+    const blobViewer = $('.blob-viewer[data-url]');
+
+    if (blobViewer.length) {
+      window.location.href = path;
+    } else {
+      const $pjaxContainer = $(GL_PJAX_CONTAINER_SEL);
+      super.selectFile(path, {
+        $pjaxContainer: $pjaxContainer,
+        fragment: GL_PJAX_CONTAINER_SEL,
+      });
+    }
   }
 
   get isOnPRPage() {

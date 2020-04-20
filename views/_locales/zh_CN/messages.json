@@ -84,7 +84,7 @@
     "message": "GitHub 通知"
   },
   "download_folder_notify": {
-    "message": "$count$ files will probably failed. Continue or not!",
+    "message": "仅支持20个文件下载!",
     "placeholders": {
       "count": {
         "content": "$1",
@@ -93,9 +93,9 @@
     }
   },
   "download_folder_process": {
-    "message": "Downloading"
+    "message": "下载中..."
   },
   "download_folder_fetch": {
-    "message": "Fetching Info"
+    "message": "获取目录信息中..."
   }
 }

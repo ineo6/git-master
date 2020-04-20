@@ -168,14 +168,14 @@ class CodeTree {
           }
           showView(this);
         })
-        .on(EVENT.VIEW_CLOSE, (event: any, data: any) => {
+        .on(EVENT.VIEW_CLOSE, (_event: any, data: any) => {
           if (data && data.showSettings) {
             optsView.toggle(true);
           } else {
             showView(this.hasError ? this.errorView : this.treeView);
           }
         })
-        .on(EVENT.FETCH_ERROR, (event: any, err: any) => this.showError(err));
+        .on(EVENT.FETCH_ERROR, (_event: any, err: any) => this.showError(err));
     }
 
     $(extStore)
@@ -186,7 +186,7 @@ class CodeTree {
       .on(EVENT.REQ_END, () => $spinner.removeClass('gitmaster-spin--loading'))
       .on(EVENT.LAYOUT_CHANGE, this.layoutChanged)
       .on(EVENT.TOGGLE_PIN, this.layoutChanged)
-      .on(EVENT.LOC_CHANGE, (event: any, reload: boolean = false) => this.tryLoadRepo(reload));
+      .on(EVENT.LOC_CHANGE, (_event: any, reload: boolean = false) => this.tryLoadRepo(reload));
 
     this.$sidebar
       .addClass(adapter.getCssClass())
@@ -223,7 +223,7 @@ class CodeTree {
    * @param {!string} event
    * @param {!Object<!string, [(string|boolean), (string|boolean)]>} changes
    */
-  optionsChanged = async (event: any, changes: any) => {
+  optionsChanged = async (_event: any, changes: any) => {
     let reload = false;
 
     Object.keys(changes)
