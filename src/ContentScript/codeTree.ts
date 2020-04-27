@@ -31,10 +31,7 @@ async function whichSite() {
 
       const domainArr = customDomains ? customDomains.split('\n') : [];
 
-      const urls = [
-        'http://git.oschina.net', 'https://git.oschina.net',
-        'http://gitee.com', 'https://gitee.com',
-      ].concat(domainArr);
+      const urls = ['http://git.oschina.net', 'https://git.oschina.net', 'http://gitee.com', 'https://gitee.com'].concat(domainArr);
 
       return urls.indexOf(currentUrl) >= 0;
     },
@@ -124,8 +121,7 @@ class CodeTree {
     this.$document = $(document);
     const $dom = $(TEMPLATE);
     this.$sidebar = $dom.find('.gitmaster-sidebar');
-    this.$toggler = this.$sidebar.find('.gitmaster-toggle')
-      .hide();
+    this.$toggler = this.$sidebar.find('.gitmaster-toggle').hide();
     this.$views = this.$sidebar.find('.gitmaster-view');
     const $spinner = this.$sidebar.find('.gitmaster-spin');
     this.$pinner = this.$sidebar.find('.gitmaster-pin');
@@ -144,10 +140,9 @@ class CodeTree {
 
     if (!this.$html.hasClass(ADDON_CLASS)) this.$html.addClass(ADDON_CLASS);
 
-    $(window)
-      .resize((event) => {
-        if (event.target === window) this.layoutChanged();
-      });
+    $(window).resize(event => {
+      if (event.target === window) this.layoutChanged();
+    });
 
     const showView = this.showView;
     const $document = this.$document;
@@ -155,14 +150,14 @@ class CodeTree {
 
     for (const view of [this.treeView, this.errorView, optsView]) {
       $(view)
-      // eslint-disable-next-line no-loop-func
+        // eslint-disable-next-line no-loop-func
         .on(EVENT.VIEW_READY, async function() {
           if (this !== optsView) {
             $document.trigger(EVENT.REQ_END);
 
             optsView.$toggler.removeClass('selected');
 
-            if (adapter.isOnPRPage && await extStore.get(STORE.PR)) {
+            if (adapter.isOnPRPage && (await extStore.get(STORE.PR))) {
               treeView.$tree.jstree('open_all');
             }
           }
@@ -178,8 +173,7 @@ class CodeTree {
         .on(EVENT.FETCH_ERROR, (_event: any, err: any) => this.showError(err));
     }
 
-    $(extStore)
-      .on(EVENT.STORE_CHANGE, this.optionsChanged);
+    $(extStore).on(EVENT.STORE_CHANGE, this.optionsChanged);
 
     this.$document
       .on(EVENT.REQ_START, () => $spinner.addClass('gitmaster-spin--loading'))
@@ -211,12 +205,11 @@ class CodeTree {
         optsView,
         errorView: this.errorView,
       },
-      activationOpts,
+      activationOpts
     );
 
     return this.tryLoadRepo();
   }
-
 
   /**
    * Invoked when the user saves the option changes in the option view.
@@ -226,33 +219,32 @@ class CodeTree {
   optionsChanged = async (_event: any, changes: any) => {
     let reload = false;
 
-    Object.keys(changes)
-      .forEach((storeKey) => {
-        const [oldValue, newValue] = changes[storeKey];
+    Object.keys(changes).forEach(storeKey => {
+      const [oldValue, newValue] = changes[storeKey];
 
-        // eslint-disable-next-line default-case
-        switch (storeKey) {
-          case STORE.GITHUB_TOKEN:
-          case STORE.GITLAB_TOKEN:
-          case STORE.GITEE_TOKEN:
-          case STORE.LAZYLOAD:
-          case STORE.ICONS:
-            reload = true;
-            break;
-          case STORE.PR:
-            reload = this.adapter.isOnPRPage;
-            break;
-          case STORE.HOVEROPEN:
-            this.handleHoverOpenOption(newValue);
-            break;
-          case STORE.HOTKEYS:
-            this.setHotkeys(newValue, oldValue);
-            break;
-          case STORE.PINNED:
-            this.onPinToggled(newValue);
-            break;
-        }
-      });
+      // eslint-disable-next-line default-case
+      switch (storeKey) {
+        case STORE.GITHUB_TOKEN:
+        case STORE.GITLAB_TOKEN:
+        case STORE.GITEE_TOKEN:
+        case STORE.LAZYLOAD:
+        case STORE.ICONS:
+          reload = true;
+          break;
+        case STORE.PR:
+          reload = this.adapter.isOnPRPage;
+          break;
+        case STORE.HOVEROPEN:
+          this.handleHoverOpenOption(newValue);
+          break;
+        case STORE.HOTKEYS:
+          this.setHotkeys(newValue, oldValue);
+          break;
+        case STORE.PINNED:
+          this.onPinToggled(newValue);
+          break;
+      }
+    });
 
     if (await octotree.applyOptions(changes)) {
       reload = true;
@@ -265,62 +257,64 @@ class CodeTree {
 
   async tryLoadRepo(reload?: boolean) {
     const token = await this.adapter.getAccessToken();
-    await this.adapter.getRepoFromPath(this.currRepo, token, async (err: any, repo: any) => {
-      if (err) {
-        // Error making API, likely private repo but no token
-        await this.showError(err);
-        if (!this.isSidebarVisible()) {
-          this.$toggler.show();
-        }
-      } else if (repo) {
-        if (await extStore.get(STORE.PINNED) && !this.isSidebarVisible()) {
-          // If we're in pin mode but sidebar doesn't show yet, show it.
-          // Note if we're from another page back to code page, sidebar is "pinned", but not visible.
-          if (this.isSidebarPinned()) {
-            await this.toggleSidebar();
-          } else {
-            await this.onPinToggled(true);
+
+    try {
+      await this.adapter.getRepoFromPath(this.currRepo, token, async (err: any, repo: any) => {
+        if (err) {
+          // Error making API, likely private repo but no token
+          await this.showError(err);
+          if (!this.isSidebarVisible()) {
+            this.$toggler.show();
           }
-        } else if (this.isSidebarVisible()) {
-          const replacer = ['username', 'reponame', 'branch', 'pullNumber'];
-          const repoChanged = JSON.stringify(repo, replacer) !== JSON.stringify(this.currRepo, replacer);
-          if (repoChanged || reload === true) {
-            this.hasError = false;
-            this.$document.trigger(EVENT.REQ_START);
-            this.currRepo = repo;
-            this.treeView.show(repo, token);
+        } else if (repo) {
+          if ((await extStore.get(STORE.PINNED)) && !this.isSidebarVisible()) {
+            // If we're in pin mode but sidebar doesn't show yet, show it.
+            // Note if we're from another page back to code page, sidebar is "pinned", but not visible.
+            if (this.isSidebarPinned()) {
+              await this.toggleSidebar();
+            } else {
+              await this.onPinToggled(true);
+            }
+          } else if (this.isSidebarVisible()) {
+            const replacer = ['username', 'reponame', 'branch', 'pullNumber'];
+            const repoChanged = JSON.stringify(repo, replacer) !== JSON.stringify(this.currRepo, replacer);
+            if (repoChanged || reload === true) {
+              this.hasError = false;
+              this.$document.trigger(EVENT.REQ_START);
+              this.currRepo = repo;
+              this.treeView.show(repo, token);
+            } else {
+              await this.treeView.syncSelection(repo);
+            }
           } else {
-            await this.treeView.syncSelection(repo);
+            // Sidebar not visible (because it's not pinned), show the toggler
+            this.$toggler.show();
+          }
+
+          // fetch repo data
+          const metaData = await this.adapter.getContent('', {
+            repo: repo,
+            isRepoMetaData: true,
+          });
+
+          if (metaData) {
+            this.repoMeta = metaData;
+            window.RepoMeta = metaData;
           }
         } else {
-          // Sidebar not visible (because it's not pinned), show the toggler
-          this.$toggler.show();
+          // Not a repo or not to be shown in this page
+          this.$toggler.hide();
+          this.toggleSidebar(false);
         }
-
-        // fetch repo data
-        const metaData = await this.adapter.getContent('', {
-          repo: repo,
-          isRepoMetaData: true,
-        });
-
-        if (metaData) {
-          this.repoMeta = metaData;
-          window.RepoMeta = metaData;
-        }
-      } else {
-        // Not a repo or not to be shown in this page
-        this.$toggler.hide();
-        this.toggleSidebar(false);
-      }
-      await this.layoutChanged();
-    });
+        await this.layoutChanged();
+      });
+    } catch (e) {}
   }
 
   showView = (view: any) => {
     this.$views.removeClass('current');
     view.$view.addClass('current');
-    $(view)
-      .trigger(EVENT.VIEW_SHOW);
+    $(view).trigger(EVENT.VIEW_SHOW);
   };
 
   async showError(err: any) {
@@ -372,7 +366,8 @@ class CodeTree {
 
     const sidebarPinned = this.isSidebarPinned();
 
-    this.$pinner.find('.master-tooltip')
+    this.$pinner
+      .find('.master-tooltip')
       .attr('aria-label', sidebarPinned ? browser.i18n.getMessage('unpin_sidebar_tip') : browser.i18n.getMessage('pin_sidebar_tip'));
     this.$document.trigger(EVENT.TOGGLE_PIN, sidebarPinned);
     await this.toggleSidebar(sidebarPinned);

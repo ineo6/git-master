@@ -83,9 +83,12 @@ class Lifecycle extends EventEmitter2 {
   private async handlePlugins(plugins: Plugin[], ctx: GitMaster): Promise<GitMaster> {
     await Promise.all(
       plugins.map(async (plugin: Plugin) => {
-        await plugin.handle(ctx);
-      }),
-    );
+        try {
+          await plugin.handle(ctx);
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
+      })
+    ).catch(() => {});
     return ctx;
   }
 }

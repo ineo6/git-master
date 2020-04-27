@@ -1,5 +1,5 @@
-import GitMaster from '../PageLife/core/GitMaster';
 import Clipboard from 'clipboard';
+import GitMaster from '../PageLife/core/GitMaster';
 
 // todo 统一公用
 function removeDom(selector: string) {
@@ -7,7 +7,7 @@ function removeDom(selector: string) {
     return;
   }
 
-  [].forEach.call(document.querySelectorAll(selector), function (el) {
+  [].forEach.call(document.querySelectorAll(selector), function(el) {
     // @ts-ignore
     el.parentNode.removeChild(el);
   });
@@ -23,12 +23,12 @@ function addCopyAndDownloadButton() {
     new Clipboard('.master-file-clipboard'); // eslint-disable-line no-new
 
     blameBtn.parent().prepend(`
-      <button aria-label="Copy file contents to clipboard" 
-      class="master-file-clipboard btn btn-sm BtnGroup-item file-clipboard-button tooltipped tooltipped-s" 
+      <button aria-label="Copy file contents to clipboard"
+      class="master-file-clipboard btn btn-sm BtnGroup-item file-clipboard-button tooltipped tooltipped-s"
       data-copied-hint="Copied!" type="button" data-clipboard-target="tbody">
         Copy
       </button>
-    `)
+    `);
   }
 }
 
@@ -53,4 +53,4 @@ export default (ctx: GitMaster) => {
     register,
     config: [],
   };
-}
+};

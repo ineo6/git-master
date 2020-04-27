@@ -1,8 +1,8 @@
 import JSZip from 'jszip';
 import saveFile from 'save-file';
-import {browser} from 'webextension-polyfill-ts';
-import {convertSizeToHumanReadableFormat, getFileSizeAndUnit} from '@/common/util.misc';
-import {IGitHubFile} from '@/ContentScript/interfaces';
+import { browser } from 'webextension-polyfill-ts';
+import { convertSizeToHumanReadableFormat, getFileSizeAndUnit } from '@/common/util.misc';
+import { IGitHubFile } from '@/ContentScript/interfaces';
 
 // @ts-ignore
 const saveFileSync = saveFile.saveSync;
@@ -49,7 +49,7 @@ class RepoView {
       return;
     }
 
-    [].forEach.call(document.querySelectorAll(selector), function (el) {
+    [].forEach.call(document.querySelectorAll(selector), function(el) {
       // @ts-ignore
       el.parentNode.removeChild(el);
     });
@@ -69,11 +69,11 @@ class RepoView {
   }
 
   getDownloadUrl(fileInfo: any) {
-    return this.resolveUrl(fileInfo.download_url, fileInfo.path)
+    return this.resolveUrl(fileInfo.download_url, fileInfo.path);
   }
 
   sortOn(arr: any[], key: string) {
-    return arr.sort(function (a, b) {
+    return arr.sort(function(a, b) {
       if (a[key] < b[key]) {
         return -1;
       }
@@ -94,7 +94,7 @@ class RepoView {
     let others: any[] = [];
     let dataAfterSorting: any[] = [];
 
-    data.forEach(function (item) {
+    data.forEach(function(item) {
       if (item.type === 'dir') {
         folders.push(item);
       } else if (item.type === 'file') {
@@ -169,13 +169,13 @@ class RepoView {
         const downloadUrl = this.getDownloadUrl(matchFile);
 
         // eslint-disable-next-line max-len
-        let html = `<td class="download js-enhanced-github-download-btn" 
+        let html = `<td class="download js-enhanced-github-download-btn"
           style="width: 20px;padding-right: 10px;color: #6a737d;text-align: right;white-space: nowrap;">
             <span style="margin-right: 5px;">
               ${formattedFileSize}
             </span>
             <a href="${downloadUrl}"
-             title="(Alt/Option/Ctrl + Click) to download File" 
+             title="(Alt/Option/Ctrl + Click) to download File"
              aria-label="(Alt/Option/Ctrl + Click) to download File"
               class="tooltipped tooltipped-nw"
               download="${matchFile.name}">
@@ -189,13 +189,13 @@ class RepoView {
       } else if (matchFile && fileType === 'directory') {
         // eslint-disable-next-line max-len
         let html = `
-          <td class="download js-enhanced-github-download-btn" 
+          <td class="download js-enhanced-github-download-btn"
           style="width: 20px;padding-right: 10px;color: #6a737d;text-align: right;white-space: nowrap;">
            <span style="margin-right: 5px;">
              Zip
             </span>
             <a
-             title="Download Folder" 
+             title="Download Folder"
              aria-label="Download Folder"
              class="tooltipped tooltipped-nw gm-download-folder"
              style="cursor:pointer;"
@@ -210,14 +210,14 @@ class RepoView {
       } else {
         item.append('<td class="download"></td>');
       }
-    })
+    });
 
     const repoCtx = this;
 
-    $('.gm-download-folder').on('click', function () {
+    $('.gm-download-folder').on('click', function() {
       const dataSet = this.dataset;
       repoCtx.downloadFolder(repoCtx.repo, dataSet.htmlurl);
-    })
+    });
   }
 
   // button list
@@ -243,7 +243,7 @@ class RepoView {
         </svg>
       </a>`;
 
-        btnGroup.each(function (_index: number, item: HTMLElement) {
+        btnGroup.each(function(_index: number, item: HTMLElement) {
           $(item).append(btnGroupHtml);
         });
       }
@@ -333,12 +333,16 @@ class RepoView {
   }
 
   async loadRepoData(path?: string, isRepoMetaData?: boolean) {
-    const data = await this.adapter.getContent(path, {
-      repo: this.repo,
-      isRepoMetaData,
-    });
+    try {
+      const data = await this.adapter.getContent(path, {
+        repo: this.repo,
+        isRepoMetaData,
+      });
 
-    return data;
+      return data;
+    } catch (e) {
+      return false;
+    }
   }
 
   async batchDownload(repo: any, files: any, dir: string) {
@@ -360,8 +364,10 @@ class RepoView {
     const controller = new AbortController();
 
     const fetchPublicFile = async (file: any) => {
-      const resolvedUrl = this.resolveUrl(`https://raw.githubusercontent.com/${repo.username}/${repo.reponame}/${repo.branch}/${file.path}`,
-        file.path);
+      const resolvedUrl = this.resolveUrl(
+        `https://raw.githubusercontent.com/${repo.username}/${repo.reponame}/${repo.branch}/${file.path}`,
+        file.path
+      );
 
       const response = await fetch(resolvedUrl, {
         signal: controller.signal,
@@ -381,7 +387,10 @@ class RepoView {
       else byteString = unescape(dataURI.split(',')[1]);
 
       // separate out the mime component
-      let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      let mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0];
 
       // write the bytes of the string to a typed array
       let ia = new Uint8Array(byteString.length);
@@ -389,7 +398,7 @@ class RepoView {
         ia[i] = byteString.charCodeAt(i);
       }
 
-      return new Blob([ia], {type: mimeString});
+      return new Blob([ia], { type: mimeString });
     }
 
     const fetchPrivateFile = async (file: any) => {
@@ -404,7 +413,7 @@ class RepoView {
         throw new Error(`HTTP ${response.statusText} for ${file.path}`);
       }
 
-      const {content} = await response.json();
+      const { content } = await response.json();
 
       const dataUrl = `data:application/octet-stream;base64,${content}`;
 
@@ -471,36 +480,40 @@ class RepoView {
 
     const token = await this.refreshToken();
 
-    this.adapter._getTree(path, {
-      repo,
-      token,
-    }, (_error: any, result: any) => {
-      // @ts-ignore
-      $.toast.remove(fetchInfoToastKey);
+    this.adapter._getTree(
+      path,
+      {
+        repo,
+        token,
+      },
+      (_error: any, result: any) => {
+        // @ts-ignore
+        $.toast.remove(fetchInfoToastKey);
 
-      if (result) {
-        let directory = this.getContentPath(targetPath);
-        if (!directory) return;
+        if (result) {
+          let directory = this.getContentPath(targetPath);
+          if (!directory) return;
 
-        if (!directory.endsWith('/')) {
-          directory += '/';
-        }
+          if (!directory.endsWith('/')) {
+            directory += '/';
+          }
 
-        const files = [];
+          const files = [];
 
-        for (const item of result) {
-          if (item.type === 'blob' && item.path.startsWith(directory)) {
-            files.push(item);
+          for (const item of result) {
+            if (item.type === 'blob' && item.path.startsWith(directory)) {
+              files.push(item);
+            }
+          }
+
+          if (files.length <= this.folderDownloadSize) {
+            this.batchDownload(repo, files, directory);
+          } else {
+            alert(browser.i18n.getMessage('download_folder_notify'));
           }
         }
-
-        if (files.length <= this.folderDownloadSize) {
-          this.batchDownload(repo, files, directory);
-        } else {
-          alert(browser.i18n.getMessage('download_folder_notify'));
-        }
       }
-    });
+    );
   }
 
   async createFolderDownload(repo: any) {

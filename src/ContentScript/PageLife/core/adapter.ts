@@ -1,7 +1,7 @@
 import GitMaster from './GitMaster';
 import CodeTree from '../../codeTree';
 
-const adapter = async (ctx: GitMaster): Promise<GitMaster> => {
+const adapter = async (ctx: GitMaster): Promise<void> => {
   try {
     const codeTree = new CodeTree();
 
@@ -10,16 +10,12 @@ const adapter = async (ctx: GitMaster): Promise<GitMaster> => {
     if (adapter) {
       ctx.setCurrentAdapter(adapter.whoami(), adapter);
     }
-
-    return ctx;
   } catch (err) {
     ctx.emit('notification', {
       title: '初始化失败',
-      body: '',
+      body: err.message,
     });
-    throw err;
   }
 };
 
 export default adapter;
-
