@@ -297,7 +297,7 @@
 
       .jstree-icon.tree,
       .jstree-icon.commit,
-      .jstree-icon.file-generic {
+      .jstree-icon.default-icon {
         margin-top: 0;
         margin-right: 2px;
       }
@@ -310,7 +310,7 @@
         .icon-v2(@octicons-file-submodule, @color: @gray, @hover-color: @gray);
       }
 
-      .jstree-icon.file-generic {
+      .jstree-icon.default-icon {
         .icon-v2(@octicons-file-text, @color: @gray, @hover-color: @gray);
       }
 
@@ -338,7 +338,8 @@
       }
 
       .gitmaster-view-body {
-        input[type="checkbox"], input[type="radio"] {
+        input[type='checkbox'],
+        input[type='radio'] {
           vertical-align: middle;
           margin: 0;
         }
@@ -619,7 +620,6 @@
       }
     }
   }
-
 }
 
 .gitmaster-sidebar.gitmaster-sidebar-right {
@@ -716,7 +716,6 @@
     }
   }
 
-
   .gitmaster-views {
     border-left: 1px solid @gray-less;
     border-right: none;
@@ -796,7 +795,6 @@
     left: unset !important;
   }
 }
-
 
 //
 // Print

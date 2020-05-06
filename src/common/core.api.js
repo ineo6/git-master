@@ -81,9 +81,9 @@ class OctotreeService {
     if (item.type === 'blob') {
       if (await extStore.get(STORE.ICONS)) {
         const className = FileIcons.getClass(item.text);
-        item.icon += ' ' + (className || 'file-generic');
+        item.icon += ' ' + (className || 'default-icon');
       } else {
-        item.icon += ' file-generic';
+        item.icon += ' default-icon';
       }
     }
   }
