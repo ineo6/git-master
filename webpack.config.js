@@ -10,7 +10,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const ExtensionReloader = require('webpack-extension-reloader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { argv } =  require('yargs');
+const { argv } = require('yargs');
 
 const manifestInput = require('./src/manifest');
 
@@ -34,22 +34,20 @@ const extensionReloaderPlugin =
       },
     })
     : () => {
-      this.apply = () => {
-      };
+      this.apply = () => {};
     };
 
-const analyzerPlugin = function () {
+const analyzerPlugin = function() {
   if (nodeEnv === 'production' && !!argv.analyzer) {
     // eslint-disable-next-line global-require
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
     return new BundleAnalyzerPlugin({
-      analyzerPort: 9191
-    })
+      analyzerPort: 9191,
+    });
   } else {
     return () => {
-      this.apply = () => {
-      };
-    }
+      this.apply = () => {};
+    };
   }
 };
 
@@ -78,9 +76,9 @@ function getLessVar() {
     const ePath = extPath[targetBrowser];
 
     if (ePath) {
-      theme.EXT_PATH = '\'' + ePath + '\'';
+      theme.ICON_PATH = "'" + ePath + "'";
     } else {
-      theme.EXT_PATH = '.';
+      theme.ICON_PATH = '.';
     }
   }
 
@@ -107,7 +105,6 @@ module.exports = {
     alias: {
       'webextension-polyfill-ts': path.resolve(path.join(__dirname, 'node_modules', 'webextension-polyfill-ts')),
       key: path.resolve(path.join(__dirname, './src/common/libs/keymaster.js')),
-      FileIcons: path.join(__dirname, './src/common/libs/file-icons.js'),
       '@': path.resolve(__dirname, 'src'),
     },
   },
@@ -204,7 +201,6 @@ module.exports = {
       jstree: 'jstree',
       key: 'key',
       TEMPLATE: path.join(__dirname, './src/common/template/template.js'),
-      FileIcons: 'FileIcons',
     }),
     // delete previous build files
     new CleanWebpackPlugin({
@@ -230,28 +226,35 @@ module.exports = {
     // write css file(s) to build folder
     new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
     // copy static assets
-    new CopyWebpackPlugin([{
-      from: 'src/assets',
-      to: 'assets',
-    }, {
-      from: 'views/inject.js',
-      to: 'inject.js',
-    }, {
-      from: 'views/libs/fonts',
-      to: 'fonts',
-    }, {
-      from: 'views/_locales',
-      to: '_locales',
-    }, {
-      from: 'views/assets',
-      to: 'assets',
-    },
+    new CopyWebpackPlugin([
+      {
+        from: 'src/assets',
+        to: 'assets',
+      },
+      {
+        from: 'views/inject.js',
+        to: 'inject.js',
+      },
+      {
+        from: 'node_modules/@ineo6/file-icons/lib/fonts',
+        to: 'fonts',
+      },
+      {
+        from: 'views/_locales',
+        to: '_locales',
+      },
+      {
+        from: 'views/assets',
+        to: 'assets',
+      },
     ]),
     // write manifest.json
-    new WriteWebpackPlugin([{
-      name: manifest.name,
-      data: Buffer.from(manifest.content),
-    }]),
+    new WriteWebpackPlugin([
+      {
+        name: manifest.name,
+        data: Buffer.from(manifest.content),
+      },
+    ]),
     // plugin to enable browser reloading in development mode
     extensionReloaderPlugin,
     analyzerPlugin(),

@@ -5,3 +5,4 @@ extension/
 .pnp.js
 typings
 **/*.d.ts
+src/common/template/template.js

@@ -1,3 +1,4 @@
+import FileIcons from '@ineo6/file-icons';
 import { STORE } from './core.constants';
 import extStore from './core.storage';
 
@@ -49,8 +50,7 @@ class OctotreeService {
   }
 
   // Hooks
-  activate(inputs, opts) {
-  }
+  activate(inputs, opts) {}
 
   applyOptions(opts) {
     return false;
@@ -74,16 +74,13 @@ class OctotreeService {
   }
 
   _getInvalidTokenMessage({ responseStatus, requestHeaders }) {
-    return (
-      'The access token is invalid. ' +
-      'Please go to <a class="settings-btn">Settings</a> and update the token.'
-    );
+    return 'The access token is invalid. Please go to <a class="settings-btn">Settings</a> and update the token.';
   }
 
   async _setNodeIconAndText(context, item) {
     if (item.type === 'blob') {
       if (await extStore.get(STORE.ICONS)) {
-        const className = FileIcons.getClassWithColor(item.text);
+        const className = FileIcons.getClass(item.text);
         item.icon += ' ' + (className || 'file-generic');
       } else {
         item.icon += ' file-generic';
@@ -102,6 +99,7 @@ class OctotreeService {
     }
 
     // (username)/(reponame)[/(type)][/(typeId)]
+    // eslint-disable-next-line no-useless-escape
     const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
     if (!match) {
       return false;
