@@ -41,6 +41,7 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "no-useless-concat": "off"
   }
 }
