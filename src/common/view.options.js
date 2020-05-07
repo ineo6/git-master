@@ -1,42 +1,43 @@
-import { EVENT, SIDEBAR_RIGHT, STORE } from './core.constants';
+import { DICT, EVENT, SIDEBAR_RIGHT, STORE } from './core.constants';
 import extStore from './core.storage';
 import { parallel } from './util.misc';
+
+const siteCode = {
+  [DICT.GITHUB]: 0,
+  [DICT.GITLAB]: 1,
+  [DICT.OSCHINA]: 2,
+};
 
 class OptionsView {
   constructor($dom, adapter, $sidebar) {
     this.adapter = adapter;
     this.whoami = adapter ? adapter.whoami() : '';
 
-    this.$toggler = $dom.find('.gitmaster-settings')
-      .click(this.toggle);
+    this.$toggler = $dom.find('.gitmaster-settings').click(this.toggle);
 
-    this.$direction = $dom.find('#direction')
-      .click(this.changeDirectionWrapper.bind(this));
+    this.$direction = $dom.find('#direction').click(this.changeDirectionWrapper.bind(this));
 
-    this.$view = $dom.find('.gitmaster-settings-view')
-      .submit((event) => {
-        event.preventDefault();
-        this.toggle(false);
-      });
+    this.$view = $dom.find('.gitmaster-settings-view').submit(event => {
+      event.preventDefault();
+      this.toggle(false);
+    });
 
     this.$sidebar = $sidebar;
 
-    this.$view.find('a.gitmaster-create-token')
-      .attr('href', this.adapter.getCreateTokenUrl());
+    this.$view.find('a.gitmaster-create-token').attr('href', this.adapter.getCreateTokenUrl());
 
     // this.$view.find('.master-tabs-tab')
     //   .click(this.handleTabClick);
 
     // init default
-    this.setTab(this.whoami - 1);
+    this.setTab(siteCode[this.whoami]);
 
     this.loadElements();
 
     // Hide options view when sidebar is hidden
-    $(document)
-      .on(EVENT.TOGGLE, (event, visible) => {
-        if (!visible) this.toggle(false);
-      });
+    $(document).on(EVENT.TOGGLE, (event, visible) => {
+      if (!visible) this.toggle(false);
+    });
 
     this.changeDirection(true);
   }
@@ -47,14 +48,13 @@ class OptionsView {
    * elements, so that they can be loaded and saved.
    */
   loadElements() {
-    this.elements = this.$view.find('[data-store]')
-      .toArray();
+    this.elements = this.$view.find('[data-store]').toArray();
   }
 
   /**
    * Toggles the visibility of this screen.
    */
-  toggle = (visibility) => {
+  toggle = visibility => {
     if (visibility !== undefined) {
       if (this.$view.hasClass('current') === visibility) return;
       return this.toggle();
@@ -63,8 +63,7 @@ class OptionsView {
     if (this.$toggler.hasClass('selected')) {
       this._save();
       this.$toggler.removeClass('selected');
-      $(this)
-        .trigger(EVENT.VIEW_CLOSE);
+      $(this).trigger(EVENT.VIEW_CLOSE);
     } else {
       this._load();
     }
@@ -77,13 +76,11 @@ class OptionsView {
     this.setTab(index);
   }
 
-
   setTab(index) {
     const current = this.$view.find(`.master-tabs-tab:eq(${index})`);
     const width = current.outerWidth(true);
 
-    current.removeClass('master-tabs-tab-disabled')
-      .addClass('master-tabs-tab-active');
+    current.removeClass('master-tabs-tab-disabled').addClass('master-tabs-tab-active');
 
     const link = this.$view.find('.master-tabs-ink-bar');
     const content = this.$view.find('.master-tabs-content');
@@ -113,11 +110,9 @@ class OptionsView {
 
           await extStore.set(STORE.DIRECTION, nextValue);
 
-          this.$direction.removeClass(`direction-${value}`)
-            .addClass(`direction-${nextValue}`);
+          this.$direction.removeClass(`direction-${value}`).addClass(`direction-${nextValue}`);
 
-          $(document)
-            .trigger(EVENT.LAYOUT_CHANGE);
+          $(document).trigger(EVENT.LAYOUT_CHANGE);
         }
         // 设置全局
         if (nextValue === 'left') {
@@ -126,8 +121,7 @@ class OptionsView {
           this.$sidebar.addClass(SIDEBAR_RIGHT);
         }
       },
-      () => {
-      },
+      () => {}
     );
   }
 
@@ -145,9 +139,8 @@ class OptionsView {
       },
       () => {
         this.$toggler.addClass('selected');
-        $(this)
-          .trigger(EVENT.VIEW_READY);
-      },
+        $(this).trigger(EVENT.VIEW_READY);
+      }
     );
   }
 
@@ -164,8 +157,7 @@ class OptionsView {
         await extStore.set(key, newValue);
         cb();
       },
-      () => {
-      },
+      () => {}
     );
   }
 
@@ -179,7 +171,7 @@ class OptionsView {
 
         processFn($elm, key, value, () => cb());
       },
-      completeFn,
+      completeFn
     );
   }
 }

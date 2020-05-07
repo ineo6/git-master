@@ -18,6 +18,7 @@
     "build:firefox": "cross-env NODE_ENV=production cross-env TARGET_BROWSER=firefox webpack",
     "build:opera": "cross-env NODE_ENV=production cross-env TARGET_BROWSER=opera webpack",
     "build": "yarn run build:chrome && yarn run build:firefox && yarn run build:opera",
+    "tpl": "node ./scripts/tpl.js",
     "analyzer": "yarn build:chrome -- --analyzer",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix"
