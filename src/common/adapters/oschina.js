@@ -55,8 +55,7 @@ class Oschina extends PjaxAdapter {
     const diffModeObserver = new window.MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (~mutation.oldValue.indexOf('split-diff') || ~mutation.target.className.indexOf('split-diff')) {
-          return $(document)
-            .trigger(EVENT.LAYOUT_CHANGE);
+          return $(document).trigger(EVENT.LAYOUT_CHANGE);
         }
       });
     });
@@ -92,25 +91,22 @@ class Oschina extends PjaxAdapter {
     const SPACING = 220;
     const $containers = $(OSC_CONTAINERS);
 
-    const WIDTH = $(document)
-      .width() - SPACING;
+    const WIDTH = $(document).width() - SPACING;
     const shouldPushEverything = sidebarPinned && sidebarVisible;
 
     const direction = isSidebarLeft ? 'left' : 'right';
 
-    $('html')
-      .css({
-        [`margin-${direction}`]: shouldPushEverything ? sidebarWidth : '',
-        [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
-      });
+    $('html').css({
+      [`margin-${direction}`]: shouldPushEverything ? sidebarWidth : '',
+      [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
+    });
     $containers.css({
       [`margin-${direction}`]: shouldPushEverything ? sidebarWidth : '',
       [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
     });
     $containers.css('width', shouldPushEverything ? WIDTH : '');
 
-    $('.git-project-download-panel')
-      .css('margin-right', shouldPushEverything ? 240 : '');
+    $('.git-project-download-panel').css('margin-right', shouldPushEverything ? 240 : '');
   }
 
   // @override
@@ -156,16 +152,11 @@ class Oschina extends PjaxAdapter {
       $('#git-project-branch .text')
         .text()
         .trim() ||
-      ($('#git-project-summary .viewer-wrapper li:eq(0)')
-        .attr('href') || '').replace(
-        `/${username}/${reponame}/commits/`,
-        '',
-      ) ||
+      ($('#git-project-summary .viewer-wrapper li:eq(0)').attr('href') || '').replace(`/${username}/${reponame}/commits/`, '') ||
       // The above should work for tree|blob, but if DOM changes, fallback to use ID from URL
       ((type === 'tree' || type === 'blob') && typeId) ||
       // Use target branch in a PR page
-      (isPR ? ($('.pull-detail-segment .branch:eq(1) a')
-        .text() || ':').match(/:(.*)/)[1] : null) ||
+      (isPR ? ($('.pull-detail-segment .branch:eq(1) a').text() || ':').match(/:(.*)/)[1] : null) ||
       // Reuse last selected branch if exist
       (currentRepo.username === username && currentRepo.reponame === reponame && currentRepo.branch) ||
       // Get default branch from cache
@@ -173,8 +164,7 @@ class Oschina extends PjaxAdapter {
 
     const showOnlyChangedInPR = await extStore.get(STORE.PR);
     const pullNumber = isPR && showOnlyChangedInPR ? typeId : null;
-    const pullHead = isPR ? ($('.pull-detail-segment .branch:eq(0) a')
-      .text() || ':').match(/:(.*)/)[1] : null;
+    const pullHead = isPR ? ($('.pull-detail-segment .branch:eq(0) a').text() || ':').match(/:(.*)/)[1] : null;
     const displayBranch = isPR && pullHead ? `${branch} < ${pullHead}` : null;
 
     // Still no luck, get default branch for real
@@ -200,7 +190,7 @@ class Oschina extends PjaxAdapter {
           // eslint-disable-next-line no-multi-assign
           repo.branch = this._defaultBranch[username + '/' + reponame] = data.default_branch || 'master';
           cb(null, repo);
-        },
+        }
       );
     }
   }
@@ -218,8 +208,7 @@ class Oschina extends PjaxAdapter {
 
         const el = $(diffMatch[0]);
         if (el.length > 0) {
-          $('html, body')
-            .animate({ scrollTop: el.offset().top - 68 }, 400);
+          $('html, body').animate({ scrollTop: el.offset().top - 68 }, 400);
           return;
         }
       }
@@ -255,10 +244,9 @@ class Oschina extends PjaxAdapter {
     }
   }
 
-
   // @override
   async shouldLoadEntireTree(repo) {
-    const isLoadingPr = await extStore.get(STORE.PR) && repo.pullNumber;
+    const isLoadingPr = (await extStore.get(STORE.PR)) && repo.pullNumber;
     if (isLoadingPr) {
       return true;
     }
@@ -335,17 +323,16 @@ class Oschina extends PjaxAdapter {
         });
 
         // Transform to emulate response from get `tree`
-        const tree = Object.keys(diffMap)
-          .map((fileName) => {
-            const patch = diffMap[fileName];
-            return {
-              patch,
-              path: fileName,
-              sha: patch.sha,
-              type: patch.type,
-              url: patch.blob_url,
-            };
-          });
+        const tree = Object.keys(diffMap).map(fileName => {
+          const patch = diffMap[fileName];
+          return {
+            patch,
+            path: fileName,
+            sha: patch.sha,
+            type: patch.type,
+            url: patch.blob_url,
+          };
+        });
 
         // Sort by path, needs to be alphabetical order (so parent folders come before children)
         // Note: this is still part of the above transform to mimic the behavior of get tree
@@ -372,7 +359,7 @@ class Oschina extends PjaxAdapter {
     const host = window.location.protocol + '//' + window.location.host;
     let url = `${host}/api/v5/repos/${opts.repo.username}/${opts.repo.reponame}${path || ''}`;
     const request = retry => {
-      if (!retry && opts.token) {
+      if (opts.token) {
         url += (url.indexOf('?') >= 0 ? '&' : '?') + `access_token=${opts.token}`;
       }
       const cfg = {
@@ -393,11 +380,7 @@ class Oschina extends PjaxAdapter {
           }
         })
         .fail(jqXHR => {
-          if (retry) {
-            request(false);
-          } else {
-            this._handleError(cfg, jqXHR, cb);
-          }
+          this._handleError(cfg, jqXHR, cb);
         });
     };
     request(true);
@@ -435,12 +418,11 @@ class Oschina extends PjaxAdapter {
         if (jqXHR.responseJSON.message === '404 Tree Not Found') {
           error = 'Empty repository';
           message = 'This repository is empty.';
+          // eslint-disable-next-line no-empty
         } else if (jqXHR.responseJSON.message === '404 Project Not Found') {
         } else {
           error = 'Repository not found';
-          message =
-            'Accessing private repositories requires access token. ' +
-            'Please go to <a class="settings-btn">Settings</a> and enter a token.';
+          message = 'Accessing private repositories requires access token. ' + 'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         }
         break;
       case 403:
@@ -453,9 +435,7 @@ class Oschina extends PjaxAdapter {
             'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         } else {
           error = 'Forbidden';
-          message =
-            'Accessing private repositories requires access token. ' +
-            'Please go to <a class="settings-btn">Settings</a> and enter a token.';
+          message = 'Accessing private repositories requires access token. ' + 'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         }
 
         break;
