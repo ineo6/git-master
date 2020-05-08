@@ -1,6 +1,14 @@
-<h1 align="center">🚀 git-master</h1>
+<h1 align="center">🚀 Git Master</h1>
 <p align="center">Git code tree extension.</p>
+<p align="center">
+<img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/users/klmeolbcejnhefkapdchfhlhhjgobhmo">
+<img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/v/klmeolbcejnhefkapdchfhlhhjgobhmo">
+<img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/stars/klmeolbcejnhefkapdchfhlhhjgobhmo">
+<img alt="GitHub" src="https://img.shields.io/github/license/ineo6/git-master">
+</p>
 <h3 align="center">🙋‍♂️ Made by <a href="https://github.com/ineo6">neo</a></h3>
+
+English | [简体中文](./README.zh-CN.md)
 
 ## Install
 
@@ -22,11 +30,11 @@
 By default, GitMaster makes unauthenticated requests to get repository metadata. However, there are two situations when GitHub require such requests to be authenticated:
 
 - You access a private repository
-- You exceed the [API rate limit](https://developer.github.com/v3/#rate-limiting)
+- You exceed the API rate limit
 
 When that happens, GitMaster will ask for your [GitHub personal access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use). If you don't already have one, [create one](https://github.com/settings/tokens/new?scopes=repo&description=Git%20Master%20extension), then copy and paste it into the token textbox in the Settings screen. Note that the minimal scopes that should be granted are `public_repo` and `repo`.
 
-However access token is not necessary to GitLab and Giteee. Cookie is used to make request.
+GitLab and Gitee have same configuration.
 
 **Access tokens are stored in the browser's local storage, only enter access tokens when you use a trusted computer.**
 
