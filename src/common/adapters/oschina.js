@@ -1,8 +1,10 @@
+import * as githubDetect from '@/common/adapters/pageDetect/github';
 import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { isSafari, isValidTimeStamp } from '../util.misc';
 import octotree from '../core.api';
+import * as giteeDetect from './pageDetect/gitee';
 
 const OSC_RESERVED_USER_NAMES = [
   'explore',
@@ -43,6 +45,8 @@ class Oschina extends PjaxAdapter {
   constructor() {
     super(OSC_PJAX_CONTAINER_SEL);
   }
+
+  detect = giteeDetect;
 
   // @override
   init($sidebar) {
@@ -109,15 +113,33 @@ class Oschina extends PjaxAdapter {
     $('.git-project-download-panel').css('margin-right', shouldPushEverything ? 240 : '');
   }
 
-  // @override
-  async getRepoFromPath(currentRepo, token, cb) {
-    const showInNonCodePage = await extStore.get(STORE.NONCODE);
+  async getRepoDataWrap(currentRepo, token) {
+    if (!giteeDetect.shouldEnable()) {
+      return;
+    }
 
-    // 检测页面是否存在仓库扩展DOM
-    if (!$(OSC_EXTENSION_DOM).length) {
+    return new Promise((resolve, reject) => {
+      this.getRepoData(currentRepo, token, (error, result) => {
+        if (!error) {
+          resolve(result);
+        }
+        if (typeof error === 'string') {
+          resolve('');
+        }
+        resolve('');
+      });
+    });
+  }
+
+  async getRepoFromPath(currentRepo, token, cb) {
+    if (!giteeDetect.shouldEnable()) {
       return cb();
     }
 
+    await this.getRepoData(currentRepo, token, cb);
+  }
+
+  async getRepoData(currentRepo, token, cb) {
     // (username)/(reponame)[/(type)][/(typeId)]
     // eslint-disable-next-line no-useless-escape
     const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
@@ -134,11 +156,6 @@ class Oschina extends PjaxAdapter {
 
     // Not a repository, skip
     if (~OSC_RESERVED_USER_NAMES.indexOf(username) || ~OSC_RESERVED_REPO_NAMES.indexOf(reponame)) {
-      return cb();
-    }
-
-    // Skip non-code page unless showInNonCodePage is true
-    if (!showInNonCodePage && match[3] && !~['tree', 'blob'].indexOf(match[3])) {
       return cb();
     }
 
@@ -353,6 +370,47 @@ class Oschina extends PjaxAdapter {
     //     const data = atob(res.content.replace(/\n/g, ''))
     //     cb(null, parseGitmodules(data))
     // })
+  }
+
+  getContentPath() {
+    let str = window.location.href;
+    let result = str.match(/.*[bt][lr][oe][be]\/[^//]+\/(.*)/); // blob/tree :D
+    return result && result.length && result[1];
+  }
+
+  async getContent(path, opts) {
+    const host = window.location.protocol + '//' + (window.location.host === 'gitee.com' ? 'gitee.com' : window.location.host) + '/api/v5';
+    const url = `${host}/repos/${opts.repo.username}/${opts.repo.reponame}`;
+
+    const contentPath = path || this.getContentPath() || '';
+
+    let contentParams = '';
+
+    const branch = encodeURIComponent(decodeURIComponent(opts.repo.branch));
+
+    if (!opts.isRepoMetaData) {
+      contentParams = '/contents/' + contentPath + '?ref=' + branch;
+    }
+
+    const cfg = {
+      url: `${url}${contentParams}`,
+      method: 'GET',
+      cache: false,
+    };
+
+    const token = await this.getAccessToken();
+
+    if (token) {
+      cfg.headers = { Authorization: 'token ' + token };
+    }
+
+    return new Promise((resolve, reject) => {
+      $.ajax(cfg)
+        .done((data, textStatus, jqXHR) => {
+          resolve(data, jqXHR);
+        })
+        .fail(jqXHR => this._handleError(cfg, jqXHR, resolve));
+    });
   }
 
   _get(path, opts, cb) {

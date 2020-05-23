@@ -18,7 +18,6 @@ export const STORE = {
   SHOWN: 'gitmaster.sidebar_shown',
   PINNED: 'gitmaster.sidebar_pinned',
   HUGE_REPOS: 'gitmaster.huge_repos',
-  NONCODE: 'gitmaster.noncode_shown',
   GITHUB_ENTERPRICE_URLS: 'gitmaster.github_custom_url',
   GITLAB_ENTERPRICE_URLS: 'gitmaster.gitlab_custom_url',
   GITEE_ENTERPRICE_URLS: 'gitmaster.gitee_custom_url',
@@ -45,7 +44,6 @@ export const DEFAULTS = {
   SHOWN: false,
   PINNED: false,
   HUGE_REPOS: {},
-  NONCODE: true,
   DIRECTION: 'left',
 };
 

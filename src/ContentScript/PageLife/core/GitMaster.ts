@@ -1,4 +1,4 @@
-import {EventEmitter2} from 'eventemitter2';
+import { EventEmitter2 } from 'eventemitter2';
 import get from 'lodash.get';
 import set from 'lodash.set';
 import unset from 'lodash.unset';
@@ -7,15 +7,17 @@ import LifecyclePlugins from '../lib/LifecyclePlugins';
 import PluginLoader from '../lib/PluginLoader';
 import Logger from '../lib/Logger';
 import Storage from '../lib/Storage';
-import {Config, Helper} from '../../interfaces';
+import { Config, Helper } from '../../interfaces';
+import { EVENT } from '@/common/core.constants';
 
+// @ts-ignore
 function bind(obj: any, eventStr: string, callback: Function) {
   if (obj.addEventListener) {
     //大部分浏览器兼容方式
     obj.addEventListener(eventStr, callback, false);
   } else {
     //IE8以下兼容方式;手动添加on
-    obj.attachEvent('on' + eventStr, function () {
+    obj.attachEvent('on' + eventStr, function() {
       //在匿名函数中调用回调函数
       callback.call(obj);
     });
@@ -98,7 +100,7 @@ class GitMaster extends EventEmitter2 {
 
   initEvents(): void {
     const ctx = this;
-    bind(document, 'pjax:end', () => {
+    $(document).on(EVENT.LOC_CHANGE, () => {
       ctx.emit(ctx.eventKey.pjaxEnd, ctx);
     });
   }

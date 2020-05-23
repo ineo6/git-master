@@ -1,49 +1,10 @@
-import JSZip from 'jszip';
-import saveFile from 'save-file';
 import { browser } from 'webextension-polyfill-ts';
 import { convertSizeToHumanReadableFormat, getFileSizeAndUnit } from '@/common/util.misc';
 import { IGitHubFile } from '@/ContentScript/interfaces';
+import RepoInfoBase from './RepoInfoBase';
+import { dataURItoBlob } from '../util';
 
-// @ts-ignore
-const saveFileSync = saveFile.saveSync;
-
-function updateStatus(_status: string) {
-  // console.log(status);
-}
-
-class RepoView {
-  private useJsDelivr: boolean = false;
-
-  private repoSize: number = 0;
-
-  private adapter: any;
-
-  private storage: any;
-
-  private repo: any = {};
-
-  private folderDownloadSize: number = 20;
-
-  private token: string = '';
-
-  constructor(adapter: any, storage: any) {
-    this.adapter = adapter;
-    this.storage = storage;
-
-    this.repoSize = 0;
-    this.useJsDelivr = false;
-  }
-
-  async init() {
-    await this.show();
-
-    if (this.storage) {
-      const options = await this.storage.getAll();
-
-      this.useJsDelivr = !!options.useJsDelivr;
-    }
-  }
-
+class GitHubRepoInfo extends RepoInfoBase {
   removeDom(selector: string) {
     if (!selector) {
       return;
@@ -192,7 +153,6 @@ class RepoView {
           <td class="download tree-file-download-btn"
           style="width: 20px;padding-right: 10px;color: #6a737d;text-align: right;white-space: nowrap;">
            <span style="margin-right: 5px;">
-             Zip
             </span>
             <a
              title="Download Folder"
@@ -306,32 +266,6 @@ class RepoView {
     return currentPath;
   }
 
-  async show() {
-    if (this.adapter.detect.shouldShowOctotree()) {
-      const token = await this.adapter.getAccessToken();
-
-      const repo = await this.adapter.getRepoDataWrap(false, token);
-
-      this.repo = repo;
-      this.token = token;
-
-      if (!this.repoSize) {
-        const result = await this.loadRepoData('', true);
-
-        if (result) {
-          this.repoSize = result.size;
-        } else {
-          return;
-        }
-      }
-
-      this.appendRepoSizeElement();
-      this.addCopyAndDownloadButton();
-      this.addFileSizeAndDownloadLink();
-      await this.createFolderDownload(repo);
-    }
-  }
-
   async loadRepoData(path?: string, isRepoMetaData?: boolean) {
     try {
       const data = await this.adapter.getContent(path, {
@@ -345,117 +279,37 @@ class RepoView {
     }
   }
 
-  async batchDownload(repo: any, files: any, dir: string) {
-    if (files.length === 0) {
-      updateStatus('No files to download');
-      return;
-    }
-
-    // @ts-ignore
-    const toastKey = $.toast.init({
-      title: 'GitMaster',
-      content: browser.i18n.getMessage('download_folder_process'),
-      type: 'info',
-      delay: 0,
+  async fetchPrivateFile(file: any) {
+    const response = await fetch(file.url, {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
     });
 
-    updateStatus(`Downloading (0/${files.length}) files…`);
-
-    const controller = new AbortController();
-
-    const fetchPublicFile = async (file: any) => {
-      const resolvedUrl = this.resolveUrl(
-        `https://raw.githubusercontent.com/${repo.username}/${repo.reponame}/${repo.branch}/${file.path}`,
-        file.path
-      );
-
-      const response = await fetch(resolvedUrl, {
-        signal: controller.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.statusText} for ${file.path}`);
-      }
-
-      return response.blob();
-    };
-
-    function dataURItoBlob(dataURI: string) {
-      // convert base64/URLEncoded data component to raw binary data held in a string
-      let byteString;
-      if (dataURI.split(',')[0].indexOf('base64') >= 0) byteString = atob(dataURI.split(',')[1]);
-      else byteString = unescape(dataURI.split(',')[1]);
-
-      // separate out the mime component
-      let mimeString = dataURI
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0];
-
-      // write the bytes of the string to a typed array
-      let ia = new Uint8Array(byteString.length);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-
-      return new Blob([ia], { type: mimeString });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.statusText} for ${file.path}`);
     }
 
-    const fetchPrivateFile = async (file: any) => {
-      const response = await fetch(file.url, {
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-        signal: controller.signal,
-      });
+    const { content } = await response.json();
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.statusText} for ${file.path}`);
-      }
+    const dataUrl = `data:application/octet-stream;base64,${content}`;
 
-      const { content } = await response.json();
+    return dataURItoBlob(dataUrl);
+  }
 
-      const dataUrl = `data:application/octet-stream;base64,${content}`;
+  async fetchPublicFile(file: any) {
+    const resolvedUrl = this.resolveUrl(
+      `https://raw.githubusercontent.com/${this.repo.username}/${this.repo.reponame}/${this.repo.branch}/${file.path}`,
+      file.path
+    );
 
-      return dataURItoBlob(dataUrl);
-    };
+    const response = await fetch(resolvedUrl, {});
 
-    let downloaded = 0;
-    const zip = new JSZip();
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.statusText} for ${file.path}`);
+    }
 
-    const download = async (file: any) => {
-      let blob: unknown;
-
-      try {
-        if (window.RepoMeta.private) {
-          blob = await fetchPrivateFile(file);
-        } else {
-          blob = await fetchPublicFile(file);
-        }
-
-        downloaded++;
-        updateStatus(`Downloading (${downloaded}/${files.length}) files…`);
-
-        zip.file(file.path.replace(dir + '/', ''), blob, {
-          binary: true,
-        });
-      } catch (e) {
-        updateStatus(`Download ${file.path} failed`);
-      }
-    };
-
-    await Promise.all(files.map(download));
-
-    updateStatus(`Zipping ${downloaded} files…`);
-
-    const zipBlob = await zip.generateAsync({
-      type: 'blob',
-    });
-
-    await saveFileSync(zipBlob, `${repo.username} ${repo.reponame} ${repo.branch} ${dir}.zip`.replace(/\//, '-'));
-    // @ts-ignore
-    $.toast.remove(toastKey);
-    updateStatus(`Downloaded ${downloaded} files! Done!`);
+    return response.blob();
   }
 
   async refreshToken() {
@@ -516,19 +370,29 @@ class RepoView {
     );
   }
 
-  async createFolderDownload(repo: any) {
-    const buttonGroup = $('.file-navigation .BtnGroup.float-right');
+  isSingleFile(): boolean {
+    return false;
+  }
 
-    const downloadBtn = $('<a class="btn btn-sm BtnGroup-item">Download </a>');
+  createFolderDownloadWrapper(): void {
+    const target = this.createFolderDownload();
 
-    downloadBtn.on('click', () => {
-      this.downloadFolder(repo);
-    });
+    this.removeDom('.master-download-folder');
 
-    if (buttonGroup) {
-      buttonGroup.prepend(downloadBtn);
+    if (target) {
+      const downloadBtn = $('<a class="btn btn-sm BtnGroup-item master-download-folder">Download </a>');
+
+      downloadBtn.on('click', async () => {
+        await this.downloadFolder(this.repo);
+      });
+
+      target.prepend(downloadBtn);
     }
+  }
+
+  createFolderDownload(): JQuery {
+    return $('.file-navigation .BtnGroup.float-right');
   }
 }
 
-export default RepoView;
+export default GitHubRepoInfo;

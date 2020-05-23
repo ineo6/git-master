@@ -250,7 +250,7 @@ class GitHub extends PjaxAdapter {
   }
 
   async getRepoDataWrap(currentRepo, token) {
-    if (!githubDetect.shouldShowOctotree()) {
+    if (!githubDetect.shouldEnable()) {
       return;
     }
 
@@ -269,7 +269,7 @@ class GitHub extends PjaxAdapter {
 
   // @override
   async getRepoFromPath(currentRepo, token, cb) {
-    if (!githubDetect.shouldShowOctotree()) {
+    if (!githubDetect.shouldEnable()) {
       return cb();
     }
 
