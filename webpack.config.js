@@ -240,6 +240,10 @@ module.exports = {
         to: 'fonts',
       },
       {
+        from: 'views/libs/fonts/mastericons.woff2',
+        to: 'fonts/mastericons.woff2',
+      },
+      {
         from: 'views/_locales',
         to: '_locales',
       },
