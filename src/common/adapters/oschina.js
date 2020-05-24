@@ -1,8 +1,7 @@
-import * as githubDetect from '@/common/adapters/pageDetect/github';
 import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
-import { isSafari, isValidTimeStamp } from '../util.misc';
+import { isValidTimeStamp } from '../util.misc';
 import octotree from '../core.api';
 import * as giteeDetect from './pageDetect/gitee';
 
@@ -213,25 +212,44 @@ class Oschina extends PjaxAdapter {
   }
 
   // @override
-  selectFile(path) {
-    if (!isSafari()) {
-      // Smooth scroll to diff file on PR page
-      const diffMatch = path.match(/#diff-\d+$/);
-      if (diffMatch) {
-        // active code change tab
-        const fileTab = $('#pull-request-tabs a[data-tab=files]');
+  selectFile(path, opts = {}) {
+    // Do nothing if file is already selected.
+    if (window.location.pathname === path) return;
 
-        fileTab && fileTab[0].click();
+    const fragment = opts.fragment;
 
-        const el = $(diffMatch[0]);
-        if (el.length > 0) {
-          $('html, body').animate({ scrollTop: el.offset().top - 68 }, 400);
-          return;
-        }
-      }
+    // If we're on the same page and just navigating to a different anchor
+    // Don't bother fetching the page with pjax
+    const pathWithoutAnchor = path.replace(/#.*$/, '');
+    const isSamePage = window.location.pathname === pathWithoutAnchor;
+    const loadWithPjax = $(this._pjaxContainerSel).length && !isSamePage;
+
+    if (loadWithPjax) {
+      const url = window.location.protocol + '//' + window.location.host + path;
+      window.history.pushState(
+        {
+          cache: true,
+        },
+        null,
+        url
+      );
+
+      $.ajax({
+        url: url,
+        dataType: 'script',
+        beforeSend: function() {
+          $(document).trigger(EVENT.REQ_START);
+          return $('.tree_progress').show();
+        },
+        complete: function() {
+          $(document).trigger(EVENT.REQ_END);
+
+          return $('.tree_progress').hide();
+        },
+      });
+    } else {
+      super.selectFile(path);
     }
-
-    window.location.href = path;
   }
 
   // @override
@@ -509,6 +527,10 @@ class Oschina extends PjaxAdapter {
       message: message,
       status: jqXHR.status,
     });
+  }
+
+  _getPatchHref(repo, patch) {
+    return `/${repo.username}/${repo.reponame}/pulls/${repo.pullNumber}/files#diff-${patch.diffId}`;
   }
 }
 
