@@ -18,4 +18,6 @@ const adapter = async (ctx: GitMaster): Promise<void> => {
   }
 };
 
+adapter.getSiteType = CodeTree.getSiteType;
+
 export default adapter;

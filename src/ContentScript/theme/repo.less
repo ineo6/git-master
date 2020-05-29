@@ -1,0 +1,81 @@
+/* # Repo page */
+
+body {
+  .topic-tag {
+    background-color: @tag-bg-color !important;
+  }
+  .commit-ref {
+    background-color: @tag-bg-color !important;
+    color: @link-color !important;
+  }
+  .numbers-summary .nolink,
+  .numbers-summary a {
+    color: @link-color !important;
+  }
+  .numbers-summary a:hover {
+    color: @bright-text-color !important;
+  }
+  .branch-group-heading {
+    color: @link-color !important;
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+  .branch-group-name {
+    color: @link-color !important;
+  }
+  .branch-name {
+    color: @link-color !important;
+    background-color: @tag-bg-color !important;
+  }
+  .branch-summary {
+    color: @link-color !important;
+    border-color: @border-color !important;
+  }
+  .more-branches {
+    background-image: @button-bg-image !important;
+  }
+  .RecentBranches {
+    background-color: @tag-bg-color;
+  }
+  .repository-lang-stats {
+    ol.repository-lang-stats-numbers {
+      li {
+        .lang {
+          font-size: 11px !important;
+          color: @link-color !important;
+        }
+        span.percent {
+          font-size: 11px !important;
+        }
+        & > a,
+        & > span {
+          color: @link-color !important;
+        }
+      }
+    }
+  }
+  .repository-lang-stats-graph {
+    border-color: @border-color !important;
+    border-top: 0 !important;
+  }
+  .branches {
+    .Box-row {
+      &--blue:last-of-type {
+        background-color: @dropdown-bg !important;
+        border-color: @border-color !important;
+      }
+    }
+  }
+  .release-label {
+    background-color: @tag-bg-color !important;
+  }
+  .details-truncate-file-list .btn-truncate-file-list {
+    background: @bg-color !important;
+    &:hover {
+      background: @file-row-active-bg !important;
+    }
+  }
+  .text-blue {
+    color: @text-color !important;
+  }
+}

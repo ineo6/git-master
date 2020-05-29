@@ -1,0 +1,133 @@
+/* # Profile page */
+
+.profile-timeline.discussion-timeline .profile-timeline-month-heading::after {
+  background-color: @border-color !important;
+}
+
+.profile-rollup-wrapper + .profile-rollup-wrapper {
+  border-color: @border-color !important;
+}
+
+.user-profile-nav {
+  background-color: @bg-color !important;
+  border-color: @border-color !important;
+}
+
+.user-profile-sticky-bar::after {
+  background-color: @bg-color !important;
+  border-color: @border-color !important;
+}
+
+.email-preference-exceptions h5 {
+  color: @bright-text-color !important;
+}
+
+.recent-user-key-access {
+  color: @text-green-color !important;
+}
+
+.security-history .security-history-timestamp {
+  color: @faded-link-color !important;
+}
+
+.session-device {
+  color: @link-color !important;
+}
+
+.listgroup-item {
+  color: @text-color !important;
+
+  .text-small {
+    color: @faded-link-color !important;
+  }
+}
+
+.user-status-message-wrapper {
+  color: @link-color !important;
+}
+.user-status-emoji-only-header {
+  background-color: @bg-color !important;
+}
+.user-status-container {
+  border: none !important;
+
+  .user-status-container-border-busy {
+    background-color: @bg-pending-color !important;
+    border-color: @bg-pending-color !important;
+
+    .user-status-message-wrapper {
+      .text-gray-dark {
+        color: @text-black-color !important;
+      }
+    }
+  }
+}
+
+.avatar-before-user-status {
+  border: none !important;
+}
+
+.pinned-item-name {
+  color: @text-color !important;
+}
+
+// Yearly Contributions graph
+.js-yearly-contributions {
+  svg {
+    rect.day {
+      &[data-count] {
+        fill: @contrib-color-5 !important;
+      }
+      &[data-count='0'] {
+        fill: @contrib-color-1 !important;
+      }
+      &[data-count='1'],
+      &[data-count='2'],
+      &[data-count='3'],
+      &[data-count='4'] {
+        fill: @contrib-color-2 !important;
+      }
+      &[data-count='5'],
+      &[data-count='6'],
+      &[data-count='7'],
+      &[data-count='8'],
+      &[data-count='9'] {
+        fill: @contrib-color-3 !important;
+      }
+      &[data-count='10'],
+      &[data-count='11'],
+      &[data-count='12'],
+      &[data-count='13'] {
+        fill: @contrib-color-4 !important;
+      }
+    }
+  }
+  .contrib-legend {
+    li {
+      &:nth-child(1) {
+        background-color: @contrib-color-1 !important;
+      }
+      &:nth-child(2) {
+        background-color: @contrib-color-2 !important;
+      }
+      &:nth-child(3) {
+        background-color: @contrib-color-3 !important;
+      }
+      &:nth-child(4) {
+        background-color: @contrib-color-4 !important;
+      }
+      &:nth-child(5) {
+        background-color: @contrib-color-5 !important;
+      }
+    }
+  }
+}
+
+// Contributions year selector fixes
+#year-list-container {
+  .profile-timeline-year-list {
+    a:not(.selected):hover {
+      color: @text-black-color !important;
+    }
+  }
+}

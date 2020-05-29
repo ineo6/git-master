@@ -1,0 +1,228 @@
+/* # Misc */
+
+body {
+  .border {
+    border-color: @border-color !important;
+  }
+  .border-gray-dark {
+    border-color: @border-color !important;
+  }
+  .border-right,
+  .border-bottom,
+  .border-left {
+    border-color: @border-color !important;
+  }
+  .bg-white {
+    background-color: @bg-color !important;
+  }
+  .pagination {
+    a,
+    em:focus,
+    em:hover,
+    span:focus,
+    span:hover {
+      border-color: @border-color !important;
+      color: @link-color !important;
+      background-image: @button-bg-image !important;
+    }
+    a:focus,
+    a:hover {
+      background-image: @button-bg-image-hover !important;
+    }
+    .gap,
+    .disabled,
+    .gap:hover,
+    .disabled:hover {
+      background-color: @dropdown-bg !important;
+      background-image: none !important;
+      border-color: @border-color !important;
+    }
+    .current,
+    .current:hover {
+      background-color: @button-active-color !important;
+      background-image: none;
+    }
+  }
+  .ajax-pagination-form .ajax-pagination-btn {
+    color: @link-color !important;
+    background-image: @button-bg-image !important;
+    border-color: @border-color !important;
+  }
+  .btn {
+    color: @link-color !important;
+    background-image: @button-bg-image !important;
+  }
+  .btn.hover,
+  .btn:hover {
+    background-image: @button-bg-image-hover !important;
+    background-position: 0 !important;
+  }
+  .btn.selected,
+  .btn:active {
+    background-color: @border-color !important;
+  }
+  .btn.disabled,
+  .btn:disabled {
+    background-color: @dropdown-bg !important;
+    color: @link-color !important;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+  .btn-outline.disabled,
+  .btn-outline:disabled {
+    background-color: @dropdown-bg !important;
+    cursor: not-allowed !important;
+  }
+  .btn-primary {
+    color: @bright-text-color !important;
+    background-image: @button-primary-bg-image !important;
+  }
+  .btn-primary:hover {
+    background-image: @button-primary-bg-image-hover !important;
+  }
+  .btn-danger {
+    background-image: @button-danger-bg-image !important;
+  }
+  .btn-danger:hover {
+    background-image: @button-danger-bg-image-hover !important;
+  }
+  .gh-header {
+    background-color: transparent !important;
+  }
+  .gh-header-meta {
+    color: @text-color !important;
+  }
+  .gh-header-meta .author {
+    color: @text-color !important;
+  }
+  .gh-header .gh-header-sticky.is-stuck + .gh-header-shadow {
+    background-color: @bg-color !important;
+  }
+  .ellipsis-expander,
+  .hidden-text-expander a {
+    background: @tag-bg-color !important;
+    color: @link-color-selected !important;
+  }
+  .underline-nav-item.selected {
+    color: @link-color-selected !important;
+  }
+  .underline-nav-item:focus,
+  .underline-nav-item:hover {
+    color: @link-color-selected !important;
+  }
+  .select-menu-modal {
+    color: @text-color !important;
+  }
+  .select-menu-divider,
+  .select-menu-header .select-menu-title {
+    color: @text-color !important;
+  }
+  .select-menu-text-filter:first-child:last-child {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+  .select-menu-divider,
+  .select-menu-header {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+  .select-menu-filters {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+  .select-menu-item.selected {
+    color: @link-color-selected !important;
+  }
+  .select-menu-item {
+    color: @link-color-selected !important;
+    border-color: @border-color !important;
+    background-color: @dropdown-bg !important;
+    &:hover,
+    &:focus {
+      background-color: @file-row-active-bg !important;
+    }
+    &.navigation-focus {
+      background-color: @border-color !important;
+      .description-inline,
+      &.select-menu-action,
+      &.selected {
+        background-color: @border-color !important;
+      }
+    }
+
+    .select-menu-item-text pre {
+      color: @text-color !important;
+    }
+  }
+  .label-select-menu .select-menu-item.js-navigation-item.selected {
+    background: @tag-bg-color !important;
+  }
+  .select-menu-modal {
+    background: @dropdown-bg !important;
+  }
+  .select-menu-tabs {
+    border-color: @border-color !important;
+  }
+  .select-menu-text-filter input {
+    border-color: @border-color !important;
+  }
+  .select-menu-tabs .select-menu-tab-nav.selected,
+  .select-menu-tabs .select-menu-tab-nav[aria-selected='true'],
+  .select-menu-tabs a.selected {
+    background-color: @dropdown-bg !important;
+    color: @link-color-selected !important;
+    border-color: @border-color !important;
+  }
+  .select-menu-tabs .select-menu-tab-nav:hover,
+  .select-menu-tabs a:hover {
+    color: @link-color-selected !important;
+  }
+  .select-menu-tabs .select-menu-tab-nav[aria-selected='true'] {
+    border-bottom-color: @dropdown-bg !important;
+  }
+  .dropdown-menu {
+    background-color: @dropdown-bg !important;
+    &:after {
+      border-bottom-color: @dropdown-bg !important;
+    }
+    .user-status-emoji-only-header {
+      background-color: @dropdown-bg !important;
+    }
+  }
+  .muted-link {
+    color: @link-color !important;
+    &:hover {
+      color: @bright-text-color !important;
+      text-decoration: underline !important;
+    }
+  }
+  .text-shadow-light {
+    text-shadow: none;
+  }
+  .text-green {
+    color: @text-green-color !important;
+  }
+  .text-red {
+    color: @text-red-color !important;
+  }
+  .exploregrid-item-title {
+    color: @bright-text-color !important;
+  }
+  .topic-tag-action {
+    color: @border-color !important;
+  }
+  .dropdown-item {
+    color: @link-color !important;
+  }
+  .dropdown-header {
+    color: @faded-link-color !important;
+  }
+}
+
+.cc-ext .pagehead-actions .cc-classic-cta a {
+  border-color: @border-color !important;
+}
+
+.pagehead-actions > li {
+  color: @bright-text-color !important;
+}

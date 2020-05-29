@@ -97,5 +97,8 @@
   },
   "download_folder_fetch": {
     "message": "Fetching Directory"
+  },
+  "dark_mode": {
+    "message": "Dark Mode"
   }
 }

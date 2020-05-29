@@ -1,0 +1,22 @@
+.SideNav {
+  background-color: @block-bg !important;
+  .SideNav-item {
+    border-top: 1px solid @border-color !important;
+  }
+  .SideNav-item:active,
+  .SideNav-item:focus,
+  .SideNav-item:hover {
+    background-color: transparent !important;
+  }
+  .SideNav-item:focus:before,
+  .SideNav-item:hover:before {
+    background-color: @highlight-border-color !important;
+  }
+  .SideNav-item[aria-current='page'],
+  .SideNav-item[aria-selected='true'] {
+    background-color: transparent !important;
+  }
+  .SideNav-item:last-child {
+    box-shadow: 0 1px 0 transparent !important;
+  }
+}

@@ -1,0 +1,586 @@
+/* # Layout */
+
+body {
+  background-color: @bg-color !important;
+  color: @text-color !important;
+
+  &.page-responsive {
+    .pagehead {
+      background-color: @bg-color !important;
+    }
+  }
+
+  .reponav-item {
+    color: @faded-link-color !important;
+
+    &.selected {
+      background-color: @bg-color !important;
+      border-color: @highlight-border-color @border-color transparent !important;
+      color: @link-color !important;
+    }
+
+    .octicon {
+      color: @faded-link-color !important;
+    }
+  }
+
+  .pagehead,
+  .repohead.experiment-repo-nav {
+    background: @head-bg !important;
+    border-color: @border-color !important;
+  }
+
+  /* Repo label (i.e. Private, Archived) */
+
+  .repohead .Label--outline,
+  .repo-list .Label--outline {
+    color: @text-color !important;
+    border-color: @light-border-color !important;
+  }
+
+  .site-header {
+    background: @head-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .showcase-page-pattern::after {
+    background: @head-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .form-group {
+    .form-control {
+      background-color: @tag-bg-color !important;
+      border-color: @border-color !important;
+      color: @link-color !important;
+
+      &:focus {
+        background-color: #1d1f25 !important;
+      }
+    }
+  }
+
+  .form-control,
+  .form-select {
+    background-color: @tag-bg-color !important;
+    border-color: @border-color !important;
+    color: @link-color !important;
+  }
+
+  .flash {
+    background-color: @tag-bg-color !important;
+    color: @link-color !important;
+  }
+
+  .blankslate {
+    background-color: @block-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .menu {
+    background-color: @block-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .menu-item {
+    border-bottom: 1px solid @border-color !important;
+  }
+
+  .menu-item:hover {
+    background-color: #41464f !important;
+  }
+
+  .menu-item.selected {
+    background-color: @bg-color !important;
+    color: @link-color !important;
+  }
+
+  .boxed-group .heading,
+  .boxed-group > h3 {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .boxed-group-inner {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .rule,
+  hr {
+    border-bottom: 1px solid @border-color !important;
+  }
+
+  .file {
+    border-color: @border-color !important;
+  }
+
+  .file-header {
+    color: @link-color !important;
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  :not(.commit-build-statuses) > a:not(.IssueLabel):not(.IssueLabel--big):not(.lh-condensed-ultra) {
+    color: @link-color !important;
+  }
+
+  div.commit-build-statuses {
+    .text-green {
+      color: @text-green-color !important;
+    }
+
+    .text-red {
+      color: @text-red-color !important;
+    }
+
+    .bg-pending {
+      color: @bg-pending-color !important;
+    }
+  }
+
+  .link-gray {
+    color: @faded-link-color !important;
+  }
+
+  .link-gray-dark,
+  body .link-gray-dark {
+    color: @link-color !important;
+  }
+
+  .link-gray-dark:hover,
+  body .link-gray-dark:hover {
+    color: @link-color !important;
+    text-decoration: underline !important;
+  }
+
+  .text-gray-dark,
+  body .text-gray-dark {
+    color: @text-color !important;
+  }
+
+  .text-gray {
+    color: @text-color !important;
+  }
+
+  .text-emphasized {
+    color: @link-color-selected !important;
+  }
+
+  .access-form-wrapper {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .table-list-header-toggle .btn-link.selected,
+  .table-list-header-toggle .btn-link.selected:hover {
+    color: @link-color-selected !important;
+  }
+
+  .table-list-header-toggle .btn-link:hover {
+    color: @link-color-selected !important;
+  }
+
+  .site-footer {
+    border-top: 1px solid @tag-bg-color !important;
+  }
+
+  .file-wrap {
+    border-color: @border-color !important;
+  }
+
+  .table-list {
+    border-bottom: 1px solid @border-color !important;
+  }
+
+  .table-list-header {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .table-list-bordered .table-list-cell:last-child {
+    border-right: 1px solid @border-color !important;
+  }
+
+  .table-list-bordered .table-list-cell:first-child {
+    border-left: 1px solid @border-color !important;
+  }
+
+  .table-list-cell {
+    border-top: 1px solid @border-color !important;
+  }
+
+  .breadcrumb {
+    color: @link-color !important;
+  }
+
+  .breadcrumb strong.final-path {
+    color: @bright-text-color !important;
+  }
+
+  .overall-summary {
+    border-color: @border-color !important;
+  }
+
+  .octofication .message {
+    border-color: @border-color !important;
+  }
+
+  .subnav-search-context .btn {
+    color: @link-color !important;
+  }
+
+  .btn-link:not(.IssueLabel) {
+    color: @link-color !important;
+  }
+
+  .social-count {
+    color: @link-color !important;
+    background-color: #424549 !important;
+  }
+
+  .social-count:hover {
+    color: @bright-text-color !important;
+  }
+
+  .subnav-item {
+    border-color: @border-color !important;
+  }
+
+  .subnav-item:focus,
+  .subnav-item:hover {
+    background-color: @comment-bg !important;
+  }
+
+  .subnav-item.selected,
+  .subnav-item.selected:focus,
+  .subnav-item.selected:hover {
+    background-color: @button-active-color !important;
+    border-color: @button-active-color !important;
+  }
+
+  .input-contrast {
+    background-color: #424549 !important;
+    border-color: @border-color !important;
+    color: @link-color !important;
+  }
+
+  .input-contrast:focus {
+    background-color: #525559 !important;
+  }
+
+  .btn-octicon {
+    color: @link-color !important;
+  }
+
+  .btn-octicon:hover {
+    color: @bright-text-color !important;
+  }
+
+  .btn-octicon-danger:hover {
+    color: @text-red-color !important;
+  }
+
+  .filter-bar {
+    background: @dropdown-bg !important;
+    border-bottom: 1px solid @border-color !important;
+  }
+
+  .more-repos {
+    background: @dropdown-bg !important;
+    box-shadow: inset 0 1px 0 @border-color !important;
+  }
+
+  .commit-group-title .octicon-git-commit {
+    background: @bg-color !important;
+  }
+
+  .commit-icon .octicon {
+    background: @bg-color !important;
+  }
+
+  .news .alert {
+    border-top: 1px solid @border-color !important;
+  }
+
+  .news .Details button {
+    border-top-color: @border-color !important;
+
+    &:hover {
+      background: transparent !important;
+      text-decoration: underline !important;
+    }
+  }
+
+  .news .Details-content--hidden li {
+    border-top-color: @border-color !important;
+  }
+
+  .dashboard-notice {
+    background-color: @block-bg !important;
+    border: solid 1px @border-color !important;
+
+    h2 {
+      color: @text-color !important;
+    }
+  }
+
+  .branch-infobar {
+    background-color: @tag-bg-color !important;
+    border-color: @border-color !important;
+  }
+
+  .commit-tease {
+    color: @link-color !important;
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .mini-repo-list-item {
+    border-top: 1px solid @border-color !important;
+  }
+
+  .commit .commit-title,
+  .commit .commit-title a {
+    color: #bbb2a9 !important;
+  }
+
+  .commits-list-item.navigation-focus {
+    background: @comment-bg !important;
+  }
+
+  .commit-group-title {
+    color: #a79f96 !important;
+  }
+
+  .commit-tease-contributors {
+    background-color: @comment-bg !important;
+    border-top: 1px solid @border-color !important;
+  }
+
+  .commit-tease-sha {
+    color: @link-color !important;
+  }
+
+  .commits blockquote {
+    color: @text-color !important;
+  }
+
+  .reponav-item {
+    &:focus,
+    &:hover {
+      color: @link-color !important;
+    }
+  }
+
+  .team-mention,
+  .user-mention {
+    color: @bright-text-color !important;
+  }
+
+  .tabnav-pr,
+  div {
+    .tabnav-tab {
+      color: @faded-link-color !important;
+
+      &.selected {
+        color: @link-color !important;
+        border-color: @border-color !important;
+        background: @bg-color !important;
+      }
+
+      &:focus,
+      &:hover {
+        color: @link-color-selected !important;
+      }
+
+      .Counter {
+        color: @link-color !important;
+      }
+    }
+  }
+
+  .Counter {
+    background-color: @border-color !important;
+    color: @link-color !important;
+  }
+
+  .Box-header--blue {
+    color: @link-color !important;
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .Box:not(.ml-1) {
+    background-color: @block-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .dashboard .js-all-activity-header + div {
+    background-color: @bg-color !important;
+    border-color: @border-color !important;
+  }
+
+  .full-commit {
+    color: @link-color !important;
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+
+    p.commit-title {
+      color: @link-color !important;
+    }
+
+    .sha-block > .sha {
+      color: @link-color !important;
+    }
+
+    .commit-meta {
+      background-color: @block-bg !important;
+      border-color: @border-color !important;
+    }
+  }
+
+  .copyable-terminal {
+    background-color: @tag-bg-color !important;
+  }
+
+  .commit-author-section {
+    color: @link-color !important;
+  }
+
+  .blob-num-expandable,
+  .blob-num-hunk {
+    background-color: @tag-bg-color !important;
+  }
+
+  .blob-code-expandable,
+  .blob-code-hunk {
+    background-color: @tag-bg-color !important;
+  }
+
+  .timeline-commits .hidden-text-expander .ellipsis-expander {
+    background-color: @tag-bg-color !important;
+  }
+
+  .tabnav {
+    border-bottom: 1px solid @border-color !important;
+  }
+
+  /* # Search */
+
+  .code-list .code-list-item + .code-list-item {
+    border-color: @border-color !important;
+  }
+
+  .code-list .divider .blob-code,
+  .code-list .divider .blob-num,
+  .code-list-item-private .blob-num {
+    background-color: @code-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .code-list .file-box {
+    border-color: @border-color !important;
+  }
+
+  /* # Home page */
+
+  .private .mini-repo-list-item {
+    background-color: @private-bg !important;
+  }
+
+  /* # Settings page */
+  /* Orgs */
+
+  .orghead {
+    background: @head-bg !important;
+    border-color: @border-color !important;
+
+    .org-name {
+      color: @link-color;
+    }
+
+    .pagehead-tabs-item {
+      &.selected {
+        background-color: @bg-color !important;
+        border-color: @highlight-border-color @border-color transparent !important;
+        color: @link-color !important;
+      }
+    }
+  }
+
+  .email-format .email-hidden-toggle a {
+    background: @head-bg !important;
+  }
+
+  .bg-gray-light {
+    background-color: @tag-bg-color !important;
+  }
+
+  .bg-yellow-light {
+    background-color: @search-bg-color !important;
+  }
+
+  .tag-info {
+    color: @link-color !important;
+
+    .tag-name {
+      color: @text-color !important;
+    }
+  }
+
+  .Box-header {
+    background-color: @dropdown-bg !important;
+    border-color: @border-color !important;
+  }
+
+  .conversation-list-heading .inner {
+    background: @dropdown-bg;
+  }
+
+  .application-main {
+    .flex-wrap {
+      background-color: transparent !important;
+    }
+
+    & > main {
+      & > div.border-bottom.border-gray-light {
+        background-color: @bg-color !important;
+      }
+
+      & > .site-subnav + div {
+        background-color: @bg-color !important;
+
+        .bg-blue-light {
+          background-color: transparent !important;
+        }
+
+        .text-gray-light {
+          color: @text-color !important;
+        }
+      }
+    }
+  }
+
+  .note,
+  .help {
+    color: @faded-link-color !important;
+  }
+
+  .file-commit-form--full {
+    background-color: @bg-color !important;
+  }
+
+  @import './common/border.less';
+}
+
+@media (min-width: 768px) {
+  body {
+    &.page-responsive {
+      .pagehead,
+      .repohead.experiment-repo-nav {
+        background-color: @head-bg !important;
+      }
+    }
+  }
+}

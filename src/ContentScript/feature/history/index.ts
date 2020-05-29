@@ -9,7 +9,7 @@ export default (ctx: GitMaster) => {
       },
       config: [],
       scope: ['github'],
-      repeatOnAjax:true,
+      repeatOnAjax: true,
     });
 
     ctx.helper.documentLoadedPlugins.register('gitlab-history', {
@@ -18,11 +18,11 @@ export default (ctx: GitMaster) => {
       },
       config: [],
       scope: ['gitlab'],
-      repeatOnAjax:true,
+      repeatOnAjax: true,
     });
   };
   return {
     register,
     config: [],
   };
-}
+};

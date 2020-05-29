@@ -1,0 +1,104 @@
+.steps li {
+  background-color: @comment-bg !important;
+  color: @text-color !important;
+}
+
+.setup-info-module {
+  background-color: @comment-bg !important;
+}
+
+.autocomplete-results {
+  background: @dropdown-bg !important;
+
+  .member-suggestion {
+    .member-suggestion-info {
+      .member-login {
+        color: @bright-text-color !important;
+      }
+
+      .member-name {
+        color: @text-color !important;
+      }
+    }
+  }
+}
+
+.Box-row--gray {
+  background-color: @comment-bg !important;
+}
+
+.menu-heading {
+  background-color: @head-bg !important;
+}
+
+.project-header {
+  background-color: @head-bg !important;
+}
+
+.project-column {
+  background-color: @comment-bg !important;
+}
+
+.oauth-application-whitelist .request-info strong {
+  color: @text-color !important;
+}
+
+.Subhead-description {
+  color: @faded-link-color !important;
+}
+
+.SelectMenu {
+  .SelectMenu-modal {
+    border: 1px solid @border-color !important;
+
+    .SelectMenu-header {
+      background-color: @bg-color !important;
+    }
+    .SelectMenu-item {
+      background-color: @block-bg !important;
+      border-bottom: 1px solid @border-color !important;
+    }
+    .SelectMenu-list {
+      border-top: 1px solid @border-color !important;
+    }
+    .SelectMenu-divider {
+      background-color: @bg-color !important;
+      border: 1px solid @border-color !important;
+    }
+    .clearfix {
+      background-color: @bg-color !important;
+    }
+
+    footer {
+      border-top: 1px solid @border-color !important;
+      background-color: @bg-color !important;
+      color: @bright-text-color !important;
+    }
+  }
+
+  /* For select menus with tabs, like the branch selector */
+  .SelectMenu-filter,
+  .SelectMenu-tabs,
+  .SelectMenu-list,
+  .SelectMenu-modal {
+    background: @block-bg !important;
+  }
+
+  .SelectMenu-filter {
+    border-color: @block-bg !important;
+  }
+
+  .SelectMenu-tab {
+    color: @text-color !important;
+
+    &[aria-selected='true'] {
+      background: @block-bg !important;
+      border-color: @tag-bg-color !important;
+    }
+
+    &:hover {
+      color: @text-color !important;
+      background: lighten(@block-bg, 10%) !important;
+    }
+  }
+}

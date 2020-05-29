@@ -1,0 +1,64 @@
+/* # Markdown */
+
+code {
+  background-color: @tag-bg-color !important;
+  color: @code-snippet-color !important;
+}
+
+.markdown-body {
+  h1 {
+    border-color: @light-border-color !important;
+  }
+
+  h2 {
+    border-color: @light-border-color !important;
+  }
+
+  hr {
+    background-color: @light-border-color !important;
+  }
+
+  blockquote {
+    border-color: @border-color !important;
+  }
+
+  img {
+    background-color: transparent !important;
+  }
+
+  code,
+  tt {
+    background-color: @tag-bg-color !important;
+    color: @code-snippet-color !important;
+  }
+
+  .highlight pre,
+  pre {
+    background-color: @tag-bg-color !important;
+  }
+
+  table {
+    tr {
+      background-color: #222 !important;
+      border-color: @border-color !important;
+
+      &:nth-child(2n) {
+        background-color: #090705 !important;
+        border-color: @border-color !important;
+      }
+    }
+
+    td,
+    th {
+      border-color: @border-color !important;
+    }
+  }
+
+  .lead-mktg p {
+    color: @text-color !important;
+  }
+
+  &.comment-body {
+    border-bottom-color: @border-color !important;
+  }
+}

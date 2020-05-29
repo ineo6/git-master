@@ -2,6 +2,7 @@
 import key from 'key';
 import { browser } from 'webextension-polyfill-ts';
 import { ADDON_CLASS, DICT, EVENT, PINNED_CLASS, SHOW_CLASS, STORE } from '@/common/core.constants';
+import { whichSite } from '@/ContentScript/util';
 import octotree from '../common/core.api';
 
 import TreeView from '../common/view.tree';
@@ -12,54 +13,6 @@ import extStore from '../common/core.storage';
 import GitHub from '../common/adapters/github';
 import Gitlab from '../common/adapters/gitlab';
 import Oschina from '../common/adapters/oschina';
-
-async function whichSite() {
-  const currentUrl = `${window.location.protocol}//${window.location.host}`;
-
-  const sites = {
-    async isGitLab() {
-      const customDomains = await extStore.get(STORE.GITLAB_ENTERPRICE_URLS);
-
-      const domainArr = customDomains ? customDomains.split('\n') : [];
-
-      const urls = ['https://gitlab.com'].concat(domainArr);
-
-      return urls.indexOf(currentUrl) >= 0;
-    },
-    async isOsChina() {
-      const customDomains = await extStore.get(STORE.GITEE_ENTERPRICE_URLS);
-
-      const domainArr = customDomains ? customDomains.split('\n') : [];
-
-      const urls = ['http://git.oschina.net', 'https://git.oschina.net', 'http://gitee.com', 'https://gitee.com'].concat(domainArr);
-
-      return urls.indexOf(currentUrl) >= 0;
-    },
-    async isGitHub() {
-      const customDomains = await extStore.get(STORE.GITHUB_ENTERPRICE_URLS);
-
-      const domainArr = customDomains ? customDomains.split('\n') : [];
-
-      const urls = ['https://github.com'].concat(domainArr);
-
-      return urls.indexOf(currentUrl) >= 0;
-    },
-  };
-
-  const isGitLab = await sites.isGitLab();
-  const isOsChina = await sites.isOsChina();
-  const isGitHub = await sites.isGitHub();
-
-  if (isGitLab) {
-    return DICT.GITLAB;
-  } else if (isGitHub) {
-    return DICT.GITHUB;
-  } else if (isOsChina) {
-    return DICT.OSCHINA;
-  }
-
-  return '';
-}
 
 async function createAdapter() {
   const siteType = await whichSite();
@@ -103,6 +56,10 @@ class CodeTree {
   hasError: any;
 
   repoMeta: any = {};
+
+  static getSiteType = async () => {
+    return await whichSite();
+  };
 
   async init() {
     const adapter = await createAdapter();

@@ -66,6 +66,10 @@ class GitMaster extends EventEmitter2 {
     LifecyclePlugins.currentPlugin = name;
   }
 
+  setCurrentAdapterName(name: string): void {
+    LifecyclePlugins.currentAdapterName = name;
+  }
+
   setCurrentAdapter(name: string, adapter: any): void {
     LifecyclePlugins.currentAdapterName = name;
     LifecyclePlugins.currentAdapter = adapter;

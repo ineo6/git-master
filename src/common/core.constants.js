@@ -22,6 +22,7 @@ export const STORE = {
   GITLAB_ENTERPRICE_URLS: 'gitmaster.gitlab_custom_url',
   GITEE_ENTERPRICE_URLS: 'gitmaster.gitee_custom_url',
   DIRECTION: 'gitmaster.direction',
+  DARKMODE: 'gitmaster.dark_mode',
 };
 
 export const DICT = {
@@ -45,6 +46,7 @@ export const DEFAULTS = {
   PINNED: false,
   HUGE_REPOS: {},
   DIRECTION: 'left',
+  DARKMODE: false,
 };
 
 export const EVENT = {

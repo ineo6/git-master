@@ -97,5 +97,8 @@
   },
   "download_folder_fetch": {
     "message": "获取目录信息中..."
+  },
+  "dark_mode": {
+    "message": "黑暗模式"
   }
 }

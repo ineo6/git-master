@@ -9,6 +9,27 @@ import './index.less';
 import './ui/toast';
 import './ui/toast/index.less';
 import './ui/toast/toast';
+import './theme/app.less';
+import '../common/libs/master-font.less';
+import { inSystemDarkMode, whichSite } from '@/ContentScript/util';
+import { DICT, STORE } from '@/common/core.constants';
+import extStore from '@/common/core.storage';
+
+async function loadNow() {
+  const siteType = await whichSite();
+
+  const dardClassName = 'gm-default-theme-' + siteType;
+
+  if (siteType === DICT.GITHUB) {
+    let isDarkMode = await extStore.get(STORE.DARKMODE);
+
+    if (isDarkMode || inSystemDarkMode()) {
+      $('html').addClass(dardClassName);
+    }
+  }
+}
+
+loadNow();
 
 const gitMaster = new GitMaster();
 

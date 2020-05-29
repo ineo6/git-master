@@ -16,6 +16,7 @@ class OptionsView {
     this.$toggler = $dom.find('.gitmaster-settings').click(this.toggle);
 
     this.$direction = $dom.find('#direction').click(this.changeDirectionWrapper.bind(this));
+    this.$darkMode = $dom.find('#gm-dark-mode').click(this.changeDarkModeWrapper.bind(this));
 
     this.$view = $dom.find('.gitmaster-settings-view').submit(event => {
       event.preventDefault();
@@ -92,6 +93,34 @@ class OptionsView {
     content.css({
       'margin-left': `-${index * 100}%`,
     });
+  }
+
+  changeDarkModeWrapper(e) {
+    this.changeDarkMode(false, e);
+  }
+
+  changeDarkMode(init, e) {
+    parallel(
+      [1],
+      async (elm, cb) => {
+        let mode = 'gm-default-theme-' + this.whoami;
+
+        let value = await extStore.get(STORE.DARKMODE);
+
+        if (!init) {
+          value = !value;
+
+          await extStore.set(STORE.DARKMODE, value);
+        }
+
+        if (value) {
+          $('html').addClass(mode);
+        } else {
+          $('html').removeClass(mode);
+        }
+      },
+      () => {}
+    );
   }
 
   changeDirectionWrapper(e) {

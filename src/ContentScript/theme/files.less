@@ -1,0 +1,50 @@
+/* # Files */
+
+table.files {
+  background: @comment-bg !important;
+  td {
+    border-top: 1px solid @border-color !important;
+    a {
+      color: @text-color !important;
+    }
+    &.icon {
+      color: @text-color !important;
+      .octicon-file-directory {
+        color: @text-color !important;
+      }
+    }
+  }
+  tr.navigation-focus {
+    td {
+      background: @file-row-active-bg !important;
+    }
+  }
+}
+
+/* # Find file page */
+
+.tree-browser {
+  td {
+    background: @comment-bg !important;
+    border-color: @border-color !important;
+    &:first-child,
+    &:last-child {
+      border-color: @border-color !important;
+    }
+  }
+  tr.navigation-focus td {
+    background: @file-row-active-bg !important;
+  }
+}
+
+.tree-finder .tree-browser {
+  border-color: @border-color !important;
+}
+
+/* # File view */
+
+.repository-content {
+  .bg-blue-light {
+    background: transparent !important;
+  }
+}

@@ -16,11 +16,15 @@ class Lifecycle extends EventEmitter2 {
   async start(): Promise<GitMaster> {
     try {
       // lifecycle main
+      // detect
+      await this.detect(this.ctx);
+
       await this.beforeDocumentLoaded(this.ctx);
 
       await onDomReady;
 
-      await this.detect(this.ctx);
+      // init
+      await this.initAdapter(this.ctx);
 
       if (this.ctx.currentAdapter) {
         await this.documentLoaded(this.ctx);
@@ -55,9 +59,15 @@ class Lifecycle extends EventEmitter2 {
     return ctx;
   }
 
-  private async detect(ctx: GitMaster): Promise<GitMaster> {
-    this.ctx.log.info('detect...');
-    this.ctx.emit('detect', ctx);
+  private async detect(ctx: GitMaster): Promise<void> {
+    const type = await adapter.getSiteType();
+
+    ctx.setCurrentAdapterName(type);
+  }
+
+  private async initAdapter(ctx: GitMaster): Promise<GitMaster> {
+    this.ctx.log.info('init adapter...');
+    this.ctx.emit('initAdapter', ctx);
 
     await adapter(ctx);
 

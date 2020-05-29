@@ -1,0 +1,72 @@
+/* # Octotree Extension */
+
+.gitmaster-sidebar.gitmaster-github-sidebar {
+  .gitmaster-views {
+    background-color: @dropdown-bg !important;
+    border: 0 solid !important;
+    border-right: 1px solid @dropdown-bg-active !important;
+
+    .gitmaster-tree-view {
+      .gitmaster-view-header {
+        background-color: @head-bg !important;
+        border: 0 solid !important;
+        border-right: 1px solid @dropdown-bg-active !important;
+      }
+
+      .gitmaster-view-search {
+        .jstree-search-input {
+          background-color: rgb(27, 29, 35) !important;
+          color: rgb(214, 216, 218) !important;
+          border-color: rgb(24, 26, 31) !important;
+        }
+      }
+
+      .gitmaster-view-body {
+        .jstree-container-ul {
+          .jstree-closed > .jstree-ocl::before,
+          .jstree-open > .jstree-ocl::before {
+            color: @bright-text-color !important;
+          }
+
+          .jstree-node {
+            .jstree-wholerow-clicked {
+              background: @dropdown-bg-active !important;
+            }
+
+            .jstree-wholerow-hovered {
+              background: @dropdown-bg-active !important;
+            }
+
+            .jstree-anchor {
+              color: @link-color !important;
+            }
+          }
+        }
+      }
+    }
+
+    .gitmaster-settings-view {
+      .gitmaster-view-body {
+        color: @bright-text-color !important;
+
+        .master-tabs {
+          color: #fff;
+
+          .master-tabs-bar {
+            border-color: #868686;
+
+            .master-tabs-tab-disabled {
+              color: #868686;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.gitmaster-footer {
+  background-color: @head-bg !important;
+  border: 0 solid !important;
+  border-right: 1px solid @dropdown-bg-active !important;
+}

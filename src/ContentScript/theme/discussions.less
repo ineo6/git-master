@@ -1,0 +1,269 @@
+/* # Discussions and PRs */
+
+body {
+  .drag-and-drop {
+    background-color: @tag-bg-color !important;
+    border-color: @border-color !important;
+  }
+  .new-discussion-timeline .previewable-comment-form .comment-form-head.tabnav {
+    background: @bg-color !important;
+
+    .toolbar-item {
+      color: @text-color !important;
+    }
+
+    .tabnav-tab {
+      &.selected,
+      &[aria-selected='true'] {
+        background: @bg-color !important;
+        color: @text-color !important;
+      }
+    }
+  }
+  .discussion-item-header {
+    color: @text-color !important;
+  }
+  .discussion-sidebar-item {
+    color: @faded-link-color !important;
+  }
+  .discussion-item + .discussion-item-review {
+    border-color: @border-color !important;
+  }
+  .new-discussion-timeline .closed-banner {
+    border-color: @bg-color !important;
+  }
+  .discussion-item-entity {
+    color: #61afef !important;
+  }
+  .review-thread-reply .inline-comment-form,
+  .review-comment .is-comment-editing {
+    background-color: @comment-bg !important;
+    border-color: @border-color !important;
+  }
+  .form-control::-webkit-input-placeholder,
+  .form-select::-webkit-input-placeholder {
+    color: #aaa !important;
+  }
+  .Box-row {
+    border-color: @border-color !important;
+  }
+  .Box-row--focus-gray.navigation-focus {
+    background-color: #090705 !important;
+  }
+  .discussion-sidebar-item + .discussion-sidebar-item {
+    border-color: @border-color !important;
+  }
+  .sidebar-assignee .assignee {
+    color: @text-color !important;
+  }
+  .discussion-sidebar-heading {
+    color: @text-color !important;
+  }
+  .timeline-comment-header {
+    background-color: @border-color !important;
+    color: @text-color !important;
+    border-color: @border-color !important;
+  }
+  .timeline-comment.current-user .timeline-comment-header {
+    background-color: @border-color !important;
+    color: @text-color !important;
+    border-color: @border-color !important;
+  }
+  .TimelineItem.TimelineItem--condensed .TimelineItem-badge {
+    background: @bg-color !important;
+  }
+  .timeline-commits .commit-message > code a {
+    color: @text-color !important;
+  }
+  .timeline-commits .commit-message > code a:hover {
+    color: @text-color !important;
+    text-decoration: underline !important;
+  }
+  .discussion-item + .discussion-item,
+  .discussion-item-review + .discussion-item {
+    border-color: @border-color !important;
+  }
+  .timeline-comment-wrapper > .timeline-comment::before,
+  .timeline-new-comment .timeline-comment::before {
+    border-right-color: @tag-bg-color !important;
+  }
+  .timeline-comment-wrapper > .timeline-comment::after,
+  .timeline-new-comment .timeline-comment::after {
+    border-right-color: @tag-bg-color !important;
+  }
+  .timeline-comment-label {
+    border-color: @text-color;
+  }
+  .suggester-container .suggester {
+    background: @dropdown-bg !important;
+
+    li {
+      color: @text-color !important;
+
+      &.navigation-focus,
+      &:hover,
+      &[aria-selected='true'] {
+        background: @dropdown-bg-active !important;
+        color: @bright-text-color !important;
+      }
+    }
+  }
+  .discussion-item-review .file-header {
+    background-color: @border-color !important;
+    border-color: @border-color !important;
+  }
+  .simple-box {
+    background-color: @comment-bg !important;
+    border-color: @border-color !important;
+  }
+  .review-summary::after {
+    border-bottom-color: @comment-bg !important;
+  }
+  .review-summary::before {
+    border-bottom-color: @tag-bg-color !important;
+  }
+  .review-summary-form-wrapper {
+    background-color: @comment-bg !important;
+  }
+  .discussion-timeline-actions {
+    background-color: @bg-color !important;
+    border-color: @border-color !important;
+  }
+  .discussion-item-review .blob-wrapper {
+    border-color: @border-color !important;
+  }
+  .discussion-item-icon {
+    background-color: @bg-color !important;
+    color: @bright-text-color !important;
+  }
+  .discussion-item .renamed-is,
+  .discussion-item .renamed-was {
+    color: @bright-text-color !important;
+  }
+  .branch-action-body {
+    background-color: @bg-color !important;
+    border-color: @border-color !important;
+  }
+  .branch-action-body .merge-branch-form,
+  .branch-action-body .merge-message {
+    background-color: @bg-color !important;
+    border-color: @border-color !important;
+  }
+  .branch-action-item + .branch-action-item,
+  .branch-action-item + .mergeability-details {
+    border-color: @border-color !important;
+  }
+  .merge-status-list {
+    border-color: @border-color !important;
+  }
+  .branch-action-body::after {
+    border-right-color: transparent !important;
+  }
+  .review-thread-reply {
+    background-color: transparent !important;
+    border-color: @border-color !important;
+  }
+  .review-thread:last-child,
+  .review-thread:not(:last-child) {
+    border-color: @border-color !important;
+  }
+  .last-review-thread {
+    border-color: @border-color !important;
+  }
+  .diff-table tr:last-child .line-comments,
+  .diff-table tr:not(:last-child) .line-comments {
+    border-color: @border-color !important;
+  }
+  .diffbar {
+    background-color: @tag-bg-color !important;
+
+    .stale-files-tab {
+      background-color: @bg-color !important;
+
+      & > a {
+        color: @text-color !important;
+      }
+    }
+  }
+  .diffstat {
+    color: #a7a7a7 !important;
+  }
+  .upload-enabled textarea {
+    border-color: @border-color !important;
+  }
+  .timeline-comment {
+    color: @text-color !important;
+    background-color: @comment-bg !important;
+    border-color: @border-color !important;
+
+    &.current-user {
+      background-color: @comment-bg !important;
+      border-color: @border-color !important;
+    }
+  }
+  .timeline-comment--caret {
+    &:after {
+      border-right-color: @border-color !important;
+    }
+    &:before {
+      border-right-color: @border-color !important;
+    }
+  }
+  .thread-subscription-status {
+    background-color: @bg-color !important;
+    border-color: @border-color !important;
+  }
+  .timeline-comment-wrapper {
+    border-color: @border-color !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+  }
+  .commit-sha {
+    background-color: @tag-bg-color !important;
+    border-color: @border-color !important;
+  }
+  .merge-status-item {
+    background-color: @bg-color !important;
+  }
+  .gh-header-number {
+    color: @faded-link-color;
+  }
+  .review-comment {
+    color: @text-color !important;
+
+    .reaction-summary-item:not(.add-reaction-btn) {
+      border-color: @border-color !important;
+    }
+  }
+  .comment-reactions .user-has-reacted {
+    background-color: @tag-bg-color !important;
+  }
+  .merge-branch-heading {
+    color: @bright-text-color !important;
+  }
+  .commit-desc {
+    pre {
+      color: @text-color;
+    }
+  }
+  .pagination-loader-container {
+    background-color: @bg-color !important;
+    background-image: url('./img/progressive-disclosure-line@2x.png') !important;
+  }
+  .commit-ref {
+    .user {
+      color: @link-color !important;
+    }
+  }
+
+  #partial-new-comment-form-actions div.bg-gray-light {
+    background-color: transparent !important;
+  }
+}
+
+.AvatarStack-body {
+  background-color: transparent !important;
+  .avatar {
+    background-color: transparent !important;
+  }
+}

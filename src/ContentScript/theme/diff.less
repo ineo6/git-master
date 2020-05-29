@@ -1,0 +1,85 @@
+/* # Diff */
+
+.blob-expanded .blob-code,
+.blob-expanded .blob-num {
+  background-color: #3a3f46 !important;
+}
+
+.file-diff-split .empty-cell {
+  background-color: #3a3f46 !important;
+}
+
+tr:not(.blob-expanded) + .blob-expanded .blob-code,
+tr:not(.blob-expanded) + .blob-expanded .blob-num {
+  border-top: 1px solid @border-color !important;
+}
+
+.blob-expanded + tr:not(.blob-expanded) .blob-code,
+.blob-expanded + tr:not(.blob-expanded) .blob-num {
+  border-top: 1px solid @border-color !important;
+}
+
+.compare-pr-placeholder {
+  background-color: @dropdown-bg !important;
+  border: 1px solid @border-color !important;
+}
+
+.blob-code-addition {
+  background-color: @diff-addition !important;
+  .x {
+    color: @diff-accent-font-color !important;
+    background-color: @diff-addition-accent !important;
+  }
+}
+
+.blob-num-addition {
+  background-color: @diff-addition !important;
+  border-color: @border-color !important;
+}
+
+.blob-code-deletion {
+  background-color: @diff-deletion !important;
+  .x {
+    color: @diff-accent-font-color !important;
+    background-color: @diff-deletion-accent !important;
+  }
+}
+
+.blob-num-deletion {
+  background-color: @diff-deletion !important;
+  border-color: @border-color !important;
+}
+
+.file-diff-split .blob-code + .blob-num {
+  border-left: 1px solid @border-color !important;
+  border-right: 1px solid @border-color !important;
+}
+
+.blob-num {
+  border-right: 1px solid @border-color !important;
+}
+
+.bottom-collapse {
+  background-color: @border-color !important;
+  border-top: 1px solid @border-color !important;
+}
+
+.pr-toolbar {
+  background-color: @tag-bg-color !important;
+  .subset-files-tab {
+    background-color: @bg-color !important;
+    color: @link-color !important;
+  }
+}
+
+.file-diff-split td.blob-num.codecov:not(.codecov-on) {
+  &.codecov-missed {
+    background-color: @codecov-num-bg-color-missed !important;
+  }
+  &.codecov-hit {
+    background-color: @codecov-num-bg-color-hit !important;
+  }
+  &.codecov-partial {
+    background-color: @codecov-num-bg-color-partial !important;
+  }
+}
