@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {browser} from 'webextension-polyfill-ts';
-import {DICT, STORE} from '@/common/core.constants';
+import React, { useEffect, useState } from 'react';
+import { browser } from 'webextension-polyfill-ts';
+import { DICT, STORE } from '@/common/core.constants';
 import extStore from '@/common/core.storage';
 import Badge from '@/components/Badge';
-import {getTabUrl} from '@/Background/lib/api';
-import {openTab} from '@/Background/lib/tabs-service';
+import { getTabUrl } from '@/Background/lib/api';
+import { openTab } from '@/Background/lib/tabs-service';
 
 function getStoreKey(type: string) {
   let storeKey = '';
@@ -74,10 +74,12 @@ function isDefaultSite(url: string) {
   const giteeUrl = ['git.oschina.net', 'gitee.com'];
   const chromeTabUrl = ['newtab'];
 
-  return githubUrl.indexOf(urlObj.host) >= 0 ||
+  return (
+    githubUrl.indexOf(urlObj.host) >= 0 ||
     gitlabUrl.indexOf(urlObj.host) >= 0 ||
     giteeUrl.indexOf(urlObj.host) >= 0 ||
-    chromeTabUrl.indexOf(urlObj.host) >= 0;
+    chromeTabUrl.indexOf(urlObj.host) >= 0
+  );
 }
 
 async function isCurrentTabActive(url: string, type: string) {
@@ -99,25 +101,14 @@ async function isCurrentTabActive(url: string, type: string) {
 }
 
 // eslint-disable-next-line camelcase
-const {short_name: shortName} = browser.runtime.getManifest();
+const { short_name: shortName } = browser.runtime.getManifest();
 
 const Popup = () => {
-  const [
-    type,
-    setType,
-  ] = useState('');
+  const [type, setType] = useState('');
 
-  const [
-    defaultSite,
-    setDefaultSite,
-  ] = useState(false);
+  const [defaultSite, setDefaultSite] = useState(false);
 
-
-  const [
-    badgeCount,
-    setBadgeCount,
-  ] = useState(null);
-
+  const [badgeCount, setBadgeCount] = useState(null);
 
   // @ts-ignore
   useEffect(async () => {
@@ -146,21 +137,20 @@ const Popup = () => {
     // @ts-ignore
     setBadgeCount(badgeText);
 
-    return () => {
-    };
+    return () => {};
   }, []);
 
-  const handleGitHubNotify = async function () {
+  const handleGitHubNotify = async function() {
     await openTab(await getTabUrl());
   };
 
   return (
     <section id="popup">
-      <div className='popup-title'>
+      <div className="popup-title">
         <div>{shortName}</div>
         <div className="notify">
           <Badge count={badgeCount}>
-            <a onClick={handleGitHubNotify}>
+            <a onClick={handleGitHubNotify} title="GitHub Notifications">
               <i className="masterfont master-icon-github" />
             </a>
           </Badge>
@@ -168,7 +158,7 @@ const Popup = () => {
       </div>
       {!defaultSite ? (
         <>
-          <div className='popup-option'>
+          <div className="popup-option">
             <a
               onClick={() => {
                 if (type === DICT.GITLAB) {
@@ -183,12 +173,12 @@ const Popup = () => {
                 setType(type === DICT.GITHUB ? '' : DICT.GITHUB);
               }}
             >
-              <img className="site-logo" src='../assets/github.png' alt='github' />
+              <img className="site-logo" src="../assets/github.png" alt="github" />
               <span>{type === DICT.GITHUB ? 'Disable' : 'Enable'}</span>
               <span>&nbsp;&nbsp;Github</span>
             </a>
           </div>
-          <div className='popup-option'>
+          <div className="popup-option">
             <a
               onClick={() => {
                 if (type === DICT.GITHUB) {
@@ -203,12 +193,12 @@ const Popup = () => {
                 setType(type === DICT.GITLAB ? '' : DICT.GITLAB);
               }}
             >
-              <img className="site-logo" src='../assets/gitlab.png' alt='gitlab' />
+              <img className="site-logo" src="../assets/gitlab.png" alt="gitlab" />
               <span>{type === DICT.GITLAB ? 'Disable' : 'Enable'}</span>
               <span>&nbsp;&nbsp;GitLab</span>
             </a>
           </div>
-          <div className='popup-option'>
+          <div className="popup-option">
             <a
               onClick={() => {
                 if (type === DICT.GITHUB) {
@@ -224,7 +214,7 @@ const Popup = () => {
                 setType(type === DICT.OSCHINA ? '' : DICT.OSCHINA);
               }}
             >
-              <img className="site-logo" src='../assets/gitee.png' alt='gitee' />
+              <img className="site-logo" src="../assets/gitee.png" alt="gitee" />
               <span>{type === DICT.OSCHINA ? 'Disable' : 'Enable'}</span>
               <span>&nbsp;&nbsp;Gitee</span>
             </a>

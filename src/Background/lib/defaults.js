@@ -24,7 +24,7 @@ export const errorTitles = new Map([
 export const errorSymbols = new Map([
   ['missing token', 'X'],
   ['client error', '!'],
-  ['default', '?'],
+  ['default', ''],
 ]);
 
 export const warningTitles = new Map([
