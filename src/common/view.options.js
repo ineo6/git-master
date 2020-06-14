@@ -33,6 +33,10 @@ class OptionsView {
     // init default
     this.setTab(siteCode[this.whoami]);
 
+    if (['github'].includes(this.whoami)) {
+      this.$darkMode.show();
+    }
+
     this.loadElements();
 
     // Hide options view when sidebar is hidden
