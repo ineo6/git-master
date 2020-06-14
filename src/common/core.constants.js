@@ -23,6 +23,7 @@ export const STORE = {
   GITEE_ENTERPRICE_URLS: 'gitmaster.gitee_custom_url',
   DIRECTION: 'gitmaster.direction',
   DARKMODE: 'gitmaster.dark_mode',
+  FILESIZE: 'gitmaster.show_file_size',
 };
 
 export const DICT = {
@@ -47,6 +48,7 @@ export const DEFAULTS = {
   HUGE_REPOS: {},
   DIRECTION: 'left',
   DARKMODE: false,
+  FILESIZE: true,
 };
 
 export const EVENT = {

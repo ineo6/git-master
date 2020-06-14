@@ -100,5 +100,8 @@
   },
   "dark_mode": {
     "message": "黑暗模式"
+  },
+  "config_show_size": {
+    "message": "显示文件数量、大小"
   }
 }

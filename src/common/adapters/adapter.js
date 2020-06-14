@@ -1,11 +1,37 @@
 import octotree from '../core.api';
 import { NODE_PREFIX } from '../core.constants';
-import { deXss, isSafari } from '../util.misc';
+import { convertSizeToHumanReadableFormat, deXss, isSafari } from '../util.misc';
 
 class Adapter {
   constructor(deps) {
     // deps.forEach((dep) => window[dep]());
     this._defaultBranch = {};
+  }
+
+  collectTree(tree) {
+    const fileMap = {};
+
+    tree.forEach(file => {
+      if (file.path.indexOf('/') >= 0) {
+        const fileRoute = file.path.split('/');
+        let deepPath = '';
+
+        for (let i = 0; i < fileRoute.length - 1; i++) {
+          deepPath += fileRoute[i];
+
+          if (fileMap[deepPath]) {
+            // eslint-disable-next-line operator-assignment
+            fileMap[deepPath] = fileMap[deepPath] + 1;
+          } else {
+            fileMap[deepPath] = 1;
+          }
+
+          deepPath += '/';
+        }
+      }
+    });
+
+    return fileMap;
   }
 
   /**
@@ -28,6 +54,8 @@ class Adapter {
 
     this._getTree(path, opts, (err, tree) => {
       if (err) return cb(err);
+
+      const treeMap = this.collectTree(tree);
 
       this._getSubmodules(tree, opts, (err, submodules) => {
         if (err) return cb(err);
@@ -68,6 +96,7 @@ class Adapter {
             const type = item.type;
             const index = path.lastIndexOf('/');
             const name = deXss(path.substring(index + 1)); // Sanitizes, closes #9
+            const attr = {};
 
             item.id = NODE_PREFIX + path;
             item.text = name;
@@ -99,16 +128,22 @@ class Adapter {
                   // eslint-disable-next-line no-multi-assign
                   folders[item.path] = item.children = [];
                 }
+
+                if (treeMap[path]) {
+                  attr['data-file-count'] = treeMap[path];
+                }
+              } else if (type === 'blob') {
+                const parsedSize = convertSizeToHumanReadableFormat(item.size);
+                attr['data-file-size'] = parsedSize.size + parsedSize.measure;
               }
 
               // If item is part of a PR, jump to that file's diff
               if (item.patch && typeof item.patch.diffId === 'number') {
                 const url = this._getPatchHref(repo, item.patch);
-                item.a_attr = {
-                  href: url,
-                  'data-download-url': item.url,
-                  'data-download-filename': name,
-                };
+
+                attr.href = url;
+                attr['data-download-url'] = item.url;
+                attr['data-download-filename'] = name;
               } else {
                 // Encodes but retains the slashes, see #274
                 const encodedPath = path
@@ -116,11 +151,10 @@ class Adapter {
                   .map(encodeURIComponent)
                   .join('/');
                 const url = this.getItemHref(repo, type, encodedPath, opts.encodedBranch);
-                item.a_attr = {
-                  href: url,
-                  'data-download-url': url,
-                  'data-download-filename': name,
-                };
+
+                attr.href = url;
+                attr['data-download-url'] = url;
+                attr['data-download-filename'] = name;
               }
             } else if (type === 'commit') {
               let moduleUrl = submodules[item.path];
@@ -139,12 +173,13 @@ class Adapter {
                     item.sha;
                   item.text = `${name} @ ${item.sha.substr(0, 7)}`;
                 }
-                item.a_attr = {
-                  href: moduleUrl,
-                  'data-skip-pjax': true,
-                };
+
+                attr.href = moduleUrl;
+                attr['data-skip-pjax'] = true;
               }
             }
+
+            item.a_attr = attr;
           }
 
           setTimeout(() => nextChunk(iteration + 1));
@@ -185,8 +220,7 @@ class Adapter {
       case 404:
         error = 'Private repository';
         message =
-          'Accessing private repositories requires a GitHub access token. ' +
-          'Please go to <a class="settings-btn">Settings</a> and enter a token.';
+          'Accessing private repositories requires a GitHub access token. ' + 'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         break;
       case 403:
         if (jqXHR.getResponseHeader('X-RateLimit-Remaining') === '0') {
@@ -299,14 +333,12 @@ class Adapter {
     if (!isSafari()) {
       // Smooth scroll to diff file on PR page
       if (path.match(/#diff-\d+$/)) {
-        const index = +path.split('-')
-          .slice(-1)[0];
+        const index = +path.split('-').slice(-1)[0];
 
         const matchDom = $('#files .file').eq(index);
 
         if (matchDom.length) {
-          $('html, body')
-            .animate({ scrollTop: matchDom.offset().top - 68 }, 400);
+          $('html, body').animate({ scrollTop: matchDom.offset().top - 68 }, 400);
           return;
         }
       }
@@ -328,8 +360,7 @@ class Adapter {
    * @api public
    */
   openInNewTab(path) {
-    window.open(path, '_blank')
-      .focus();
+    window.open(path, '_blank').focus();
   }
 
   /**
@@ -418,7 +449,7 @@ class Adapter {
       return a.type === 'blob' ? 1 : -1;
     });
 
-    folder.forEach((item) => {
+    folder.forEach(item => {
       if (item.type === 'tree' && item.children !== true && item.children.length > 0) {
         this._sort(item.children);
       }
@@ -428,7 +459,7 @@ class Adapter {
   }
 
   _collapse(folder) {
-    return folder.map((item) => {
+    return folder.map(item => {
       if (item.type === 'tree') {
         item.children = this._collapse(item.children);
         if (item.children.length === 1 && item.children[0].type === 'tree' && item.a_attr) {

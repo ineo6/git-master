@@ -100,5 +100,8 @@
   },
   "dark_mode": {
     "message": "Dark Mode"
+  },
+  "config_show_size": {
+    "message": "Show file count or size"
   }
 }

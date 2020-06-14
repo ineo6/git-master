@@ -14,22 +14,23 @@ export function promisify(fn, method) {
     throw new Error(`promisify: fn does not have ${method} method`);
   }
 
-  return function (...args) {
-    return new Promise(((resolve, reject) => {
-      fn[method](...args, (res) => {
+  return function(...args) {
+    return new Promise((resolve, reject) => {
+      fn[method](...args, res => {
         if (browser.runtime.lastError) {
           reject(browser.runtime.lastError);
         } else {
           resolve(res);
         }
       });
-    }));
+    });
   };
 }
 
 // Regexps from https://github.com/shockie/node-iniparser
 const INI_SECTION = /^\s*\[\s*([^\]]*)\s*\]\s*$/;
 const INI_COMMENT = /^\s*;.*$/;
+// eslint-disable-next-line no-useless-escape
 const INI_PARAM = /^\s*([\w\.\-\_]+)\s*=\s*(.*?)\s*$/;
 const SEPARATOR = /\r\n|\r|\n/;
 
@@ -40,8 +41,9 @@ export function parseGitmodules(data) {
   const lines = data.split(SEPARATOR);
   let lastPath;
 
-  lines.forEach((line) => {
+  lines.forEach(line => {
     let match;
+    // eslint-disable-next-line no-cond-assign
     if (INI_SECTION.test(line) || INI_COMMENT.test(line) || !(match = line.match(INI_PARAM))) {
       return;
     }
@@ -55,16 +57,16 @@ export function parseGitmodules(data) {
 }
 
 export function parallel(arr, iter, done) {
-  var total = arr.length;
+  let total = arr.length;
   if (total === 0) return done();
-
-  arr.forEach((item) => {
-    iter(item, finish);
-  });
 
   function finish() {
     if (--total === 0) done();
   }
+
+  arr.forEach(item => {
+    iter(item, finish);
+  });
 }
 
 let $dummyDiv;
@@ -72,22 +74,21 @@ let $dummyDiv;
 export function deXss(str) {
   $dummyDiv = $dummyDiv || $('<div></div>');
 
-  return $dummyDiv.text(str)
-    .html();
+  return $dummyDiv.text(str).html();
 }
 
 export function convertSizeToHumanReadableFormat(bytes) {
   if (bytes === 0) {
     return {
       size: 0,
-      measure: 'Bytes',
+      measure: 'B',
     };
   }
 
   bytes *= 1024;
 
   const K = 1024;
-  const MEASURE = ['', 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const MEASURE = ['', 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   const i = Math.floor(Math.log(bytes) / Math.log(K));
 
   return {

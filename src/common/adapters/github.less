@@ -208,20 +208,32 @@
       }
 
       .jstree-anchor {
-        color: @dark !important;
         outline: none;
         padding-right: 0;
         text-decoration: none;
-        width: calc(~'100% - 20px');
+        width: calc(~'100% - 36px');
         display: inline-flex;
 
         & > span {
-          color: @dark !important;
         }
 
         &:hover {
           text-decoration: none !important;
         }
+
+        .gm-tree-file-info {
+          font-size: 12px;
+          text-align: right;
+          width: 80px;
+        }
+      }
+
+      .jstree-anchor-inner {
+        outline: none;
+        padding-right: 0;
+        text-decoration: none;
+        width: calc(~'100% - 36px');
+        display: inline-flex;
       }
 
       .jstree-default {
@@ -236,6 +248,26 @@
         .jstree-node {
           line-height: 24px;
           margin-left: 16px;
+
+          &[aria-level='1'] {
+            > .jstree-anchor {
+              width: calc(~'100% - 24px');
+
+              > .jstree-anchor-inner {
+                width: calc(~'100% - 24px');
+              }
+            }
+          }
+
+          &[aria-level='2'] {
+            > .jstree-anchor {
+              width: calc(~'100% - 24px');
+
+              > .jstree-anchor-inner {
+                width: calc(~'100% - 24px');
+              }
+            }
+          }
         }
 
         .jstree-wholerow {

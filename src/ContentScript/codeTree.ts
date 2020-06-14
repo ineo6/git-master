@@ -186,6 +186,7 @@ class CodeTree {
         case STORE.GITEE_TOKEN:
         case STORE.LAZYLOAD:
         case STORE.ICONS:
+        case STORE.FILESIZE:
           reload = true;
           break;
         case STORE.PR:
