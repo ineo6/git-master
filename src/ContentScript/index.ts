@@ -18,13 +18,13 @@ import extStore from '@/common/core.storage';
 async function loadNow() {
   const siteType = await whichSite();
 
-  const dardClassName = 'gm-default-theme-' + siteType;
+  const darkClassName = 'gm-default-theme-' + siteType;
 
   if (siteType === DICT.GITHUB) {
     let isDarkMode = await extStore.get(STORE.DARKMODE);
 
     if (isDarkMode || inSystemDarkMode()) {
-      $('html').addClass(dardClassName);
+      $('html').addClass(darkClassName);
     }
   }
 }
