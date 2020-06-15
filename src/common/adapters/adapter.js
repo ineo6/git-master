@@ -132,8 +132,8 @@ class Adapter {
                 if (treeMap[path]) {
                   attr['data-file-count'] = treeMap[path];
                 }
-              } else if (type === 'blob') {
-                const parsedSize = convertSizeToHumanReadableFormat(item.size);
+              } else if (type === 'blob' && item.size) {
+                const parsedSize = convertSizeToHumanReadableFormat(item.size, 0);
                 attr['data-file-size'] = parsedSize.size + parsedSize.measure;
               }
 

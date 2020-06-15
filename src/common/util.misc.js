@@ -77,7 +77,7 @@ export function deXss(str) {
   return $dummyDiv.text(str).html();
 }
 
-export function convertSizeToHumanReadableFormat(bytes) {
+export function convertSizeToHumanReadableFormat(bytes, digits = 2) {
   if (bytes === 0) {
     return {
       size: 0,
@@ -93,7 +93,7 @@ export function convertSizeToHumanReadableFormat(bytes) {
 
   return {
     // eslint-disable-next-line no-restricted-properties
-    size: parseFloat((bytes / Math.pow(K, i)).toFixed(2)),
+    size: parseFloat((bytes / Math.pow(K, i)).toFixed(digits)),
     measure: MEASURE[i],
   };
 }

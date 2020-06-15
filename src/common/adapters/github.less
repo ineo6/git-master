@@ -211,7 +211,7 @@
         outline: none;
         padding-right: 0;
         text-decoration: none;
-        width: calc(~'100% - 36px');
+        width: calc(~'100% - 24px');
         display: inline-flex;
 
         & > span {
@@ -223,8 +223,25 @@
 
         .gm-tree-file-info {
           font-size: 12px;
+          line-height: 26px;
           text-align: right;
           width: 80px;
+        }
+
+        &[data-file-count] {
+          width: calc(~'100% - 36px');
+
+          .jstree-anchor-inner {
+            width: calc(~'100% - 24px');
+          }
+        }
+
+        &[data-file-size] {
+          width: calc(~'100% - 36px');
+
+          .jstree-anchor-inner {
+            width: calc(~'100% - 24px');
+          }
         }
       }
 
@@ -232,7 +249,7 @@
         outline: none;
         padding-right: 0;
         text-decoration: none;
-        width: calc(~'100% - 36px');
+        width: calc(~'100%');
         display: inline-flex;
       }
 
@@ -250,21 +267,23 @@
           margin-left: 16px;
 
           &[aria-level='1'] {
-            > .jstree-anchor {
+            > .jstree-anchor[data-file-size],
+            > .jstree-anchor[data-file-count] {
               width: calc(~'100% - 24px');
 
               > .jstree-anchor-inner {
-                width: calc(~'100% - 24px');
+                width: calc(~'100% - 46px');
               }
             }
           }
 
           &[aria-level='2'] {
-            > .jstree-anchor {
+            > .jstree-anchor[data-file-size],
+            > .jstree-anchor[data-file-count] {
               width: calc(~'100% - 24px');
 
               > .jstree-anchor-inner {
-                width: calc(~'100% - 24px');
+                width: calc(~'100% - 46px');
               }
             }
           }

@@ -26,8 +26,7 @@ class TreeView {
         plugins: ['wholerow', 'search', 'truncate'],
       });
 
-    this.$search = $dom.find('.jstree-search-input')
-      .bind('input propertychange', this.search);
+    this.$search = $dom.find('.jstree-search-input').bind('input propertychange', this.search);
   }
 
   get $jstree() {
@@ -35,8 +34,7 @@ class TreeView {
   }
 
   focus() {
-    this.$jstree.get_container()
-      .focus();
+    this.$jstree.get_container().focus();
   }
 
   show(repo, token) {
@@ -50,44 +48,44 @@ class TreeView {
         const loadAll = await this.adapter.shouldLoadEntireTree(repo);
         node = !loadAll && (node.id === '#' ? { path: '' } : node.original);
 
-        this.adapter.loadCodeTree({
-          repo,
-          token,
-          node,
-        }, (err, treeData) => {
-          if (err) {
-            if (err.status === 206 && loadAll) {
-              // The repo is too big to load all, need to retry
-              $jstree.refresh(true);
-            } else {
-              $(this)
-                .trigger(EVENT.FETCH_ERROR, [err]);
+        this.adapter.loadCodeTree(
+          {
+            repo,
+            token,
+            node,
+          },
+          (err, treeData) => {
+            if (err) {
+              if (err.status === 206 && loadAll) {
+                // The repo is too big to load all, need to retry
+                $jstree.refresh(true);
+              } else {
+                $(this).trigger(EVENT.FETCH_ERROR, [err]);
+              }
+              return;
             }
-            return;
-          }
 
-          cb(treeData);
-          $(document)
-            .trigger(EVENT.REPO_LOADED, {
+            cb(treeData);
+            $(document).trigger(EVENT.REPO_LOADED, {
               repo,
               loadAll,
               duration: Date.now() - startTime,
             });
-        });
+          }
+        );
       })();
     };
 
     this.$tree.one('refresh.jstree', async () => {
       await this.syncSelection(repo);
-      $(this)
-        .trigger(EVENT.VIEW_READY);
+      $(this).trigger(EVENT.VIEW_READY);
     });
 
     this._showHeader(repo);
     $jstree.refresh(true);
   }
 
-  search = (e) => {
+  search = e => {
     this.$jstree.search(e.target.value || '', false, true);
   };
 
@@ -107,13 +105,12 @@ class TreeView {
             <i class="gitmaster-icon-branch"></i>
             ${deXss((repo.displayBranch || repo.branch).toString())}
           </div>
-        </div>`,
+        </div>`
       )
       .on('click', 'a[data-pjax]', function(event) {
         event.preventDefault();
         // A.href always return absolute URL, don't want that
-        const href = $(this)
-          .attr('href');
+        const href = $(this).attr('href');
         const newTab = event.shiftKey || event.ctrlKey || event.metaKey;
         newTab ? adapter.openInNewTab(href) : adapter.selectFile(href);
       });
@@ -130,6 +127,11 @@ class TreeView {
 
   _onItemClick(event) {
     let $target = $(event.target);
+
+    if (!$target.is('a.jstree-anchor')) {
+      $target = $target.closest('a.jstree-anchor');
+    }
+
     let download = false;
 
     // Handle middle click
@@ -153,18 +155,17 @@ class TreeView {
 
     // Refocus after complete so that keyboard navigation works, fix #158
     const refocusAfterCompletion = () => {
-      $(document)
-        .one('pjax:success page:load', () => {
-          this.$jstree.get_container()
-            .focus();
-        });
+      $(document).one('pjax:success page:load', () => {
+        this.$jstree.get_container().focus();
+      });
     };
 
     const adapter = this.adapter;
     const newTab = event.shiftKey || event.ctrlKey || event.metaKey;
     const href = $target.attr('href');
     // The 2nd path is for submodule child links
-    const $icon = $target.children().length ? $target.children(':first') : $target.siblings(':first');
+    const targetInner = $target.find('.jstree-anchor-inner');
+    const $icon = targetInner.children().length ? targetInner.children(':first') : targetInner.siblings(':first');
 
     if ($icon.hasClass('commit')) {
       refocusAfterCompletion();
@@ -183,11 +184,10 @@ class TreeView {
 
   // Convert ['a/b'] to ['a', 'a/b']
   breakPath(fullPath) {
-    return fullPath.split('/')
-      .reduce((res, path, idx) => {
-        res.push(idx === 0 ? path : `${res[idx - 1]}/${path}`);
-        return res;
-      }, []);
+    return fullPath.split('/').reduce((res, path, idx) => {
+      res.push(idx === 0 ? path : `${res[idx - 1]}/${path}`);
+      return res;
+    }, []);
   }
 
   async syncSelection(repo) {
