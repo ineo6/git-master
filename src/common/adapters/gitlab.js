@@ -1,14 +1,10 @@
 import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
-import { parseGitmodules } from '../util.misc';
 import { sendMessageToContentScriptByPostMessage } from '../util.ext';
 import octotree from '../core.api';
 
-const GL_RESERVED_USER_NAMES = [
-  'u', 'dashboard', 'projects', 'users', 'help',
-  'explore', 'profile', 'public', 'groups', 'abuse_reports',
-];
+const GL_RESERVED_USER_NAMES = ['u', 'dashboard', 'projects', 'users', 'help', 'explore', 'profile', 'public', 'groups', 'abuse_reports'];
 const GL_RESERVED_TYPES = ['raw'];
 const GL_RESERVED_REPO_NAMES = [];
 
@@ -24,13 +20,12 @@ class Gitlab extends PjaxAdapter {
   constructor() {
     super(GL_PJAX_CONTAINER_SEL);
 
-    $(document)
-      .on('pjax:end', (e) => {
-        sendMessageToContentScriptByPostMessage({
-          type: 'gitlab',
-          handle: 'highlight',
-        });
+    $(document).on('pjax:end', e => {
+      sendMessageToContentScriptByPostMessage({
+        type: 'gitlab',
+        handle: 'highlight',
       });
+    });
   }
 
   // @override
@@ -40,11 +35,10 @@ class Gitlab extends PjaxAdapter {
     // Fix #151 by detecting when page layout is updated.
     // In this case, split-diff page has a wider layout, so need to recompute margin.
     // Note that couldn't do this in response to URL change, since new DOM via pjax might not be ready.
-    const diffModeObserver = new window.MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
+    const diffModeObserver = new window.MutationObserver(mutations => {
+      mutations.forEach(mutation => {
         if (~mutation.oldValue.indexOf('split-diff') || ~mutation.target.className.indexOf('split-diff')) {
-          return $(document)
-            .trigger(EVENT.LAYOUT_CHANGE);
+          return $(document).trigger(EVENT.LAYOUT_CHANGE);
         }
       });
     });
@@ -72,7 +66,7 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   async shouldLoadEntireTree(repo) {
-    const isLoadingPr = await extStore.get(STORE.PR) && repo.pullNumber;
+    const isLoadingPr = (await extStore.get(STORE.PR)) && repo.pullNumber;
     if (isLoadingPr) {
       return true;
     }
@@ -90,31 +84,29 @@ class Gitlab extends PjaxAdapter {
     const shouldPushEverything = sidebarPinned && sidebarVisible;
     const direction = isSidebarLeft ? 'left' : 'right';
 
-    $('.gitmaster_toggle')
-      .css('right', sidebarVisible ? '' : -40);
-    $('.side-nav-toggle, h1.title')
-      .css({
-        [`margin-${direction}`]: (sidebarPinned || sidebarVisible) ? '' : 36,
-        [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
-      });
-    $('.navbar-gitlab')
-      .css({
-        [`margin-${direction}`]: shouldPushEverything ? sidebarWidth : '',
-        [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
-      });
-    $('.page-with-sidebar')
-      .css({
-        [`padding-${direction}`]: shouldPushEverything ? sidebarWidth : '',
-        [`padding-${direction === 'left' ? 'right' : 'left'}`]: '',
-      });
+    $('.gitmaster_toggle').css('right', sidebarVisible ? '' : -40);
+    $('.side-nav-toggle, h1.title').css({
+      [`margin-${direction}`]: sidebarPinned || sidebarVisible ? '' : 36,
+      [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
+    });
+    $('.navbar-gitlab').css({
+      [`margin-${direction}`]: shouldPushEverything ? sidebarWidth : '',
+      [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
+    });
+    $('.page-with-sidebar').css({
+      [`padding-${direction}`]: shouldPushEverything ? sidebarWidth : '',
+      [`padding-${direction === 'left' ? 'right' : 'left'}`]: '',
+    });
   }
 
   // @override
   async getRepoFromPath(currentRepo, token, cb) {
     // 404 page, skip - GitLab doesn't have specific element for Not Found page
-    if ($(document)
-      .find('title')
-      .text() === 'The page you\'re looking for could not be found (404)') {
+    if (
+      $(document)
+        .find('title')
+        .text() === "The page you're looking for could not be found (404)"
+    ) {
       return cb();
     }
 
@@ -130,9 +122,7 @@ class Gitlab extends PjaxAdapter {
     const type = match[3];
 
     // Not a repository, skip
-    if (~GL_RESERVED_USER_NAMES.indexOf(username) ||
-      ~GL_RESERVED_REPO_NAMES.indexOf(reponame) ||
-      ~GL_RESERVED_TYPES.indexOf(type)) {
+    if (~GL_RESERVED_USER_NAMES.indexOf(username) || ~GL_RESERVED_REPO_NAMES.indexOf(reponame) || ~GL_RESERVED_TYPES.indexOf(type)) {
       return cb();
     }
 
@@ -144,14 +134,13 @@ class Gitlab extends PjaxAdapter {
 
     const branch =
       // Code page
-      $(GL_BRANCH_SEL_1)
-        .val() || $(GL_BRANCH_SEL_2)
-        .text() ||
+      $(GL_BRANCH_SEL_1).val() ||
+      $(GL_BRANCH_SEL_2).text() ||
       // Non-code page
       // A space ' ' is a failover to make match() always return an array
-      ($(GL_BRANCH_SEL_3)
-      // eslint-disable-next-line no-useless-escape
-        .attr('href') || ' ').match(/([^\/]+)/g)[3] ||
+      ($(GL_BRANCH_SEL_3).attr('href') || ' ')
+        // eslint-disable-next-line no-useless-escape
+        .match(/([^\/]+)/g)[3] ||
       // Assume same with previously
       (currentRepo.username === username && currentRepo.reponame === reponame && currentRepo.branch) ||
       // Default from cache
@@ -177,11 +166,15 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   loadCodeTree(opts, cb) {
-    opts.path = opts.node ? (opts.node.path || '') : '';
-    this._loadCodeTreeInternal(opts, (item) => {
-      item.sha = item.id;
-      // item.path = item.name;
-    }, cb);
+    opts.path = opts.node ? opts.node.path || '' : '';
+    this._loadCodeTreeInternal(
+      opts,
+      item => {
+        item.sha = item.id;
+        // item.path = item.name;
+      },
+      cb
+    );
   }
 
   // @override
@@ -288,17 +281,16 @@ class Gitlab extends PjaxAdapter {
         });
 
         // Transform to emulate response from get `tree`
-        const tree = Object.keys(diffMap)
-          .map((fileName) => {
-            const patch = diffMap[fileName];
-            return {
-              patch,
-              path: fileName,
-              sha: patch.sha,
-              type: patch.type,
-              url: patch.blob_url,
-            };
-          });
+        const tree = Object.keys(diffMap).map(fileName => {
+          const patch = diffMap[fileName];
+          return {
+            patch,
+            path: fileName,
+            sha: patch.sha,
+            type: patch.type,
+            url: patch.blob_url,
+          };
+        });
 
         // Sort by path, needs to be alphabetical order (so parent folders come before children)
         // Note: this is still part of the above transform to mimic the behavior of get tree
@@ -311,21 +303,14 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   _getSubmodules(tree, opts, cb) {
-    const item = tree.filter((item) => /^\.gitmodules$/i.test(item.name))[0];
-    if (!item) return cb();
-
-    this._get(`/blobs/${opts.encodedBranch}?filepath=${item.name}`, opts, (err, data) => {
-      if (err) return cb(err);
-      cb(null, parseGitmodules(data));
-    });
+    // todo gitlab api not support fetch submodule
+    return cb();
   }
 
   _get(path, opts, cb) {
     const repo = opts.repo;
     const host = `${window.location.protocol}//${window.location.host}/api/v4`;
-    const project = $('#search_project_id')
-      .val() || $('#project_id')
-      .val() || `${repo.username}%2f${repo.reponame}`;
+    const project = $('#search_project_id').val() || $('#project_id').val() || `${repo.username}%2f${repo.reponame}`;
     const url = `${host}/projects/${project}/repository${path || '/tree?'}&per_page=999&private_token=${opts.token}`;
     const cfg = {
       url,
@@ -334,8 +319,8 @@ class Gitlab extends PjaxAdapter {
     };
 
     $.ajax(cfg)
-      .done((data) => cb(null, data))
-      .fail((jqXHR) => this._handleError(cfg, jqXHR, cb));
+      .done(data => cb(null, data))
+      .fail(jqXHR => this._handleError(cfg, jqXHR, cb));
   }
 
   async _handleError(settings, jqXHR, cb) {
@@ -362,9 +347,7 @@ class Gitlab extends PjaxAdapter {
           message = 'This repository is empty.';
         } else {
           error = 'Private repository';
-          message =
-            'Accessing private repositories requires access token. ' +
-            'Please go to <a class="settings-btn">Settings</a> and enter a token.';
+          message = 'Accessing private repositories requires access token. ' + 'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         }
         break;
       case 403:
@@ -377,9 +360,7 @@ class Gitlab extends PjaxAdapter {
             'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         } else {
           error = 'Forbidden';
-          message =
-            'Accessing private repositories requires access token. ' +
-            'Please go to <a class="settings-btn">Settings</a> and enter a token.';
+          message = 'Accessing private repositories requires access token. ' + 'Please go to <a class="settings-btn">Settings</a> and enter a token.';
         }
 
         break;
