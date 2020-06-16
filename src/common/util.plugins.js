@@ -16,18 +16,12 @@ async function treeTruncate() {
     this.redraw_node = function(obj, deep, callback, forceDraw) {
       obj = parent.redraw_node.call(this, obj, deep, callback, forceDraw);
 
-      extStore.get(STORE.FILESIZE).then(showFileSize => {
-        if (obj) {
-          const anchor = $(obj).find('.jstree-anchor');
-          const anchorData = anchor.data();
-          let sizeInfo = '';
+      let anchor = null;
 
-          if (anchorData.fileCount) {
-            sizeInfo = `<span class="gm-tree-file-info">${anchorData.fileCount}</span>`;
-          } else if (anchorData.fileSize) {
-            sizeInfo = `<span class="gm-tree-file-info">${anchorData.fileSize}</span>`;
-          }
+      if (obj) {
+        anchor = $(obj).children('.jstree-anchor');
 
+        if (anchor.length) {
           // wrap content
           anchor
             .contents()
@@ -40,13 +34,24 @@ async function treeTruncate() {
 
           anchor.children().wrapAll('<div class="jstree-anchor-inner"></div>');
 
-          if (showFileSize) {
-            // append size
+          extStore.get(STORE.FILESIZE).then(showFileSize => {
+            if (showFileSize) {
+              let sizeInfo = '';
+              const anchorData = anchor.data();
 
-            anchor.append(sizeInfo);
-          }
+              if (anchorData.fileCount) {
+                sizeInfo = `<span class="gm-tree-file-info">${anchorData.fileCount}</span>`;
+              } else if (anchorData.fileSize) {
+                sizeInfo = `<span class="gm-tree-file-info">${anchorData.fileSize}</span>`;
+              }
+
+              // append size
+              anchor.addClass('gm-show-file-info');
+              anchor.append(sizeInfo);
+            }
+          });
         }
-      });
+      }
 
       return obj;
     };

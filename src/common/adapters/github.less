@@ -228,16 +228,16 @@
           width: 80px;
         }
 
-        &[data-file-count] {
-          width: calc(~'100% - 36px');
+        &[data-file-count].gm-show-file-info {
+          width: calc(~'100% - 24px');
 
           .jstree-anchor-inner {
             width: calc(~'100% - 24px');
           }
         }
 
-        &[data-file-size] {
-          width: calc(~'100% - 36px');
+        &[data-file-size].gm-show-file-info {
+          width: calc(~'100% - 24px');
 
           .jstree-anchor-inner {
             width: calc(~'100% - 24px');
@@ -266,20 +266,12 @@
           line-height: 24px;
           margin-left: 16px;
 
-          &[aria-level='1'] {
-            > .jstree-anchor[data-file-size],
-            > .jstree-anchor[data-file-count] {
-              width: calc(~'100% - 24px');
-
-              > .jstree-anchor-inner {
-                width: calc(~'100% - 46px');
-              }
-            }
-          }
-
-          &[aria-level='2'] {
-            > .jstree-anchor[data-file-size],
-            > .jstree-anchor[data-file-count] {
+          &[aria-level='1'],
+          &[aria-level='2'],
+          &[aria-level='3'],
+          &[aria-level='4'] {
+            > .jstree-anchor[data-file-size].gm-show-file-info,
+            > .jstree-anchor[data-file-count].gm-show-file-info {
               width: calc(~'100% - 24px');
 
               > .jstree-anchor-inner {
