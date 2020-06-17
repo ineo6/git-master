@@ -11,7 +11,7 @@ import './ui/toast/index.less';
 import './ui/toast/toast';
 import './theme/app.less';
 import '../common/libs/master-font.less';
-import { inSystemDarkMode, whichSite } from '@/ContentScript/util';
+import { whichSite } from '@/ContentScript/util';
 import { DICT, STORE } from '@/common/core.constants';
 import extStore from '@/common/core.storage';
 
@@ -23,7 +23,7 @@ async function loadNow() {
   if (siteType === DICT.GITHUB) {
     let isDarkMode = await extStore.get(STORE.DARKMODE);
 
-    if (isDarkMode || inSystemDarkMode()) {
+    if (isDarkMode) {
       $('html').addClass(darkClassName);
     }
   }

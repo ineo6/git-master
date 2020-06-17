@@ -52,3 +52,17 @@ export async function whichSite() {
 export const inSystemDarkMode = (): boolean => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
+
+export const subscribeDarkMode = (cb: (prefersDarkMode: any) => void) => {
+  let media = window.matchMedia('(prefers-color-scheme: dark)');
+  let callback = (e: { matches: any }) => {
+    let prefersDarkMode = e.matches;
+
+    cb && cb(prefersDarkMode);
+  };
+  if (typeof media.addEventListener === 'function') {
+    media.addEventListener('change', callback);
+  } else if (typeof media.addListener === 'function') {
+    media.addListener(callback);
+  }
+};
