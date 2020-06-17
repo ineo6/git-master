@@ -1,3 +1,18 @@
+# [1.5.0](https://github.com/ineo6/git-master/compare/v1.4.0...v1.5.0) (2020-06-17)
+
+
+### Bug Fixes
+
+* disable gitlab submodule ([4bdf338](https://github.com/ineo6/git-master/commit/4bdf33820ada89d2bf8ec961a2ab6c70ce2fac19))
+* hide dark-mode button ([409bc0c](https://github.com/ineo6/git-master/commit/409bc0c88c520cb65fa7e35b9c5653fa3b5910b1))
+
+
+### Features
+
+* do not detect system dark-mode ([3fdea48](https://github.com/ineo6/git-master/commit/3fdea4832382ef2f69c386ddfc577175e0de3953))
+* improve file info behavior ([1d532e7](https://github.com/ineo6/git-master/commit/1d532e7f22056525e69755bbb40cd567010db9bf))
+* show file count or size in treeview ([a148059](https://github.com/ineo6/git-master/commit/a1480590d38d49b26930bc9bcf99a779e38a2fc0))
+
 # [1.4.0](https://github.com/ineo6/git-master/compare/v1.3.0...v1.4.0) (2020-05-31)
 
 
