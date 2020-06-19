@@ -21,6 +21,7 @@ English | [简体中文](./README.zh-CN.md)
 - File search
 - Show GitHub repo size and file download support
 - GitHub notifications
+- GitHub dark mode
 - Browse the history of files (GitHub && GitLab)
 
 ## Settings
