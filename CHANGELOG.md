@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/ineo6/git-master/compare/v1.5.0...v1.5.1) (2020-06-19)
+
+
+### Bug Fixes
+
+* support github preview feature ui ([e687763](https://github.com/ineo6/git-master/commit/e68776308b61cf7ba45e959ee0dac2703ec88b12))
+
 # [1.5.0](https://github.com/ineo6/git-master/compare/v1.4.0...v1.5.0) (2020-06-17)
 
 
