@@ -11,7 +11,7 @@ import * as githubDetect from './pageDetect/github';
 // Therefore, the below selector uses many path but only points to the same <main> element
 const GH_PJAX_CONTAINER_SEL = '#js-repo-pjax-container, div[itemtype="http://schema.org/SoftwareSourceCode"] main, [data-pjax-container]';
 
-const GH_CONTAINERS = '.container, .container-lg, .container-responsive';
+const GH_CONTAINERS = '.container, .container-lg, .container-xl, .container-responsive';
 const GH_HEADER = '.js-header-wrapper > header';
 const GH_MAX_HUGE_REPOS_SIZE = 50;
 const GH_HIDDEN_RESPONSIVE_CLASS = '.d-none';
