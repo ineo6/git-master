@@ -1,3 +1,5 @@
+import { GaEvent, IEvent } from '@/common/analytics';
+
 // eslint-disable-next-line import/prefer-default-export
 export function dataURItoBlob(dataURI: string): Blob {
   // convert base64/URLEncoded data component to raw binary data held in a string
@@ -22,3 +24,17 @@ export function dataURItoBlob(dataURI: string): Blob {
 
   return new Blob([ia], { type: mimeString });
 }
+
+export const report = {
+  event: GaEvent,
+  send(ev: IEvent, opts: { action: string; value: number }) {
+    ev.eventAction = opts.action || ev.eventAction;
+    ev.eventValue = opts.value || ev.eventValue;
+
+    // @ts-ignore
+    window.postMessage({
+      type: 'ga',
+      data: ev,
+    });
+  },
+};

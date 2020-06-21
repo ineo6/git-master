@@ -5,3 +5,7 @@ declare module 'clipboard';
 
 declare var TEMPLATE;
 declare var RepoMeta;
+
+interface Window {
+  _gaq: any[];
+}

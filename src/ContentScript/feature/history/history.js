@@ -1,3 +1,5 @@
+import { report } from '../util';
+
 function addFrame() {
   const history = $('<iframe class="history-frame" />');
   const historyClose = $('<a class="history-frame-close">Close</a>');
@@ -84,6 +86,8 @@ export function isButtonInsertedGitlab(url) {
 
     buttonGitHistory.onclick = function() {
       openFrame(targetUrl);
+
+      report.send(report.event.USE_GIT_HISTORY, { action: 'gitlab' });
     };
 
     try {
@@ -116,6 +120,8 @@ export function isButtonInsertedGithub(url) {
 
     buttonGithubHistory.onclick = function() {
       openFrame(targetUrl);
+
+      report.send(report.event.USE_GIT_HISTORY, { action: 'github' });
     };
 
     try {

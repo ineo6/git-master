@@ -2,7 +2,7 @@ import { browser } from 'webextension-polyfill-ts';
 import { getFileSizeAndUnit } from '@/common/util.misc';
 import { IGitHubFile } from '@/ContentScript/interfaces';
 import RepoInfoBase from './RepoInfoBase';
-import { dataURItoBlob } from '../util';
+import { dataURItoBlob, report } from '../util';
 
 class GiteeRepoInfo extends RepoInfoBase {
   removeDom(selector: string) {
@@ -306,6 +306,8 @@ class GiteeRepoInfo extends RepoInfoBase {
   }
 
   async downloadFolder(repo: any, targetPath?: string) {
+    report.send(report.event.FOLDER_DOWNLOAD, { action: 'gitee' });
+
     const encodedBranch = encodeURIComponent(decodeURIComponent(repo.branch));
     const path = encodedBranch + '?recursive=1';
 

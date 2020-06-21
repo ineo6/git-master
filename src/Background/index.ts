@@ -1,5 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 import delay from 'delay';
+import { MessageType } from '@/common/core.constants';
+import Analytics from '@/common/analytics';
 import optionsStorage from './options-storage';
 import localStore from './lib/local-store';
 import { openTab } from './lib/tabs-service';
@@ -8,17 +10,20 @@ import { getNotificationCount, getTabUrl } from './lib/api';
 import { renderCount, renderError, renderWarning } from './lib/badge';
 import { checkNotifications, openNotification } from './lib/notifications-service';
 import { isChrome, isNotificationTargetPage } from './util';
-import { MessageType } from '../common/core.constants';
 
 let currentUrl = '';
 let tabId: number;
+const ga = new Analytics();
+
+ga.initialize('UA-39288503-7');
 
 browser.runtime.onInstalled.addListener((): void => {
   console.log('extension installed');
+  ga.sendEvent(ga.event.INSTALLED);
 });
 
 async function scheduleNextAlarm(interval?: number) {
-  const intervalSetting = await localStore.get('interval') || 60;
+  const intervalSetting = (await localStore.get('interval')) || 60;
   const intervalValue = interval || 60;
 
   if (intervalSetting !== intervalValue) {
@@ -32,7 +37,7 @@ async function scheduleNextAlarm(interval?: number) {
 }
 
 async function handleLastModified(newLastModified: any) {
-  const lastModified = await localStore.get('lastModified') || new Date(0);
+  const lastModified = (await localStore.get('lastModified')) || new Date(0);
 
   // Something has changed since we last accessed, display any new notificaitons
   if (newLastModified !== lastModified) {
@@ -137,7 +142,7 @@ function handleUrlLoad() {
         browser.tabs.sendMessage(tabId, { type: MessageType.PAGE_RENDERED });
       }
     },
-    { urls: ['*://*.github.com/*'] },
+    { urls: ['*://*.github.com/*'] }
   );
 
   browser.webNavigation.onHistoryStateUpdated.addListener(
@@ -151,17 +156,17 @@ function handleUrlLoad() {
           hostSuffix: 'github.com',
         },
       ],
-    },
+    }
   );
 }
 
-async function onMessage(message: {
-  type: String,
-  tabId?: number
-}) {
+async function onMessage(message: { type: String; data?: any; tabId?: number }) {
   if (message.type === 'update') {
     await addHandlers();
     await update();
+  } else if (message.type === 'report') {
+    // report to ga
+    ga.sendEvent(message.data);
   }
 }
 

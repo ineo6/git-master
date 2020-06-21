@@ -18,19 +18,11 @@ const manifestInput = {
 
   permissions: ['*://*.github.com/*', 'tabs', 'activeTab', 'storage', 'alarms', 'webRequest', 'webNavigation', 'https://api.github.com/*'],
 
-  optional_permissions: [
-    '<all_urls>',
-    'notifications',
-  ],
+  optional_permissions: ['<all_urls>', 'notifications'],
 
-  web_accessible_resources: [
-    '*.woff2',
-    '*.png',
-    '*.gif',
-    'inject.js',
-  ],
+  web_accessible_resources: ['*.woff2', '*.png', '*.gif', 'inject.js'],
 
-  content_security_policy: 'script-src \'self\' \'unsafe-eval\'; object-src \'self\'',
+  content_security_policy: "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'",
 
   '__chrome|firefox__author': 'neo',
   __opera__developer: {
@@ -75,9 +67,7 @@ const manifestInput = {
       run_at: 'document_start',
       matches: ['http://*/*', 'https://*/*'],
       js: ['js/contentScript.bundle.js'],
-      css: [
-        'css/contentScript.css',
-      ],
+      css: ['css/contentScript.css'],
     },
   ],
 };

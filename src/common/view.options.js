@@ -1,3 +1,4 @@
+import { report } from '@/ContentScript/feature/util';
 import { DICT, EVENT, SIDEBAR_RIGHT, STORE } from './core.constants';
 import extStore from './core.storage';
 import { parallel } from './util.misc';
@@ -122,6 +123,11 @@ class OptionsView {
         } else {
           $('html').removeClass(mode);
         }
+
+        report.send(report.event.DARK_MODE, {
+          action: this.whoami,
+          value: value ? 1 : 0,
+        });
       },
       () => {}
     );
@@ -146,6 +152,11 @@ class OptionsView {
           this.$direction.removeClass(`direction-${value}`).addClass(`direction-${nextValue}`);
 
           $(document).trigger(EVENT.LAYOUT_CHANGE);
+
+          report.send(report.event.DARK_MODE, {
+            action: this.whoami,
+            value: value === 'left' ? 1 : 0,
+          });
         }
         // 设置全局
         if (nextValue === 'left') {
