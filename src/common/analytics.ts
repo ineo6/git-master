@@ -1,3 +1,6 @@
+import { STORE } from '@/common/core.constants';
+import extStore from '@/common/core.storage';
+
 export interface IEvent {
   eventCategory: string;
   eventAction: string;
@@ -88,7 +91,11 @@ export default class Analytics {
     });
 
     if (process.env.NODE_ENV === 'production') {
-      window._gaq.push(['_trackEvent', ...eventArr]);
+      extStore.get(STORE.ANALYSIS).then((result: boolean) => {
+        if (result) {
+          window._gaq.push(['_trackEvent', ...eventArr]);
+        }
+      });
     } else {
       // eslint-disable-next-line no-console
       console.log(event);

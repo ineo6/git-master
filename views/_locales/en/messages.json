@@ -103,5 +103,8 @@
   },
   "config_show_size": {
     "message": "Show file count or size"
+  },
+  "config_analysis": {
+    "message": "Send analysis info"
   }
 }

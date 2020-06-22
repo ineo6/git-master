@@ -24,6 +24,7 @@ export const STORE = {
   DIRECTION: 'gitmaster.direction',
   DARKMODE: 'gitmaster.dark_mode',
   FILESIZE: 'gitmaster.show_file_size',
+  ANALYSIS: 'gitmaster.ga',
 };
 
 export const DICT = {
@@ -49,6 +50,7 @@ export const DEFAULTS = {
   DIRECTION: 'left',
   DARKMODE: false,
   FILESIZE: true,
+  ANALYSIS: true,
 };
 
 export const EVENT = {

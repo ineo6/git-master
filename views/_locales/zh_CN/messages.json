@@ -103,5 +103,8 @@
   },
   "config_show_size": {
     "message": "显示文件数量、大小"
+  },
+  "config_analysis": {
+    "message": "允许发送统计信息"
   }
 }
