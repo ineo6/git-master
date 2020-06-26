@@ -652,9 +652,9 @@
 
   .footer-action {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
-    a {
+    .footer-action-icon {
       outline: none;
       cursor: pointer;
       margin-left: 20px;
@@ -662,6 +662,10 @@
       &:hover {
         text-decoration: none;
       }
+    }
+
+    .footer-action-love {
+      line-height: 24px;
     }
   }
 }
@@ -771,6 +775,10 @@
 
     .footer-action {
       justify-content: flex-start;
+
+      .direction-toggle {
+        margin-left: 0;
+      }
     }
   }
 }
