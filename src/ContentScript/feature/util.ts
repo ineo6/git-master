@@ -28,13 +28,14 @@ export function dataURItoBlob(dataURI: string): Blob {
 export const report = {
   event: GaEvent,
   send(ev: IEvent, opts: { action?: string; value?: number }) {
-    ev.eventAction = opts.action || ev.eventAction;
-    ev.eventValue = opts.value || ev.eventValue;
+    const reportEvent = { ...ev };
+    reportEvent.eventAction = opts.action || reportEvent.eventAction;
+    reportEvent.eventValue = 'value' in opts ? opts.value : reportEvent.eventValue;
 
     // @ts-ignore
     window.postMessage({
       type: 'ga',
-      data: ev,
+      data: reportEvent,
     });
   },
 };

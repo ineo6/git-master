@@ -5,6 +5,18 @@ import extStore from '@/common/core.storage';
 import Badge from '@/components/Badge';
 import { getTabUrl } from '@/Background/lib/api';
 import { openTab } from '@/Background/lib/tabs-service';
+import { IEvent, GaEvent } from '@/common/analytics';
+
+function report(ev: IEvent, opts: { action?: string; value?: number }) {
+  const reportEvent = { ...ev };
+  reportEvent.eventAction = opts.action || reportEvent.eventAction;
+  reportEvent.eventValue = 'value' in opts ? opts.value : reportEvent.eventValue;
+
+  browser.runtime.sendMessage({
+    type: 'report',
+    data: reportEvent,
+  });
+}
 
 function getStoreKey(type: string) {
   let storeKey = '';
@@ -56,10 +68,6 @@ async function toggleSite(type: string, active: boolean, load: boolean = false) 
   }
 
   await extStore.set(storeKey, urlArr.join('\n'));
-
-  console.log('设置数据', storeKey, urlArr);
-
-  console.log('load hasChange', load, hasChange);
 
   if (load && hasChange) {
     await browser.tabs.reload(currentTab.id);
@@ -171,6 +179,11 @@ const Popup = () => {
 
                 toggleSite(DICT.GITHUB, type === DICT.GITHUB, true);
                 setType(type === DICT.GITHUB ? '' : DICT.GITHUB);
+
+                report(GaEvent.SITE_ENABLE, {
+                  action: 'github',
+                  value: type === DICT.GITHUB ? 0 : 1,
+                });
               }}
             >
               <img className="site-logo" src="../assets/github.png" alt="github" />
@@ -191,6 +204,11 @@ const Popup = () => {
 
                 toggleSite(DICT.GITLAB, type === DICT.GITLAB, true);
                 setType(type === DICT.GITLAB ? '' : DICT.GITLAB);
+
+                report(GaEvent.SITE_ENABLE, {
+                  action: 'gitlab',
+                  value: type === DICT.GITLAB ? 0 : 1,
+                });
               }}
             >
               <img className="site-logo" src="../assets/gitlab.png" alt="gitlab" />
@@ -212,6 +230,11 @@ const Popup = () => {
                 toggleSite(DICT.OSCHINA, type === DICT.OSCHINA, true);
 
                 setType(type === DICT.OSCHINA ? '' : DICT.OSCHINA);
+
+                report(GaEvent.SITE_ENABLE, {
+                  action: 'gitee',
+                  value: type === DICT.OSCHINA ? 0 : 1,
+                });
               }}
             >
               <img className="site-logo" src="../assets/gitee.png" alt="gitee" />

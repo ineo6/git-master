@@ -32,8 +32,6 @@ async function loadNow() {
 
 function createListener() {
   window.addEventListener('message', function(e) {
-    console.log(e.data);
-
     if (e.data.type === 'ga') {
       browser.runtime.sendMessage({
         type: 'report',

@@ -45,6 +45,11 @@ export const GaEvent = {
     eventAction: 'exception',
     eventLabel: '',
   },
+  SITE_ENABLE: {
+    eventCategory: 'site-enable',
+    eventAction: '',
+    eventLabel: 'feature usage',
+  },
 };
 
 export default class Analytics {
