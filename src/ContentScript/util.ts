@@ -1,3 +1,5 @@
+// @ts-ignore
+import FileIcons from '@ineo6/file-icons';
 import extStore from '@/common/core.storage';
 import { DICT, STORE } from '@/common/core.constants';
 
@@ -66,3 +68,12 @@ export const subscribeDarkMode = (cb: (prefersDarkMode: any) => void) => {
     media.addListener(callback);
   }
 };
+
+export async function getFileIcon(fileName: string) {
+  if (await extStore.get(STORE.ICONS)) {
+    const className = FileIcons.getClass(fileName);
+    return className || 'default-icon';
+  } else {
+    return 'default-icon';
+  }
+}
