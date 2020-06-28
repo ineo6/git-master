@@ -1,3 +1,18 @@
+# [1.6.0](https://github.com/ineo6/git-master/compare/v1.5.1...v1.6.0) (2020-06-28)
+
+
+### Bug Fixes
+
+* change border color of tree view ([95bb8f7](https://github.com/ineo6/git-master/commit/95bb8f70188f0a5316b7f4d476172725861b11de))
+
+
+### Features
+
+* add analysis checkbox option ([0c53e27](https://github.com/ineo6/git-master/commit/0c53e271c92c3335cc8d9868dbf17b69dd1a5b31))
+* add ga.js ([449335d](https://github.com/ineo6/git-master/commit/449335d3ff6109a84bb2eeb1b905c90418fccd81))
+* support GitHub new ui ([1be27c1](https://github.com/ineo6/git-master/commit/1be27c17b03571286e02b4fb6a18d80561ed9fa8))
+* use ga in popup ([5f0d3cb](https://github.com/ineo6/git-master/commit/5f0d3cb11d466139e29eaa2db9d44a2994998f1c))
+
 ## [1.5.1](https://github.com/ineo6/git-master/compare/v1.5.0...v1.5.1) (2020-06-19)
 
 
