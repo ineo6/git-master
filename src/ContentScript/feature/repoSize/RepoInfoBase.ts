@@ -6,7 +6,7 @@ import { browser } from 'webextension-polyfill-ts';
 const saveFileSync = saveFile.saveSync;
 
 function updateStatus(_status: string) {
-  // console.log(status);
+  // console.log(_status);
 }
 
 abstract class RepoInfoBase {
@@ -174,9 +174,9 @@ abstract class RepoInfoBase {
     }
   }
 
-  abstract async fetchPublicFile(file: any): Promise<Blob>;
+  abstract async fetchPublicFile(file: any): Promise<ArrayBuffer>;
 
-  abstract async fetchPrivateFile(file: any): Promise<Blob>;
+  abstract async fetchPrivateFile(file: any): Promise<ArrayBuffer>;
 
   async batchDownload(repo: any, files: any, dir: string) {
     if (files.length === 0) {
@@ -209,10 +209,9 @@ abstract class RepoInfoBase {
 
         downloaded++;
         updateStatus(`Downloading (${downloaded}/${files.length}) files…`);
+        // @ts-ignore
 
-        zip.file(file.path.replace(dir + '/', ''), blob, {
-          binary: true,
-        });
+        zip.file(file.path.replace(dir + '/', ''), blob);
       } catch (e) {
         updateStatus(`Download ${file.path} failed`);
       }
@@ -222,14 +221,18 @@ abstract class RepoInfoBase {
 
     updateStatus(`Zipping ${downloaded} files…`);
 
-    const zipBlob = await zip.generateAsync({
-      type: 'blob',
-    });
-
-    await saveFileSync(zipBlob, `${repo.username} ${repo.reponame} ${repo.branch} ${dir}.zip`.replace(/\//, '-'));
-    // @ts-ignore
-    $.toast.remove(toastKey);
-    updateStatus(`Downloaded ${downloaded} files! Done!`);
+    try {
+      const zipBlob = await zip.generateAsync({
+        type: 'blob',
+      });
+      console.log(zipBlob);
+      await saveFileSync(zipBlob, `${repo.username} ${repo.reponame} ${repo.branch} ${dir}.zip`.replace(/\//, '-'));
+      // @ts-ignore
+      $.toast.remove(toastKey);
+      updateStatus(`Downloaded ${downloaded} files! Done!`);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   async refreshToken() {

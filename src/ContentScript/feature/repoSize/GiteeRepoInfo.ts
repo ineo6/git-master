@@ -2,7 +2,7 @@ import { browser } from 'webextension-polyfill-ts';
 import { getFileSizeAndUnit } from '@/common/util.misc';
 import { IGitHubFile } from '@/ContentScript/interfaces';
 import RepoInfoBase from './RepoInfoBase';
-import { dataURItoBlob, report } from '../util';
+import { dataURItoArraybuffer, report } from '../util';
 
 class GiteeRepoInfo extends RepoInfoBase {
   removeDom(selector: string) {
@@ -279,7 +279,7 @@ class GiteeRepoInfo extends RepoInfoBase {
 
     const dataUrl = `data:application/octet-stream;base64,${content}`;
 
-    return dataURItoBlob(dataUrl);
+    return dataURItoArraybuffer(dataUrl);
   }
 
   async fetchPublicFile(file: any) {
@@ -294,7 +294,7 @@ class GiteeRepoInfo extends RepoInfoBase {
       throw new Error(`HTTP ${response.statusText} for ${file.path}`);
     }
 
-    return response.blob();
+    return response.arrayBuffer();
   }
 
   async refreshToken() {
