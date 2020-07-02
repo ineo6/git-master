@@ -140,8 +140,6 @@ class GitHubRepoInfo extends RepoInfoBase {
 
           if (fileTitle) {
             getFileIcon(fileTitle).then((ext: string) => {
-              console.log(fileTitle, ext);
-
               svgIcon.replaceWith(`<i class="gm-navigation-item-icon ${ext}" role="presentation"></i>`);
             });
           }
