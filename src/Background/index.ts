@@ -17,9 +17,13 @@ const ga = new Analytics();
 
 ga.initialize('UA-39288503-7');
 
-browser.runtime.onInstalled.addListener((): void => {
-  console.log('extension installed');
-  ga.sendEvent(ga.event.INSTALLED);
+browser.runtime.onInstalled.addListener((details): void => {
+  const manifest = browser.runtime.getManifest();
+  if (details.reason === 'install') {
+    ga.sendEvent(ga.event.INSTALLED, 'installed', manifest.version);
+  } else if (details.reason === 'update') {
+    ga.sendEvent(ga.event.UPDATED, 'updated', `${details.previousVersion}=>${manifest.version}`);
+  }
 });
 
 async function scheduleNextAlarm(interval?: number) {
