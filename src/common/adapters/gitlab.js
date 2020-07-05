@@ -10,12 +10,6 @@ const GL_RESERVED_REPO_NAMES = [];
 
 const GL_PJAX_CONTAINER_SEL = '#tree-holder';
 
-const GL_CONTAINERS = '.container, .container-lg, .container-responsive';
-const GL_HEADER = '.navbar-gitlab';
-const GL_MAX_HUGE_REPOS_SIZE = 50;
-const GL_HIDDEN_RESPONSIVE_CLASS = '.d-none';
-const GL_RESPONSIVE_BREAKPOINT = 1010;
-
 class Gitlab extends PjaxAdapter {
   constructor() {
     super(GL_PJAX_CONTAINER_SEL);
@@ -93,7 +87,7 @@ class Gitlab extends PjaxAdapter {
       [`margin-${direction}`]: shouldPushEverything ? sidebarWidth : '',
       [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
     });
-    $('.page-with-sidebar').css({
+    $('.page-with-sidebar,.page-with-contextual-sidebar').css({
       [`padding-${direction}`]: shouldPushEverything ? sidebarWidth : '',
       [`padding-${direction === 'left' ? 'right' : 'left'}`]: '',
     });
