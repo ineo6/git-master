@@ -1,6 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 import { getFileSizeAndUnit } from '@/common/util.misc';
 import { IGitHubFile } from '@/ContentScript/interfaces';
+import { getFileIcon } from '@/ContentScript/util';
 import RepoInfoBase from './RepoInfoBase';
 import { dataURItoArraybuffer, report } from '../util';
 
@@ -103,33 +104,26 @@ class GiteeRepoInfo extends RepoInfoBase {
     }
 
     let elems = $('.row.tree-item');
+    const fileListParent = elems.parent();
+
+    fileListParent.addClass('file-icons-wrapper');
 
     elems.each((_i, domItem) => {
       const item = $(domItem);
 
       // directory submodule file
-      const fileCls = item.find('.iconfont').attr('class') || '';
+      const fileIcon = item.find('.iconfont');
       const fileTitleDom = item.find('.tree-list-item a');
 
       let fileType = '';
 
-      const matches = /icon-\w+/.exec(fileCls);
+      const matches = /icon-\w+/.exec(fileIcon.attr('class') || '');
 
       if (matches) {
         fileType = matches[0];
       }
 
       let fileTitle: string | undefined = fileTitleDom.length > 0 ? fileTitleDom.attr('title') : '';
-      //
-      // if (fileTitleDom.find('span.text-gray-light').length) {
-      //   // some hidden dir
-      //   fileTitle = fileTitleDom.find('span.text-gray-light')
-      //     .text();
-      //
-      //   if (fileTitle.indexOf('/') === fileTitle.length - 1) {
-      //     fileTitle = fileTitle.substring(0, fileTitle.length - 1);
-      //   }
-      // }
 
       const matchFile = fileObj[fileTitle || ''];
 
@@ -139,6 +133,12 @@ class GiteeRepoInfo extends RepoInfoBase {
 
       if (matchFile && fileType === 'icon-file') {
         const downloadUrl = this.getDownloadUrl(matchFile);
+
+        if (fileTitle) {
+          getFileIcon(fileTitle).then((ext: string) => {
+            fileIcon.replaceWith(`<i class="gm-navigation-item-icon ${ext}" role="presentation"></i>`);
+          });
+        }
 
         // eslint-disable-next-line max-len
         let html = `<div class="two wide column tree_download download tree-file-download-btn"
@@ -157,6 +157,8 @@ class GiteeRepoInfo extends RepoInfoBase {
 
         item.append(html);
       } else if (matchFile && fileType === 'icon-folders') {
+        fileIcon.replaceWith('<i class="gm-navigation-item-icon" role="presentation"></i>');
+
         // eslint-disable-next-line max-len
         let html = `
           <div class="two wide column tree_download download tree-file-download-btn"

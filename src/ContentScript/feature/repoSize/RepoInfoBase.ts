@@ -225,7 +225,7 @@ abstract class RepoInfoBase {
       const zipBlob = await zip.generateAsync({
         type: 'blob',
       });
-      console.log(zipBlob);
+
       await saveFileSync(zipBlob, `${repo.username} ${repo.reponame} ${repo.branch} ${dir}.zip`.replace(/\//, '-'));
       // @ts-ignore
       $.toast.remove(toastKey);
