@@ -5,6 +5,7 @@
 <img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/v/klmeolbcejnhefkapdchfhlhhjgobhmo">
 <img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/stars/klmeolbcejnhefkapdchfhlhhjgobhmo">
 <img alt="GitHub" src="https://img.shields.io/github/license/ineo6/git-master">
+<a href="https://gitter.im/ineo6/GitMaster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img alt="Gitter" src="https://badges.gitter.im/ineo6/GitMaster.svg" /></a>
 </p>
 
 <h3 align="center">🙋‍♂️ Made by <a href="https://github.com/ineo6">neo</a></h3>
