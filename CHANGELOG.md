@@ -1,3 +1,21 @@
+# [1.7.0](https://github.com/ineo6/git-master/compare/v1.6.0...v1.7.0) (2020-07-08)
+
+
+### Bug Fixes
+
+* change sidebar layout event wide screen ([5522df4](https://github.com/ineo6/git-master/commit/5522df409983168a5e354bd31654a39a1e534a91))
+* change treeview top header height ([365036b](https://github.com/ineo6/git-master/commit/365036b438092370bf302d246e57364619429801))
+* gitlab nav padding ([b902e8e](https://github.com/ineo6/git-master/commit/b902e8ee8deeb1c1436f85c9ae89f05c0dc1c15c))
+* nav item in dark mode ([665d822](https://github.com/ineo6/git-master/commit/665d822d8f9d47ccb30043ee362b40a579a6c2d1))
+* use arraybuffer instead of blob to download ([0d65c7f](https://github.com/ineo6/git-master/commit/0d65c7fc613c94d3ae9db0e2480135eb9fc8043a))
+
+
+### Features
+
+* report version when trigger onInstalled event ([022c16d](https://github.com/ineo6/git-master/commit/022c16dbfe169c8aca431cc5e76627cde4a5d953))
+* show file icon in tree list ([9fb419c](https://github.com/ineo6/git-master/commit/9fb419cbbfa8771a2802f7e050494706216ce108))
+* upgrade file-icons ([8e29b24](https://github.com/ineo6/git-master/commit/8e29b243cc2e05b3d86b505734ea9dc6ef88df6c))
+
 # [1.6.0](https://github.com/ineo6/git-master/compare/v1.5.1...v1.6.0) (2020-06-28)
 
 
