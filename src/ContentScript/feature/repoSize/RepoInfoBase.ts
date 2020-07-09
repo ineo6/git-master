@@ -1,6 +1,7 @@
 import JSZip from 'jszip';
 import saveFile from 'save-file';
 import { browser } from 'webextension-polyfill-ts';
+import saveAs from '@/common/fileSave';
 
 // @ts-ignore
 const saveFileSync = saveFile.saveSync;
@@ -40,6 +41,16 @@ abstract class RepoInfoBase {
 
       this.useJsDelivr = !!options.useJsDelivr;
     }
+
+    $(document).on('click', '.gm-download-file', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const name = $(this).attr('download');
+      const url = $(this).attr('href');
+
+      saveAs(url as string, name);
+    });
   }
 
   removeDom(selector: string) {
