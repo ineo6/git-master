@@ -10,8 +10,11 @@ class Adapter {
 
   collectTree(tree) {
     const fileMap = {};
-
     tree.forEach(file => {
+      // For the compatibility of gitlab V3 version
+      if (!file.path && file.name) {
+        file.path = file.name;
+      }
       if (file.path.indexOf('/') >= 0) {
         const fileRoute = file.path.split('/');
         let deepPath = '';

@@ -48,6 +48,10 @@ class Gitlab extends PjaxAdapter {
     return DICT.GITLAB;
   }
 
+  isAliGitlab() {
+    return window.location.host === 'gitlab.alibaba-inc.com';
+  }
+
   // @override
   getCssClass() {
     return 'gitmaster-github-sidebar';
@@ -70,7 +74,8 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   getCreateTokenUrl() {
-    return `${window.location.protocol}//${window.location.host}/profile/personal_access_tokens`;
+    const tokenPath = this.isAliGitlab() ? 'account' : 'personal_access_tokens';
+    return `${window.location.protocol}//${window.location.host}/profile/${tokenPath}`;
   }
 
   // @override
@@ -303,7 +308,8 @@ class Gitlab extends PjaxAdapter {
 
   _get(path, opts, cb) {
     const repo = opts.repo;
-    const host = `${window.location.protocol}//${window.location.host}/api/v4`;
+    const version = this.isAliGitlab() ? 'v3' : 'v4';
+    const host = `${window.location.protocol}//${window.location.host}/api/${version}`;
     const project = $('#search_project_id').val() || $('#project_id').val() || `${repo.username}%2f${repo.reponame}`;
     const url = `${host}/projects/${project}/repository${path || '/tree?'}&per_page=999&private_token=${opts.token}`;
     const cfg = {

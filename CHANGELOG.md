@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/ineo6/git-master/compare/v1.7.0...v1.8.0) (2020-07-20)
+
+
+### Features
+
+* download file directly ([f572bad](https://github.com/ineo6/git-master/commit/f572bad702340bf8811ee1ec924c19a4f8ba5fe9))
+
 # [1.7.0](https://github.com/ineo6/git-master/compare/v1.6.0...v1.7.0) (2020-07-08)
 
 
