@@ -2,7 +2,7 @@ import GitMaster from '../core/GitMaster';
 
 class Logger {
   level: {
-    [propName: string]: string
+    [propName: string]: string;
   };
 
   ctx: GitMaster;
@@ -20,7 +20,6 @@ class Logger {
   // @ts-ignore
   protected handleLog(type: string, msg: string | Error): string | Error | undefined {
     if (this.ctx.getConfig() === undefined || !this.ctx.getConfig('silent')) {
-
       this.handleWriteLog(type, msg, this.ctx);
 
       return msg;
@@ -29,7 +28,7 @@ class Logger {
 
   protected handleWriteLog(type: string, msg: string | Error, _ctx?: GitMaster): void {
     try {
-      const logLevel = this.ctx.getConfig('settings.logLevel');
+      const logLevel = this.ctx.getConfig('logLevel');
 
       if (this.checkLogLevel(type, logLevel)) {
         let log = `${Date.now()} [GitMaster ${type.toUpperCase()}] ${msg}`;
@@ -46,7 +45,7 @@ class Logger {
         }
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -55,7 +54,7 @@ class Logger {
       return true;
     }
     if (Array.isArray(level)) {
-      return level.some((item: string) => (item === type || item === 'all'));
+      return level.some((item: string) => item === type || item === 'all');
     } else {
       return type === level;
     }

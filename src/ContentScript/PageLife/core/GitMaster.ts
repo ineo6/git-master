@@ -77,7 +77,12 @@ class GitMaster extends EventEmitter2 {
   }
 
   initConfig(): void {
-    this.config = {};
+    const production = process.env.NODE_ENV === 'production';
+
+    this.config = {
+      debug: !production,
+      logLevel: !production ? 'error' : 'all',
+    };
   }
 
   async init(): Promise<any> {
