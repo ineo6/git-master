@@ -87,7 +87,7 @@ class Adapter {
             // gitlab default is lazyload
             // so gitlab url should not append parent path
             if (node && node.path) {
-              if (!item.path.startsWith(node.path)) {
+              if (!item.path.startsWith(`${node.path}/`)) {
                 item.path = node.path + '/' + item.path;
               }
             }
