@@ -48,8 +48,9 @@ class Gitlab extends PjaxAdapter {
     return DICT.GITLAB;
   }
 
-  isAliGitlab() {
-    return window.location.host === 'gitlab.alibaba-inc.com';
+  isV3Gitlab() {
+    const v3GitlabList = ['gitlab.alibaba-inc.com'];
+    return v3GitlabList.indexOf(window.location.host) > -1;
   }
 
   // @override
@@ -74,7 +75,7 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   getCreateTokenUrl() {
-    const tokenPath = this.isAliGitlab() ? 'account' : 'personal_access_tokens';
+    const tokenPath = this.isV3Gitlab() ? 'account' : 'personal_access_tokens';
     return `${window.location.protocol}//${window.location.host}/profile/${tokenPath}`;
   }
 
@@ -308,7 +309,7 @@ class Gitlab extends PjaxAdapter {
 
   _get(path, opts, cb) {
     const repo = opts.repo;
-    const version = this.isAliGitlab() ? 'v3' : 'v4';
+    const version = this.isV3Gitlab() ? 'v3' : 'v4';
     const host = `${window.location.protocol}//${window.location.host}/api/${version}`;
     const project = $('#search_project_id').val() || $('#project_id').val() || `${repo.username}%2f${repo.reponame}`;
     const url = `${host}/projects/${project}/repository${path || '/tree?'}&per_page=999&private_token=${opts.token}`;
