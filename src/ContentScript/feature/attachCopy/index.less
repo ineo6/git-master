@@ -1,0 +1,29 @@
+.gm-clipboard-wrapper {
+  position: relative;
+
+  .gm-clipboard-btn {
+    position: absolute;
+    right: 0;
+    padding: 4px 8px;
+    cursor: pointer;
+    z-index: 1;
+    display: none;
+
+    .masterfont {
+      background: #ffffff;
+      padding: 2px;
+      //transition: all 1s ease-in-out;
+      font-size: 20px;
+    }
+  }
+}
+
+.repository-content div#readme article {
+  pre {
+    &:hover + .gm-clipboard-wrapper {
+      .gm-clipboard-btn {
+        display: block;
+      }
+    }
+  }
+}
