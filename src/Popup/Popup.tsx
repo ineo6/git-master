@@ -31,6 +31,9 @@ function getStoreKey(type: string) {
     case DICT.OSCHINA:
       storeKey = STORE.GITEE_ENTERPRICE_URLS;
       break;
+    case DICT.GITEA:
+      storeKey = STORE.GITEA_ENTERPRICE_URLS;
+      break;
     default:
       break;
   }
@@ -80,12 +83,14 @@ function isDefaultSite(url: string) {
   const githubUrl = ['github.com'];
   const gitlabUrl = ['gitlab.com'];
   const giteeUrl = ['git.oschina.net', 'gitee.com'];
+  const giteaUrl = ['try.gitea.io'];
   const chromeTabUrl = ['newtab'];
 
   return (
     githubUrl.indexOf(urlObj.host) >= 0 ||
     gitlabUrl.indexOf(urlObj.host) >= 0 ||
     giteeUrl.indexOf(urlObj.host) >= 0 ||
+    giteaUrl.indexOf(urlObj.host) >= 0 ||
     chromeTabUrl.indexOf(urlObj.host) >= 0
   );
 }
@@ -133,9 +138,10 @@ const Popup = () => {
     const isGitHubActive = await isCurrentTabActive(currentTabUrl, DICT.GITHUB);
     const isGitLabActive = await isCurrentTabActive(currentTabUrl, DICT.GITLAB);
     const isGiteeActive = await isCurrentTabActive(currentTabUrl, DICT.OSCHINA);
+    const isGiteaActive = await isCurrentTabActive(currentTabUrl, DICT.GITEA);
     const isDefault = isDefaultSite(currentTabUrl);
 
-    setType(isGitHubActive || isGitLabActive || isGiteeActive);
+    setType(isGitHubActive || isGitLabActive || isGiteeActive || isGiteaActive);
     setDefaultSite(isDefault);
 
     const badgeText = await browser.browserAction.getBadgeText({
@@ -177,6 +183,10 @@ const Popup = () => {
                   toggleSite(DICT.OSCHINA, true);
                 }
 
+                if (type === DICT.GITEA) {
+                  toggleSite(DICT.GITEA, true);
+                }
+
                 toggleSite(DICT.GITHUB, type === DICT.GITHUB, true);
                 setType(type === DICT.GITHUB ? '' : DICT.GITHUB);
 
@@ -200,6 +210,10 @@ const Popup = () => {
 
                 if (type === DICT.OSCHINA) {
                   toggleSite(DICT.OSCHINA, true);
+                }
+
+                if (type === DICT.GITEA) {
+                  toggleSite(DICT.GITEA, true);
                 }
 
                 toggleSite(DICT.GITLAB, type === DICT.GITLAB, true);
@@ -227,6 +241,10 @@ const Popup = () => {
                   toggleSite(DICT.GITLAB, true);
                 }
 
+                if (type === DICT.GITEA) {
+                  toggleSite(DICT.GITEA, true);
+                }
+
                 toggleSite(DICT.OSCHINA, type === DICT.OSCHINA, true);
 
                 setType(type === DICT.OSCHINA ? '' : DICT.OSCHINA);
@@ -240,6 +258,36 @@ const Popup = () => {
               <img className="site-logo" src="../assets/gitee.png" alt="gitee" />
               <span>{type === DICT.OSCHINA ? 'Disable' : 'Enable'}</span>
               <span>&nbsp;&nbsp;Gitee</span>
+            </a>
+          </div>
+          <div className="popup-option">
+            <a
+              onClick={() => {
+                if (type === DICT.GITHUB) {
+                  toggleSite(DICT.GITHUB, true);
+                }
+
+                if (type === DICT.GITLAB) {
+                  toggleSite(DICT.GITLAB, true);
+                }
+
+                if (type === DICT.OSCHINA) {
+                  toggleSite(DICT.OSCHINA, true);
+                }
+
+                toggleSite(DICT.GITEA, type === DICT.GITEA, true);
+
+                setType(type === DICT.GITEA ? '' : DICT.GITEA);
+
+                report(GaEvent.SITE_ENABLE, {
+                  action: 'gitea',
+                  value: type === DICT.GITEA ? 0 : 1,
+                });
+              }}
+            >
+              <img className="site-logo" src="../assets/gitea.png" alt="gitea" />
+              <span>{type === DICT.GITEA ? 'Disable' : 'Enable'}</span>
+              <span>&nbsp;&nbsp;Gitea</span>
             </a>
           </div>
         </>

@@ -17,14 +17,12 @@
   position: relative;
   overflow: hidden;
 
-
   &-bar {
     margin: 0 0 16px 0;
     border-bottom: 1px solid #f0f0f0;
     outline: none;
     -webkit-transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-
   }
 
   &-ink-bar {
@@ -42,10 +40,14 @@
   }
 
   &-ink-bar-animated {
-    -webkit-transition: width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transition: width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    -webkit-transition: width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1),
+      left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.2s cubic-bezier(0.645, 0.045, 0.355, 1),
+      left 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   &-nav-container {
@@ -60,7 +62,6 @@
     -webkit-transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
-
 
   &-nav {
     position: relative;
@@ -82,7 +83,7 @@
       box-sizing: border-box;
       height: 100%;
       width: 45px;
-      margin: 0 32px 0 0;
+      margin: 0 10px 0 0;
       padding: 12px 0;
       text-decoration: none;
       cursor: pointer;

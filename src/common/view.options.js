@@ -7,6 +7,7 @@ const siteCode = {
   [DICT.GITHUB]: 0,
   [DICT.GITLAB]: 1,
   [DICT.OSCHINA]: 2,
+  [DICT.GITEA]: 3,
 };
 
 class OptionsView {
@@ -92,7 +93,7 @@ class OptionsView {
     const content = this.$view.find('.master-tabs-content');
 
     link.css({
-      transform: `translate3d(${index * 77}px, 0px, 0px)`,
+      transform: `translate3d(${index * 57}px, 0px, 0px)`,
     });
 
     content.css({
