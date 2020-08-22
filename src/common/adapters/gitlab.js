@@ -49,8 +49,8 @@ class Gitlab extends PjaxAdapter {
   }
 
   isV3Gitlab() {
-    const v3GitlabList = ['gitlab.alibaba-inc.com'];
-    return v3GitlabList.indexOf(window.location.host) > -1;
+    const gonHtml = document.getElementsByTagName('script')[1].innerHTML;
+    return /\"v3\"/.test(gonHtml)
   }
 
   // @override

@@ -4,7 +4,7 @@ const gmTrigger = {
   gitlab: {
     highlight: function() {
       $('.js-syntax-highlight').syntaxHighlight();
-      $('.js-render-math').renderMath();
+      $('.js-render-math') && $('.js-render-math').renderMath && $('.js-render-math').renderMath();
     },
   },
 };
