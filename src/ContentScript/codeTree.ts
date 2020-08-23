@@ -13,6 +13,7 @@ import extStore from '../common/core.storage';
 import GitHub from '../common/adapters/github';
 import Gitlab from '../common/adapters/gitlab';
 import Oschina from '../common/adapters/oschina';
+import Gitea from '../common/adapters/gitea';
 
 async function createAdapter() {
   const siteType = await whichSite();
@@ -25,6 +26,8 @@ async function createAdapter() {
       return new Gitlab();
     case DICT.OSCHINA:
       return new Oschina();
+    case DICT.GITEA:
+      return new Gitea();
     default:
       return null;
   }
