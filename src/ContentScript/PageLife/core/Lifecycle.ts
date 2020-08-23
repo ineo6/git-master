@@ -26,11 +26,11 @@ class Lifecycle extends EventEmitter2 {
       // init
       await this.initAdapter(this.ctx);
 
-      if (this.ctx.currentAdapter) {
-        await this.documentLoaded(this.ctx);
-        await this.inject(this.ctx);
-        await this.afterProcess(this.ctx);
-      }
+      // if (this.ctx.currentAdapter) {
+      await this.documentLoaded(this.ctx);
+      await this.inject(this.ctx);
+      await this.afterProcess(this.ctx);
+      // }
 
       return this.ctx;
     } catch (e) {

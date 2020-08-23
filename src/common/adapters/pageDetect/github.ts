@@ -90,3 +90,7 @@ export const shouldEnable = function() {
 // 判断是否是文件夹或者文件
 
 export const isSingleFile = (): boolean => String(getRepoPath()).startsWith('blob/');
+
+export const isGistFile = function() {
+  return !!document.querySelector('.js-task-list-container');
+};

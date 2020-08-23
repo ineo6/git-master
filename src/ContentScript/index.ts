@@ -21,7 +21,7 @@ async function loadNow() {
 
   const darkClassName = 'gm-default-theme-' + siteType;
 
-  if (siteType === DICT.GITHUB) {
+  if (siteType === DICT.GITHUB || siteType === DICT.GIST) {
     let isDarkMode = await extStore.get(STORE.DARKMODE);
 
     if (isDarkMode) {

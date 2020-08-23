@@ -34,11 +34,27 @@ export async function whichSite() {
 
       return urls.indexOf(currentUrl) >= 0;
     },
+    async isGitea() {
+      const customDomains = await extStore.get(STORE.GITEA_ENTERPRICE_URLS);
+
+      const domainArr = customDomains ? customDomains.split('\n') : [];
+
+      const urls = ['https://try.gitea.io'].concat(domainArr);
+
+      return urls.indexOf(currentUrl) >= 0;
+    },
+    async isGist() {
+      const urls = ['https://gist.github.com'];
+
+      return urls.indexOf(currentUrl) >= 0;
+    },
   };
 
   const isGitLab = await sites.isGitLab();
   const isOsChina = await sites.isOsChina();
   const isGitHub = await sites.isGitHub();
+  const isGitea = await sites.isGitea();
+  const isGist = await sites.isGist();
 
   if (isGitLab) {
     return DICT.GITLAB;
@@ -46,6 +62,10 @@ export async function whichSite() {
     return DICT.GITHUB;
   } else if (isOsChina) {
     return DICT.OSCHINA;
+  } else if (isGitea) {
+    return DICT.GITEA;
+  } else if (isGist) {
+    return DICT.GIST;
   }
 
   return '';
@@ -76,4 +96,21 @@ export async function getFileIcon(fileName: string) {
   } else {
     return 'default-icon';
   }
+}
+
+export function copyElementContent(element: Element): boolean {
+  let selection = window.getSelection();
+
+  if (selection) selection.removeAllRanges();
+
+  const range = document.createRange();
+  range.selectNode(element);
+  selection = window.getSelection();
+
+  if (selection) selection.addRange(range);
+  const isCopySuccessful = document.execCommand('copy');
+  selection = window.getSelection();
+
+  if (selection) selection.removeAllRanges();
+  return isCopySuccessful;
 }
