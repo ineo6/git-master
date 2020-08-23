@@ -3,6 +3,7 @@ import repoSize from './repoSize';
 import history from './history';
 import injectJs from './injectJs';
 import copyFile from './copy-file';
+import attachCopy from './attachCopy';
 
 export default {
   i18n,
@@ -10,4 +11,5 @@ export default {
   history,
   injectJs,
   copyFile,
+  attachCopy,
 };
