@@ -196,6 +196,7 @@ class TreeView {
 
     // Convert /username/reponame/object_type/branch/path to path
     const path = decodeURIComponent(window.location.pathname);
+    // todo should support subgroup
     // eslint-disable-next-line no-useless-escape
     const match = path.match(/(?:[^\/]+\/){4}(.*)/);
     if (!match) return;
