@@ -93,7 +93,7 @@ class OptionsView {
     const content = this.$view.find('.master-tabs-content');
 
     link.css({
-      transform: `translate3d(${index * 57}px, 0px, 0px)`,
+      transform: `translate3d(${index * 51}px, 0px, 0px)`,
     });
 
     content.css({
