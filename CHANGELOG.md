@@ -1,3 +1,22 @@
+# [1.9.0](https://github.com/ineo6/git-master/compare/v1.8.0...v1.9.0) (2020-08-26)
+
+
+### Bug Fixes
+
+* remove outline when side view focused ([f4d43d3](https://github.com/ineo6/git-master/commit/f4d43d3984f750263951955d1c5eee07d8a53320))
+* some ui problem ([85dd1c2](https://github.com/ineo6/git-master/commit/85dd1c2263c13340ccb9cdb807349c401fa6f232))
+* startsWith should use directory ([0f9c7a6](https://github.com/ineo6/git-master/commit/0f9c7a638b4b8d8d6b6c79090fde6c0743c63801))
+
+
+### Features
+
+* add code copy and dark mode in gist ([50f4c8d](https://github.com/ineo6/git-master/commit/50f4c8d4cc190b7637bb0e63df3efd1990d8a5ec))
+* add gitea in entry ([d0aa15d](https://github.com/ineo6/git-master/commit/d0aa15d79a65a7621270064f48569944dda73bd1))
+* copy snippet ([7ae1ece](https://github.com/ineo6/git-master/commit/7ae1eced71fd32474c8049d1fa39f94201e1c107))
+* disable normal log for env production ([2ec6bae](https://github.com/ineo6/git-master/commit/2ec6bae05235af59ccbc649b3b5f48a61efb8073))
+* enable attach copy ([66aa417](https://github.com/ineo6/git-master/commit/66aa41714090e3f2d2e09fcc602c57a0aad4e908))
+* support gitea ([b528ab1](https://github.com/ineo6/git-master/commit/b528ab13222f1063d47099371332d7bcf798c032))
+
 # [1.8.0](https://github.com/ineo6/git-master/compare/v1.7.0...v1.8.0) (2020-07-20)
 
 
