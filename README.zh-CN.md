@@ -20,11 +20,12 @@
 
 ## 特性
 
-- 🚀 代码树支持`GitHub`、`GitLab`、`Gitee`
+- 🚀 代码树支持`GitHub`、`GitLab`、`Gitee`、`Gitea`
 - 🖊️ 支持私有部署页面，一键标记
 - 🗂️ 支持文件提交历史可视化 (GitHub && GitLab)
 - 🔔 `GitHub`通知提醒
-- 🌗 `GitHub`支持黑暗模式
+- 🌗 `GitHub`支持黑暗模式，同时支持`Gist`
+- 📋 代码片段复制
 - ⬇️ `GitHub`支持文件、目录下载
 - 📦 展示`GitHub`仓库和文件大小
 
@@ -52,9 +53,14 @@
 
 进一步了解可以访问 [keymaster](https://github.com/madrobby/keymaster#supported-keys).
 
-## Show your support
+## 咖啡或者星星
 
 如果觉得`GitMaster`帮到你了，请给它一颗 ⭐️。
+
+当然请我喝杯咖啡也是极好的.
+
+<img src="https://cdn.jsdelivr.net/gh/ineo6/git-master/materiel/wechat-reward-code-zh.jpg" alt="wechat-like" width=256 height=256 />
+
 ## Licence
 
 Code released under the [MIT License](LICENSE).

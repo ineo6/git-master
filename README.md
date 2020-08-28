@@ -15,15 +15,16 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/git-master/klmeolbcejnhefkapdchfhlhhjgobhmo)
 - [Edge Web Store](https://microsoftedge.microsoft.com/addons/detail/pcpkfgepcjdmdfelbabogmgoadgmiocg)
-- [Firefox Addon](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
+- [~~Firefox Addon~~](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
 
 ## Features
 
-- Git file tree (GitHub && GitLab && Gitee)
+- Git file tree (GitHub && GitLab && Gitee && Gitea)
 - File search
 - Show GitHub repo size and file download support
 - GitHub notifications
-- GitHub dark mode
+- GitHub dark mode, also work for gist
+- Code Snippet
 - Browse the history of files (GitHub && GitLab)
 
 ## Settings
@@ -50,9 +51,13 @@ Hotkeys to pin or unpin the sidebar. You can enter multiple hotkeys by separatin
 
 Learn more at [keymaster](https://github.com/madrobby/keymaster#supported-keys).
 
-## Show your support
+## Coffee or star
 
 Give a ⭐️ if this project helped you!
+
+Coffee is also welcome.
+
+<img src="https://cdn.jsdelivr.net/gh/ineo6/git-master/materiel/wechat-reward-code-zh.jpg" alt="wechat-like" width=256 height=256 />
 
 ## Licence
 
