@@ -59,7 +59,9 @@
 
 当然请我喝杯咖啡也是极好的.
 
-<img src="https://cdn.jsdelivr.net/gh/ineo6/git-master/materiel/wechat-reward-code-zh.jpg" alt="wechat-like" width=256 height=256 />
+| WeChat |
+| --- |
+| <img src="https://i.loli.net/2020/08/30/r6NfI7CQJyOjBnV.jpg" alt="wechat-like" width=256 height=256 />  |
 
 ## Licence
 

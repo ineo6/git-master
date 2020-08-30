@@ -51,13 +51,15 @@ Hotkeys to pin or unpin the sidebar. You can enter multiple hotkeys by separatin
 
 Learn more at [keymaster](https://github.com/madrobby/keymaster#supported-keys).
 
-## Coffee or star
+## Coffee or Star
 
 Give a ⭐️ if this project helped you!
 
 Coffee is also welcome.
 
-<img src="https://cdn.jsdelivr.net/gh/ineo6/git-master/materiel/wechat-reward-code-zh.jpg" alt="wechat-like" width=256 height=256 />
+| WeChat |
+| --- |
+| <img src="https://i.loli.net/2020/08/30/xX6vAM5bB7dgnLR.jpg" alt="wechat-like" width=256 height=256 />  |
 
 ## Licence
 
