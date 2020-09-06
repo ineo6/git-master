@@ -1,10 +1,11 @@
 import GitMaster from '../PageLife/core/GitMaster';
 import saveAs from '@/common/fileSave';
 import Clipboard from 'clipboard';
+import { IGistFile } from '@/ContentScript/interfaces';
 
-let globalGistData: any[] = [];
+let globalGistData: IGistFile[] = [];
 
-async function getGists(adapter: any) {
+async function getGists(adapter: any): Promise<IGistFile[]> {
   const token = await adapter.getAccessToken();
 
   const repo = await adapter.getRepoDataWrap(false, token);
@@ -16,7 +17,7 @@ async function getGists(adapter: any) {
   return data;
 }
 
-function applyAction(gistName: string, cb: Function) {
+function applyAction(gistName: string, cb: Function): string | void {
   const matchGist = globalGistData.find((item: { filename: string }) => item.filename.trim() === gistName.trim());
 
   if (matchGist) {
