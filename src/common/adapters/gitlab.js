@@ -50,7 +50,7 @@ class Gitlab extends PjaxAdapter {
 
   isV3Gitlab() {
     const gonHtml = document.getElementsByTagName('script')[1].innerHTML;
-    return /\"v3\"/.test(gonHtml)
+    return /"v3"/.test(gonHtml);
   }
 
   // @override
@@ -171,7 +171,8 @@ class Gitlab extends PjaxAdapter {
       opts,
       item => {
         item.sha = item.id;
-        // item.path = item.name;
+
+        return item;
       },
       cb
     );

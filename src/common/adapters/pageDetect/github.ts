@@ -73,6 +73,19 @@ export const isRepo = function() {
   return !(~GH_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame));
 };
 
+export const isGist = function() {
+  // (username)/(3a648b8c6de6d4daa11520743b6a5926)
+  const match = window.location.pathname.match(/([^\/]+)\/([a-zA-Z0-9]{32})(?:\/([^\/]+))?(?:\/([^\/]+))?/);
+  if (!match) {
+    return false;
+  }
+
+  const username = match[1];
+  const gistId = match[2];
+
+  return username && gistId;
+};
+
 export const shouldEnable = function() {
   if (is404()) {
     return false;
@@ -85,6 +98,20 @@ export const shouldEnable = function() {
 
   // (username)/(reponame)[/(type)][/(typeId)]
   return isRepo();
+};
+
+export const shouldEnableGist = function() {
+  if (is404()) {
+    return false;
+  }
+
+  // Skip raw page
+  if (isRawPage()) {
+    return false;
+  }
+
+  // (username)/(gistId)
+  return isGist();
 };
 
 // 判断是否是文件夹或者文件

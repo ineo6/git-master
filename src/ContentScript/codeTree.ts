@@ -14,6 +14,7 @@ import GitHub from '../common/adapters/github';
 import Gitlab from '../common/adapters/gitlab';
 import Oschina from '../common/adapters/oschina';
 import Gitea from '../common/adapters/gitea';
+import Gist from '../common/adapters/gist';
 
 async function createAdapter() {
   const siteType = await whichSite();
@@ -28,9 +29,16 @@ async function createAdapter() {
       return new Oschina();
     case DICT.GITEA:
       return new Gitea();
+    case DICT.GIST:
+      return new Gist();
     default:
       return null;
   }
+}
+
+interface CodeTreeInstance {
+  load: Function;
+  tryLoad: Function;
 }
 
 class CodeTree {
@@ -60,6 +68,38 @@ class CodeTree {
 
   repoMeta: any = {};
 
+  adapterMap: any = {};
+
+  instance: CodeTreeInstance = {
+    load: () => {},
+    tryLoad: () => {},
+  };
+
+  constructor() {
+    this.adapterMap = {
+      [DICT.GITHUB]: {
+        load: this.loadExtension.bind(this),
+        tryLoad: this.tryLoadRepo.bind(this),
+      },
+      [DICT.GITLAB]: {
+        load: this.loadExtension.bind(this),
+        tryLoad: this.tryLoadRepo.bind(this),
+      },
+      [DICT.OSCHINA]: {
+        load: this.loadExtension.bind(this),
+        tryLoad: this.tryLoadRepo.bind(this),
+      },
+      [DICT.GITEA]: {
+        load: this.loadExtension.bind(this),
+        tryLoad: this.tryLoadRepo.bind(this),
+      },
+      [DICT.GIST]: {
+        load: this.loadGistExtension.bind(this),
+        tryLoad: this.tryLoadGist.bind(this),
+      },
+    };
+  }
+
   static getSiteType = async () => {
     return await whichSite();
   };
@@ -70,10 +110,111 @@ class CodeTree {
     this.adapter = adapter;
 
     if (adapter) {
-      await this.loadExtension(adapter);
+      const matchIns = this.adapterMap[adapter.constructor.name.toLowerCase()];
+
+      if (matchIns) {
+        this.instance = matchIns;
+      }
+
+      await this.instance.load(adapter);
     }
 
     return adapter;
+  }
+
+  async loadGistExtension(adapter: any, activationOpts = {}) {
+    this.$html = $('html');
+    this.$document = $(document);
+    const $dom = $(TEMPLATE);
+    this.$sidebar = $dom.find('.gitmaster-sidebar');
+    this.$toggler = this.$sidebar.find('.gitmaster-toggle').hide();
+    this.$views = this.$sidebar.find('.gitmaster-view');
+    const $spinner = this.$sidebar.find('.gitmaster-spin');
+    this.$pinner = this.$sidebar.find('.gitmaster-pin');
+    this.treeView = new TreeView($dom, adapter);
+    const optsView = new OptionsView($dom, adapter, this.$sidebar);
+    const helpPopup = new HelpPopup($dom);
+    this.errorView = new ErrorView($dom);
+
+    this.adapter = adapter;
+    this.currRepo = false;
+    this.hasError = false;
+
+    this.$pinner.click(this.togglePin);
+    await this.setupSidebarFloatingBehaviors();
+    this.setHotkeys(await extStore.get(STORE.HOTKEYS));
+
+    if (!this.$html.hasClass(ADDON_CLASS)) this.$html.addClass(ADDON_CLASS);
+
+    $(window).resize(event => {
+      if (event.target === window) this.layoutChanged();
+    });
+
+    const showView = this.showView;
+    const $document = this.$document;
+    const treeView = this.treeView;
+
+    for (const view of [this.treeView, this.errorView, optsView]) {
+      $(view)
+        // eslint-disable-next-line no-loop-func
+        .on(EVENT.VIEW_READY, async function() {
+          if (this !== optsView) {
+            $document.trigger(EVENT.REQ_END);
+
+            optsView.$toggler.removeClass('selected');
+
+            if (adapter.isOnPRPage && (await extStore.get(STORE.PR))) {
+              treeView.$tree.jstree('open_all');
+            }
+          }
+          showView(this);
+        })
+        .on(EVENT.VIEW_CLOSE, (_event: any, data: any) => {
+          if (data && data.showSettings) {
+            optsView.toggle(true);
+          } else {
+            showView(this.hasError ? this.errorView : this.treeView);
+          }
+        })
+        .on(EVENT.FETCH_ERROR, (_event: any, err: any) => this.showError(err));
+    }
+
+    $(extStore).on(EVENT.STORE_CHANGE, this.optionsChanged);
+
+    this.$document
+      .on(EVENT.REQ_START, () => $spinner.addClass('gitmaster-spin--loading'))
+      .on(EVENT.REQ_END, () => $spinner.removeClass('gitmaster-spin--loading'))
+      .on(EVENT.LAYOUT_CHANGE, this.layoutChanged)
+      .on(EVENT.TOGGLE_PIN, this.layoutChanged)
+      .on(EVENT.LOC_CHANGE, (_event: any, reload: boolean = false) => this.instance.tryLoad(reload));
+
+    this.$sidebar
+      .addClass(adapter.getCssClass())
+      .width(Math.min(parseInt(await extStore.get(STORE.WIDTH), 10), 1000))
+      .resize(() => this.layoutChanged(true))
+      .appendTo($('body'));
+
+    this.$document.trigger(EVENT.SIDEBAR_HTML_INSERTED);
+
+    adapter.init(this.$sidebar);
+    await helpPopup.init();
+
+    await octotree.activate(
+      {
+        adapter,
+        $document: this.$document,
+        $dom,
+        $sidebar: this.$sidebar,
+        $toggler: this.$toggler,
+        $views: this.$views,
+        treeView: this.treeView,
+        optsView,
+        errorView: this.errorView,
+      },
+      activationOpts
+    );
+
+    return this.instance.tryLoad();
   }
 
   async loadExtension(adapter: any, activationOpts = {}) {
@@ -140,7 +281,7 @@ class CodeTree {
       .on(EVENT.REQ_END, () => $spinner.removeClass('gitmaster-spin--loading'))
       .on(EVENT.LAYOUT_CHANGE, this.layoutChanged)
       .on(EVENT.TOGGLE_PIN, this.layoutChanged)
-      .on(EVENT.LOC_CHANGE, (_event: any, reload: boolean = false) => this.tryLoadRepo(reload));
+      .on(EVENT.LOC_CHANGE, (_event: any, reload: boolean = false) => this.instance.tryLoad(reload));
 
     this.$sidebar
       .addClass(adapter.getCssClass())
@@ -168,7 +309,7 @@ class CodeTree {
       activationOpts
     );
 
-    return this.tryLoadRepo();
+    return this.instance.tryLoad();
   }
 
   /**
@@ -212,9 +353,58 @@ class CodeTree {
     }
 
     if (reload) {
-      await this.tryLoadRepo(true);
+      await this.instance.tryLoad(true);
     }
   };
+
+  async tryLoadGist(reload?: boolean) {
+    const token = await this.adapter.getAccessToken();
+
+    try {
+      await this.adapter.getRepoFromPath(this.currRepo, token, async (err: any, repo: any) => {
+        if (err) {
+          // Error making API, likely private repo but no token
+          await this.showError(err);
+          if (!this.isSidebarVisible()) {
+            this.$toggler.show();
+          }
+        } else if (repo) {
+          if ((await extStore.get(STORE.PINNED)) && !this.isSidebarVisible()) {
+            // If we're in pin mode but sidebar doesn't show yet, show it.
+            // Note if we're from another page back to code page, sidebar is "pinned", but not visible.
+            if (this.isSidebarPinned()) {
+              await this.toggleSidebar();
+            } else {
+              await this.onPinToggled(true);
+            }
+          } else if (this.isSidebarVisible()) {
+            const replacer = ['username', 'reponame', 'branch', 'pullNumber'];
+            const repoChanged = JSON.stringify(repo, replacer) !== JSON.stringify(this.currRepo, replacer);
+            if (repoChanged || reload === true) {
+              this.hasError = false;
+              this.$document.trigger(EVENT.REQ_START);
+              this.currRepo = repo;
+              this.treeView.show(repo, token);
+            } else {
+              await this.treeView.syncSelection(repo);
+            }
+
+            this.$pinner.find('.master-tooltip').attr('aria-label', browser.i18n.getMessage('pin_sidebar_tip'));
+          } else {
+            // Sidebar not visible (because it's not pinned), show the toggler
+            this.$toggler.show();
+
+            this.$pinner.find('.master-tooltip').attr('aria-label', browser.i18n.getMessage('pin_sidebar_tip'));
+          }
+        } else {
+          // Not a repo or not to be shown in this page
+          this.$toggler.hide();
+          this.toggleSidebar(false);
+        }
+        await this.layoutChanged();
+      });
+    } catch (e) {}
+  }
 
   async tryLoadRepo(reload?: boolean) {
     const token = await this.adapter.getAccessToken();
@@ -297,7 +487,7 @@ class CodeTree {
       // Note that tryLoadRepo() already takes care of not reloading if nothing changes.
       if (this.isSidebarVisible()) {
         this.$toggler.show();
-        await this.tryLoadRepo();
+        await this.instance.tryLoad();
       }
     }
 

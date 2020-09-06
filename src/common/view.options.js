@@ -8,6 +8,7 @@ const siteCode = {
   [DICT.GITLAB]: 1,
   [DICT.OSCHINA]: 2,
   [DICT.GITEA]: 3,
+  [DICT.GIST]: 4,
 };
 
 class OptionsView {
@@ -35,7 +36,7 @@ class OptionsView {
     // init default
     this.setTab(siteCode[this.whoami]);
 
-    if (['github'].includes(this.whoami)) {
+    if ([DICT.GITHUB, DICT.GIST].includes(this.whoami)) {
       this.$darkMode.show();
     }
 

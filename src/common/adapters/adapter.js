@@ -15,7 +15,7 @@ class Adapter {
       if (!file.path && file.name) {
         file.path = file.name;
       }
-      if (file.path.indexOf('/') >= 0) {
+      if (file.path && file.path.indexOf('/') >= 0) {
         const fileRoute = file.path.split('/');
         let deepPath = '';
 
@@ -69,7 +69,7 @@ class Adapter {
           const CHUNK_SIZE = 300;
 
           for (let i = 0; i < CHUNK_SIZE; i++) {
-            const item = tree[iteration * CHUNK_SIZE + i];
+            let item = tree[iteration * CHUNK_SIZE + i];
 
             // We're done
             if (item === undefined) {
@@ -83,7 +83,7 @@ class Adapter {
 
             // Runs transform requested by subclass
             if (transform) {
-              transform(item);
+              item = transform(item);
             }
 
             // If lazy load and has parent, prefix with parent path
@@ -95,7 +95,7 @@ class Adapter {
               }
             }
 
-            const path = item.path;
+            const path = item.path || '';
             const type = item.type;
             const index = path.lastIndexOf('/');
             const name = deXss(path.substring(index + 1)); // Sanitizes, closes #9
