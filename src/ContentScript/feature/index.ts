@@ -4,6 +4,7 @@ import history from './history';
 import injectJs from './injectJs';
 import copyFile from './copy-file';
 import attachCopy from './attachCopy';
+import gistDownload from './gist-download';
 
 export default {
   i18n,
@@ -12,4 +13,5 @@ export default {
   injectJs,
   copyFile,
   attachCopy,
+  gistDownload,
 };
