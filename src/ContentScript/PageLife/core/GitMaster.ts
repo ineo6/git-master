@@ -81,7 +81,7 @@ class GitMaster extends EventEmitter2 {
 
     this.config = {
       debug: !production,
-      logLevel: !production ? 'error' : 'all',
+      logLevel: production ? 'error' : 'all',
     };
   }
 
