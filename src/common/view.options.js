@@ -93,9 +93,9 @@ class OptionsView {
     const link = this.$view.find('.master-tabs-ink-bar');
     const content = this.$view.find('.master-tabs-content');
 
-    link.css({
-      transform: `translate3d(${index * 51}px, 0px, 0px)`,
-    });
+    // link.css({
+    //   transform: `translate3d(${index * 51}px, 0px, 0px)`,
+    // });
 
     content.css({
       'margin-left': `-${index * 100}%`,
