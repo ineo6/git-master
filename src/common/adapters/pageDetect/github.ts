@@ -75,7 +75,7 @@ export const isRepo = function() {
 
 export const isGist = function() {
   // (username)/(3a648b8c6de6d4daa11520743b6a5926)
-  const match = window.location.pathname.match(/([^\/]+)\/([a-zA-Z0-9]{32})(?:\/([^\/]+))?(?:\/([^\/]+))?/);
+  const match = window.location.pathname.match(/([^\/]+)\/([a-zA-Z0-9]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
   if (!match) {
     return false;
   }

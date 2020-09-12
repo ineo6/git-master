@@ -107,7 +107,7 @@ class Gist extends PjaxAdapter {
   async getRepoData(currentRepo, token, cb) {
     // (username)/(gistId)[/(sha)]
     // eslint-disable-next-line no-useless-escape
-    const match = window.location.pathname.match(/([^\/]+)\/([a-zA-Z0-9]{32})(?:\/([^\/]+))?(?:\/([^\/]+))?/);
+    const match = window.location.pathname.match(/([^\/]+)\/([a-zA-Z0-9]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
 
     const username = match[1];
     const gistId = match[2];
@@ -125,6 +125,8 @@ class Gist extends PjaxAdapter {
       gistId,
       branch: GIST_RESERVED_TYPE.indexOf(shaType) === -1 && /[a-zA-Z0-9]{40}/.test(shaType) ? shaType : '',
     };
+
+    repo.displayBranch = repo.branch === '' ? 'latest' : repo.branch;
 
     cb(null, repo);
   }
@@ -179,7 +181,7 @@ class Gist extends PjaxAdapter {
 
   // @override
   getAccessToken() {
-    return window.extStore.get(window.STORE.GITHUB_TOKEN);
+    return window.extStore.get(window.STORE.GIST_TOKEN);
   }
 
   decodeFileName(name) {
@@ -328,6 +330,8 @@ class Gist extends PjaxAdapter {
   }
 
   async getGists(path, opts) {
+    opts.token = await this.getAccessToken();
+
     return new Promise(resolve => {
       this._getTree(path, opts, (err, tree) => {
         resolve(tree);
@@ -342,7 +346,7 @@ class Gist extends PjaxAdapter {
     const cfg = {
       url,
       method: 'GET',
-      cache: false,
+      cache: true,
     };
 
     if (opts.token) {
