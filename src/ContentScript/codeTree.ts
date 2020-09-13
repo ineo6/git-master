@@ -110,7 +110,7 @@ class CodeTree {
     this.adapter = adapter;
 
     if (adapter) {
-      const matchIns = this.adapterMap[adapter.constructor.name.toLowerCase()];
+      const matchIns = this.adapterMap[adapter.whoami()];
 
       if (matchIns) {
         this.instance = matchIns;
@@ -408,7 +408,6 @@ class CodeTree {
 
   async tryLoadRepo(reload?: boolean) {
     const token = await this.adapter.getAccessToken();
-
     try {
       await this.adapter.getRepoFromPath(this.currRepo, token, async (err: any, repo: any) => {
         if (err) {

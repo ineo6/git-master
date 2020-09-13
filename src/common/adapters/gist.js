@@ -16,6 +16,7 @@ const GH_HIDDEN_RESPONSIVE_CLASS = '.d-none';
 const GH_RESPONSIVE_BREAKPOINT = 1010;
 
 const GIST_RESERVED_TYPE = ['revisions', 'stargazers', 'forks'];
+const GIST_RESERVED_ID = ['forked'];
 
 class Gist extends PjaxAdapter {
   constructor() {
@@ -73,7 +74,7 @@ class Gist extends PjaxAdapter {
 
   // @override
   getCreateTokenUrl() {
-    return `${window.location.protocol}//${window.location.host}/settings/tokens/new?` + 'scopes=repo&description=Git%20Master%20extension';
+    return `${window.location.protocol}//github.com/settings/tokens/new?` + 'scopes=repo&description=Git%20Master%20extension';
   }
 
   // @override
@@ -113,9 +114,8 @@ class Gist extends PjaxAdapter {
     const gistId = match[2];
     const shaType = match[3];
 
-    // Not a repository, skip
-    // eslint-disable-next-line no-bitwise
-    if (!gistId) {
+    // Not a gist, skip
+    if (!gistId || GIST_RESERVED_ID.indexOf(gistId) >= 0) {
       return cb();
     }
 
