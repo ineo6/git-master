@@ -1,3 +1,21 @@
+# [1.10.0](https://github.com/ineo6/git-master/compare/v1.9.0...v1.10.0) (2020-09-13)
+
+
+### Bug Fixes
+
+* change logLevel ([85393b2](https://github.com/ineo6/git-master/commit/85393b21356076781e32767cdff10a04b34a4c63))
+* nav tabs margin ([0ce2d9a](https://github.com/ineo6/git-master/commit/0ce2d9aaceb468ccb1f602dda8e3a4aac7d1c8ea))
+* use adapter whoami get instance ([1684efa](https://github.com/ineo6/git-master/commit/1684efa38ed2da235c0a191a40bec68ea838f1d2))
+
+
+### Features
+
+* add sidebar for gist ([56797c9](https://github.com/ineo6/git-master/commit/56797c927c15077eec4926e3822db9f842736b01))
+* disable tabs nav ink bar ([5999056](https://github.com/ineo6/git-master/commit/5999056d60c4b831c88f6ed52722c8a2fd6646fe))
+* gist data type ([a93ddfc](https://github.com/ineo6/git-master/commit/a93ddfc4c007e8f21bf2500d213fd98351c22289))
+* gist file download and copy ([682edee](https://github.com/ineo6/git-master/commit/682edeeae790c4213e0729929c90aa5d2bc90e70))
+* gist reversion and username match ([77ce795](https://github.com/ineo6/git-master/commit/77ce7953b37c0e59af577c0168eac7c2535955a8))
+
 # [1.9.0](https://github.com/ineo6/git-master/compare/v1.8.0...v1.9.0) (2020-08-26)
 
 
