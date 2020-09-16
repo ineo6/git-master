@@ -1,6 +1,6 @@
 import 'jstree';
 import './util.plugins';
-import { EVENT, NODE_PREFIX } from './core.constants';
+import { EVENT, NODE_PREFIX, DICT } from './core.constants';
 import { deXss } from './util.misc';
 
 class TreeView {
@@ -190,18 +190,46 @@ class TreeView {
     }, []);
   }
 
+  parserGitLabRepoPath(path) {
+    const match = path.match(/(?:[^/]+\/)+blob\/(?:[^/]+\/)(.*)/);
+
+    if (match && match.length === 2) {
+      return match[1];
+    }
+
+    return '';
+  }
+
+  parserRepoPath(path) {
+    const match = path.match(/(?:[^/]+\/){4}(.*)/);
+
+    if (match && match.length === 2) {
+      return match[1];
+    }
+
+    return '';
+  }
+
+  getCurrentFilePath() {
+    const path = decodeURIComponent(window.location.pathname);
+
+    if (this.adapter.whoami() === DICT.GITLAB) {
+      return this.parserGitLabRepoPath(path);
+    }
+
+    return this.parserRepoPath(path);
+  }
+
   async syncSelection(repo) {
     const $jstree = this.$jstree;
     if (!$jstree) return;
 
-    // Convert /username/reponame/object_type/branch/path to path
-    const path = decodeURIComponent(window.location.pathname);
-    // todo should support subgroup
-    // eslint-disable-next-line no-useless-escape
-    const match = path.match(/(?:[^\/]+\/){4}(.*)/);
-    if (!match) return;
+    const currentPath = this.getCurrentFilePath();
 
-    const currentPath = match[1];
+    if (currentPath === '') {
+      return;
+    }
+
     const loadAll = await this.adapter.shouldLoadEntireTree(repo);
 
     this.selectPath(loadAll ? [currentPath] : this.breakPath(currentPath));

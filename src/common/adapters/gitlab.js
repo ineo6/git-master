@@ -110,16 +110,43 @@ class Gitlab extends PjaxAdapter {
       return cb();
     }
 
-    // (username)/(reponame)[/(type)]
+    let pathname = window.location.pathname;
+
+    const replacePath = pathname.replace(/\/-\/([^/]+)?/, '/$1');
+
+    // (group)/(group)/.../(reponame)[/(type)]
+    // support multiple subgroup
     // eslint-disable-next-line no-useless-escape
-    const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?/);
+    let match = replacePath.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?/);
+
     if (!match) {
       return cb();
     }
 
-    const username = match[1];
-    const reponame = match[2];
-    const type = match[3];
+    match = match.filter(regPath => !!regPath);
+
+    // get project name first
+    const projectName = $('body').attr('project');
+
+    let reponame = projectName;
+    const usernameArr = [];
+    let type = '';
+
+    // remove matched type like blob
+    if (['blob', 'raw', 'commit', 'commits', 'tree'].includes(match[match.length - 1])) {
+      type = match.pop();
+    }
+
+    // get username and reponame part from match result
+    for (let i = 1; i < match.length; i++) {
+      if (i < match.length - 1) {
+        usernameArr.push(match[i]);
+      } else {
+        reponame = match[i];
+      }
+    }
+
+    const username = usernameArr.join('/');
 
     // Not a repository, skip
     if (~GL_RESERVED_USER_NAMES.indexOf(username) || ~GL_RESERVED_REPO_NAMES.indexOf(reponame) || ~GL_RESERVED_TYPES.indexOf(type)) {
@@ -185,17 +212,7 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   selectFile(path) {
-    const blobViewer = $('.blob-viewer[data-url]');
-
-    if (blobViewer.length) {
-      window.location.href = path;
-    } else {
-      const $pjaxContainer = $(GL_PJAX_CONTAINER_SEL);
-      super.selectFile(path, {
-        $pjaxContainer: $pjaxContainer,
-        fragment: GL_PJAX_CONTAINER_SEL,
-      });
-    }
+    window.location.href = path;
   }
 
   get isOnPRPage() {
