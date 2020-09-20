@@ -128,10 +128,6 @@ class TreeView {
   _onItemClick(event) {
     let $target = $(event.target);
 
-    if (!$target.is('a.jstree-anchor')) {
-      $target = $target.closest('a.jstree-anchor');
-    }
-
     let download = false;
 
     // Handle middle click
@@ -139,10 +135,11 @@ class TreeView {
 
     if (this.onItemClick(event)) return;
 
-    // Handle icon click, fix #122
     if ($target.is('i.jstree-icon')) {
       $target = $target.parent();
       download = true;
+    } else if (!$target.is('a.jstree-anchor')) {
+      $target = $target.closest('a.jstree-anchor');
     }
 
     $target = $target.is('a.jstree-anchor') ? $target : $target.parent();
