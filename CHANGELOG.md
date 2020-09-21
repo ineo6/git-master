@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/ineo6/git-master/compare/v1.10.0...v1.11.0) (2020-09-21)
+
+
+### Bug Fixes
+
+* open raw link when file icon clicked ([05174d1](https://github.com/ineo6/git-master/commit/05174d19d064863bc3fc8fb0cd3b1d313968c8a6))
+
+
+### Features
+
+* support subgroup project for gitlab ([404b0e5](https://github.com/ineo6/git-master/commit/404b0e5ca7f37b987b14ee4bb7f68dfbbc419607))
+
 # [1.10.0](https://github.com/ineo6/git-master/compare/v1.9.0...v1.10.0) (2020-09-13)
 
 
