@@ -111,40 +111,22 @@ class Gitlab extends PjaxAdapter {
     }
 
     let pathname = window.location.pathname;
+    // get project name first
+    const projectName = $('body').data('project');
 
     const replacePath = pathname.replace(/\/-\/([^/]+)?/, '/$1');
 
-    // (group)/(group)/.../(reponame)[/(type)]
-    // support multiple subgroup
-    // eslint-disable-next-line no-useless-escape
-    let match = replacePath.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?/);
+    // dynamic regex
+    let match = replacePath.match(new RegExp(`((?:[^/]+\\/)+)${projectName}(?:\\/([^/]+))?`));
 
     if (!match) {
       return cb();
     }
 
-    match = match.filter(regPath => !!regPath);
-
-    // get project name first
-    const projectName = $('body').attr('project');
-
     let reponame = projectName;
-    const usernameArr = [];
-    let type = '';
 
-    // remove matched type like blob
-    if (['blob', 'raw', 'commit', 'commits', 'tree'].includes(match[match.length - 1])) {
-      type = match.pop();
-    }
-
-    // get username and reponame part from match result
-    for (let i = 1; i < match.length; i++) {
-      if (i < match.length - 1) {
-        usernameArr.push(match[i]);
-      } else {
-        reponame = match[i];
-      }
-    }
+    const usernameArr = match[1].split('/').filter(Boolean);
+    let type = match[2] || '';
 
     const username = usernameArr.join('/');
 
