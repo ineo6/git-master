@@ -3,8 +3,8 @@ let gmPageId = 'inject';
 const gmTrigger = {
   gitlab: {
     highlight: function() {
-      $('.js-syntax-highlight').syntaxHighlight();
-      $('.js-render-math') && $('.js-render-math').renderMath && $('.js-render-math').renderMath();
+      $('.js-syntax-highlight').length && $('.js-syntax-highlight').syntaxHighlight && $('.js-syntax-highlight').syntaxHighlight();
+      $('.js-render-math').length && $('.js-render-math').renderMath && $('.js-render-math').renderMath();
     },
   },
 };
