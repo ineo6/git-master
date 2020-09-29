@@ -1,3 +1,12 @@
+## [1.11.1](https://github.com/ineo6/git-master/compare/v1.11.0...v1.11.1) (2020-09-29)
+
+
+### Bug Fixes
+
+* apply highlight only when dom existed ([db69b1e](https://github.com/ineo6/git-master/commit/db69b1e308425c1caec5d2698389991330cd173b))
+* get branch dynamic to support subgroup ([a8eb09c](https://github.com/ineo6/git-master/commit/a8eb09c3adbebb8313cf7391e48a5607b973babe))
+* improve gitlab subgroup ([c97f476](https://github.com/ineo6/git-master/commit/c97f4762133528e74ec7e6d552acce2cafc508ba))
+
 # [1.11.0](https://github.com/ineo6/git-master/compare/v1.10.0...v1.11.0) (2020-09-21)
 
 
