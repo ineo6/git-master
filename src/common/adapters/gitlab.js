@@ -149,7 +149,7 @@ class Gitlab extends PjaxAdapter {
       // A space ' ' is a failover to make match() always return an array
       ($(GL_BRANCH_SEL_3).attr('href') || ' ')
         // eslint-disable-next-line no-useless-escape
-        .match(/([^\/]+)/g)[3] ||
+        .match(/([^\/]+)/g)[usernameArr.length + 2] ||
       // Assume same with previously
       (currentRepo.username === username && currentRepo.reponame === reponame && currentRepo.branch) ||
       // Default from cache
