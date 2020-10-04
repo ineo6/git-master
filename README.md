@@ -51,6 +51,10 @@ Hotkeys to pin or unpin the sidebar. You can enter multiple hotkeys by separatin
 
 Learn more at [keymaster](https://github.com/madrobby/keymaster#supported-keys).
 
+## Contribute
+
+We welcome all contributions. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
+
 ## Coffee or Star
 
 Give a ⭐️ if this project helped you!
