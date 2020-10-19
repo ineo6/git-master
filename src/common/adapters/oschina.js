@@ -4,6 +4,7 @@ import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp } from '../util.misc';
 import octotree from '../core.api';
 import * as giteeDetect from './pageDetect/gitee';
+import './oschina.less';
 
 const OSC_RESERVED_USER_NAMES = [
   'explore',
@@ -76,7 +77,7 @@ class Oschina extends PjaxAdapter {
 
   // @override
   getCssClass() {
-    return 'gitmaster-github-sidebar';
+    return 'gitmaster-gitee-sidebar';
   }
 
   // @override

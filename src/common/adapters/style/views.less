@@ -1,0 +1,446 @@
+.views() {
+  .gitmaster-views {
+    height: 100%;
+    box-sizing: border-box;
+    border-right: 1px solid @gray-less;
+    background-color: #fafbfc;
+
+    .gitmaster-view {
+      display: none;
+      box-sizing: border-box;
+      color: @dark;
+      height: 100%;
+
+      &.current {
+        display: block;
+      }
+
+      input[type='text'],
+      textarea {
+        padding: 4px 8px;
+        color: @dark;
+        border-radius: 3px;
+        outline: none;
+        font-size: 14px;
+      }
+
+      textarea {
+        padding: 6px 8px;
+      }
+
+      .gitmaster-view-header {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        background-color: @github-header-bg-color;
+        border-right: 1px @github-header-bg-color solid;
+        color: white;
+        font-size: 16px;
+        font-weight: normal;
+        top: 0;
+        left: 0;
+        line-height: 1;
+        width: 100%;
+        height: @github-header-height;
+        margin: 0;
+        padding-right: 65px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.gitmaster-header-text-top {
+          padding-bottom: 17px;
+        }
+      }
+
+      .gitmaster-help {
+        outline: 0;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+
+    .gitmaster-tree-view {
+      overflow: auto;
+      -webkit-user-select: none; /* Chrome all / Safari all */
+      -moz-user-select: none; /* Firefox all */
+      -ms-user-select: none; /* IE 10+ */
+      user-select: none; /* Likely future */
+
+      .gitmaster-view-header {
+        padding-left: 5px;
+        box-sizing: border-box;
+
+        .gitmaster-header-summary {
+          width: 100%;
+        }
+
+        .gitmaster-header-repo,
+        .gitmaster-header-branch {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          box-sizing: border-box;
+        }
+
+        .gitmaster-header-repo {
+          margin-bottom: 3px;
+
+          font-size: 13px;
+          line-height: 16px;
+          font-weight: normal;
+          color: white;
+
+          &:before {
+            margin-right: 6px;
+            line-height: 28px;
+          }
+
+          .gitmaster-icon-repo {
+            .icon-v2(@octicons-repo, @color: white, @hover-color: white);
+            vertical-align: middle;
+          }
+
+          a {
+            color: white !important;
+
+            &:hover {
+              color: white !important;
+            }
+          }
+        }
+
+        .gitmaster-header-branch {
+          line-height: 1;
+          margin-left: -1px;
+          font-size: 11px;
+          color: white;
+
+          &:before {
+            margin-right: 4px;
+            margin-left: 3px;
+          }
+
+          .gitmaster-icon-branch {
+            .icon-v2(@octicons-git-branch, @color: white, @hover-color: white);
+            top: 1px;
+            left: 2px;
+          }
+        }
+      }
+
+      .gitmaster-view-search {
+        position: absolute;
+        display: flex;
+        top: @github-header-height;
+        left: 0;
+        width: 100%;
+        height: 24px;
+        z-index: 1;
+
+        .jstree-search-input {
+          font-size: 12px;
+          width: 100%;
+          outline: none;
+          padding: 2px 5px;
+          border-radius: 0;
+          border: 1px solid rgb(238, 238, 238);
+        }
+      }
+
+      .gitmaster-view-body {
+        margin-top: 24px;
+        outline: none;
+      }
+
+      .jstree-anchor {
+        outline: none;
+        padding-right: 0;
+        text-decoration: none;
+        width: calc(~'100% - 24px');
+        display: inline-flex;
+
+        & > span {
+        }
+
+        &:hover {
+          text-decoration: none !important;
+        }
+
+        .gm-tree-file-info {
+          font-size: 12px;
+          line-height: 26px;
+          text-align: right;
+          width: 80px;
+        }
+
+        &[data-file-count].gm-show-file-info {
+          width: calc(~'100% - 24px');
+
+          .jstree-anchor-inner {
+            width: calc(~'100% - 24px');
+          }
+        }
+
+        &[data-file-size].gm-show-file-info {
+          width: calc(~'100% - 24px');
+
+          .jstree-anchor-inner {
+            width: calc(~'100% - 24px');
+          }
+        }
+      }
+
+      .jstree-anchor-inner {
+        outline: none;
+        padding-right: 0;
+        text-decoration: none;
+        width: calc(~'100%');
+        display: inline-flex;
+      }
+
+      .jstree-default {
+        .jstree-container-ul {
+          max-width: 100%;
+          outline: none;
+        }
+
+        .jstree-container-ul > .jstree-node {
+          margin-left: 0px;
+        }
+
+        .jstree-node {
+          line-height: 24px;
+          margin-left: 16px;
+
+          &[aria-level='1'],
+          &[aria-level='2'],
+          &[aria-level='3'],
+          &[aria-level='4'] {
+            > .jstree-anchor[data-file-size].gm-show-file-info,
+            > .jstree-anchor[data-file-count].gm-show-file-info {
+              width: calc(~'100% - 24px');
+
+              > .jstree-anchor-inner {
+                width: calc(~'100% - 46px');
+              }
+            }
+          }
+        }
+
+        .jstree-wholerow {
+          height: auto;
+
+          &-hovered {
+            background: #eff0f1;
+          }
+
+          &-clicked {
+            background: #dbeeff;
+          }
+        }
+
+        .jstree-icon {
+          width: 16px;
+          flex-shrink: 0;
+        }
+
+        .jstree-icon,
+        .jstree-icon:empty,
+        .jstree-anchor {
+          line-height: 24px !important;
+          font-style: normal;
+        }
+
+        // Override the arrow icons & position
+        .jstree-no-dots {
+          .jstree-ocl {
+            margin-top: -1px;
+            width: 20px;
+          }
+
+          .jstree-open > .jstree-ocl,
+          .jstree-closed > .jstree-ocl {
+            background: none;
+            position: relative;
+            left: 3px;
+          }
+
+          .jstree-open > .jstree-ocl {
+            .icon-v2(@octicons-chevron-down, @color: @dark, @hover-color: @dark, @font-size: 12px);
+          }
+
+          .jstree-closed > .jstree-ocl {
+            .icon-v2(@octicons-chevron-right, @color: @dark, @hover-color: @dark, @font-size: 12px);
+          }
+        }
+      }
+
+      .jstree-icon.tree,
+      .jstree-icon.blob,
+      .jstree-icon.commit {
+        display: inline-block;
+        margin-right: 3px;
+        text-decoration: none;
+        font-smoothing: antialiased;
+      }
+
+      .jstree-icon.tree,
+      .jstree-icon.commit,
+      .jstree-icon.default-icon {
+        margin-top: 0;
+        margin-right: 2px;
+      }
+
+      .jstree-icon.tree {
+        .icon-v2(@octicons-file-directory, @color: @blue, @hover-color: @blue);
+      }
+
+      .jstree-icon.commit {
+        .icon-v2(@octicons-file-submodule, @color: @gray, @hover-color: @gray);
+      }
+
+      .jstree-icon.default-icon {
+        .icon-v2(@octicons-file-text, @color: @gray, @hover-color: @gray);
+      }
+
+      .jstree-node.jstree-leaf:hover .jstree-icon.blob {
+        .icon-v2(@octicons-link-external, @color: @error, @hover-color: @error, @font-size: 15px);
+      }
+
+      .gitmaster-patch {
+        display: inline-flex;
+        flex-grow: 1;
+        margin-right: 5px;
+
+        font-size: 80%;
+
+        span {
+          padding-left: 5px;
+        }
+      }
+    }
+
+    .gitmaster-error-view,
+    .gitmaster-settings-view {
+      .gitmaster-view-header {
+        padding-left: 8px;
+      }
+
+      .gitmaster-view-body {
+        input[type='checkbox'],
+        input[type='radio'] {
+          vertical-align: middle;
+          margin: 0;
+        }
+      }
+    }
+
+    .gitmaster-error-view {
+      & > form {
+        div {
+          padding: 8px;
+        }
+
+        input {
+          width: 100%;
+        }
+
+        .error {
+          color: @error;
+        }
+
+        .button {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .gitmaster-settings-view {
+      & > form {
+        padding: 8px;
+        line-height: 1.5;
+
+        .gitmaster-token-actions {
+          float: right;
+        }
+
+        & > div {
+          margin-bottom: 10px;
+        }
+
+        label {
+          font-weight: normal !important;
+          margin: 0;
+
+          &.disabled {
+            color: @gray-less;
+          }
+
+          input + span {
+            position: relative;
+            top: 1px;
+            left: 2px;
+          }
+        }
+
+        input[type='text'],
+        textarea {
+          width: 100%;
+
+          &:focus {
+            box-shadow: none;
+          }
+        }
+
+        input[type='text'] {
+          padding: 5px 12px;
+          font-size: 14px;
+          height: 32px;
+          line-height: 20px;
+          color: #24292e;
+          vertical-align: middle;
+          background-color: #fff;
+          background-repeat: no-repeat;
+          background-position: right 8px center;
+          border: 1px solid #e1e4e8;
+          border-radius: 6px;
+          outline: none;
+          box-shadow: inset 0 1px 0 rgba(225, 228, 232, 0.2);
+        }
+
+        textarea {
+          resize: vertical;
+          height: 60px;
+        }
+
+        .gitmaster-disclaimer {
+          display: block;
+          font-size: 12px;
+
+          &.is-margin-left {
+            margin-left: 18px;
+          }
+        }
+
+        button.btn {
+          display: inline-block;
+          padding: 5px 16px;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px;
+          vertical-align: middle;
+          cursor: pointer;
+          user-select: none;
+          border-radius: 6px;
+          appearance: none;
+          color: #fff;
+          background-color: #2ea44f;
+          border: 1px solid rgba(27, 31, 35, 0.15);
+          box-shadow: 0 1px 0 rgba(27, 31, 35, 0.1), inset 0 1px 0 hsla(0, 0%, 100%, 0.03);
+        }
+      }
+    }
+  }
+}

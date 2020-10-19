@@ -1,0 +1,246 @@
+@import './style/views';
+@import './style/toggle';
+@import './style/header';
+@import './style/footer';
+
+.gitmaster-sidebar {
+  box-sizing: border-box;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 232;
+  overflow: visible;
+  padding-bottom: @footer-height;
+  padding-top: @github-header-height;
+  position: fixed !important;
+  transform: translate3d(-100%, 0, 0);
+  transition: transform 0.3s ease-in;
+  z-index: @index-base;
+
+  // jQuery resizer
+  .ui-resizable-handle {
+    bottom: 0;
+    cursor: col-resize;
+    position: absolute;
+    top: 0;
+  }
+
+  .ui-resizable-e {
+    right: -4px;
+    width: 0;
+  }
+
+  .footer();
+
+  .views();
+
+  .header();
+
+  .toggle();
+
+  .gitmaster-icon-key {
+    .icon-v2(@octicons-key);
+  }
+
+  .gitmaster-icon-help {
+    .icon-v2(@octicons-question);
+  }
+}
+
+.gitmaster-sidebar.gitmaster-sidebar-right {
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: unset !important;
+  width: 232px;
+  position: fixed;
+  transform: translate3d(100%, 0, 0);
+
+  .gitmaster-toggle {
+    background-color: #f2f5f7;
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #e0e4e7;
+    border-right: none;
+    box-shadow: 2px 0 5px 0 rgba(118, 118, 118, 0.11);
+    opacity: 1;
+    line-height: 1;
+    position: absolute;
+
+    left: -35px;
+    right: unset;
+
+    text-align: center;
+    top: 33%;
+    width: 35px;
+    z-index: @index-base;
+    transition: right 0.25s ease-in 0.2s, opacity 0.35s ease-in 0.2s;
+    cursor: pointer;
+
+    > .gitmaster-toggle-icon {
+      .icon-v2(@octicons-chevron-left, @font-size: 15px, @color: @dark, @hover-color: @dark);
+      left: 3px;
+      top: 5px;
+    }
+
+    > span {
+      color: @dark;
+      display: inline-block;
+      font-size: 12px;
+      left: -1px;
+      line-height: 14px;
+      position: relative;
+      top: 0;
+    }
+
+    .popup {
+      right: 0;
+      left: unset;
+      line-height: 20px;
+
+      &:hover {
+        color: black;
+      }
+
+      &.show {
+        opacity: 1;
+      }
+
+      & > .arrow,
+      & > .arrow:after {
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+      }
+
+      & > .arrow {
+        right: 15px;
+        left: unset;
+        top: -6px;
+        border-width: 6px;
+        margin-left: -6px;
+        border-top-width: 0;
+        border-bottom-color: rgba(0, 0, 0, 0.25);
+      }
+
+      & > .arrow:after {
+        border-width: 5px;
+        content: '';
+        top: 1px;
+        margin-left: -5px;
+        border-top-width: 0;
+        border-bottom-color: white;
+      }
+
+      & > .content {
+        padding: 9px 14px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .gitmaster-views {
+    border-left: 1px solid @gray-less;
+    border-right: none;
+  }
+
+  .gitmaster-footer {
+    border-left: 1px solid rgb(200, 225, 255);
+    border-right: none;
+
+    .footer-action {
+      justify-content: flex-start;
+
+      .direction-toggle {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+//
+// Sidebar showing styles
+//
+.gitmaster-show {
+  .gitmaster-sidebar {
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.2s ease;
+
+    .ui-resizable-handle {
+      width: 8px;
+    }
+
+    .gitmaster-toggle {
+      opacity: 0;
+      pointer-events: none;
+      right: 10px;
+      transition: right 0s, opacity 0s;
+    }
+
+    .gitmaster-spin {
+      position: absolute;
+      right: 8px;
+      top: @github-header-height + 5;
+      display: none;
+
+      &.gitmaster-spin--loading {
+        display: block;
+      }
+
+      .gitmaster-spin--loader {
+        border-radius: 50%;
+        border: 2px solid @gray;
+        border-top: 2px solid rgba(0, 0, 0, 0);
+        border-left: 2px solid rgba(0, 0, 0, 0);
+        width: 16px;
+        height: 16px;
+        animation: loading 0.5s infinite linear;
+
+        &:after {
+          content: '';
+        }
+
+        @keyframes loading {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      }
+    }
+  }
+
+  body.split-diff .container {
+    padding-left: 0;
+  }
+
+  .gitmaster-sidebar.gitmaster-sidebar-right {
+    width: 232px;
+    transform: none;
+    left: unset !important;
+  }
+}
+
+//
+// Print
+//
+@media print {
+  .gitmaster-sidebar {
+    display: none;
+
+    .gitmaster-toggle {
+      display: none;
+    }
+  }
+}
+
+// share icon
+
+.gm-tree-list-folder-icon {
+  .icon-v2(@octicons-file-directory, @color: @blue, @hover-color: @blue);
+}

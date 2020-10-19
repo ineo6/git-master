@@ -1,0 +1,17 @@
+.createSideBarHeight(@height,@bg-color) {
+  padding-top: @height;
+
+  .gitmaster-spin {
+    top: @height;
+  }
+
+  .gitmaster-view-header {
+    height: @height !important;
+    background-color: @bg-color !important;
+    border-right: @bg-color !important;
+  }
+
+  .gitmaster-view-search {
+    top: @height !important;
+  }
+}

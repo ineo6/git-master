@@ -56,7 +56,7 @@ class Gist extends PjaxAdapter {
 
   // @override
   getCssClass() {
-    return 'gitmaster-github-sidebar';
+    return 'gitmaster-gist-sidebar';
   }
 
   // @override

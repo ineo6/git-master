@@ -3,6 +3,7 @@ import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { sendMessageToContentScriptByPostMessage } from '../util.ext';
 import octotree from '../core.api';
+import './gitlab.less';
 
 const GL_RESERVED_USER_NAMES = ['u', 'dashboard', 'projects', 'users', 'help', 'explore', 'profile', 'public', 'groups', 'abuse_reports'];
 const GL_RESERVED_TYPES = ['raw'];
@@ -55,7 +56,7 @@ class Gitlab extends PjaxAdapter {
 
   // @override
   getCssClass() {
-    return 'gitmaster-github-sidebar';
+    return 'gitmaster-gitlab-sidebar';
   }
 
   // @override

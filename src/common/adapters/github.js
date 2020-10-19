@@ -3,6 +3,7 @@ import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp, parseGitmodules } from '../util.misc';
 import * as githubDetect from './pageDetect/github';
+import './github.less';
 
 // When Github page loads at repo path e.g. https://github.com/jquery/jquery, the HTML tree has
 // <main id="js-repo-pjax-container"> to contain server-rendered HTML in response of pjax.

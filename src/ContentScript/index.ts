@@ -1,7 +1,7 @@
 import 'jquery';
 import 'jquery-ui/ui/widgets/resizable';
 import 'whatwg-fetch';
-import '../common/styles/octotree.less';
+import '../common/styles/main.less';
 import '@ineo6/file-icons/index.less';
 import '../common/libs/jstree.css';
 import './index.less';

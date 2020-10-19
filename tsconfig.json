@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    /* Basic Options */
-    "outDir": "dist",
     /* for manifest/index.js */
     "allowJs": true,
     "target": "es5",
@@ -38,7 +36,7 @@
     /* Module Resolution Options */
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "declaration": true,
+    "declaration": false,
     "pretty": true,
     "newLine": "lf",
     "stripInternal": true,

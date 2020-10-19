@@ -89,7 +89,7 @@ class Gitea extends PjaxAdapter {
 
   // @override
   getCssClass() {
-    return 'gitmaster-github-sidebar';
+    return 'gitmaster-gitea-sidebar';
   }
 
   // @override

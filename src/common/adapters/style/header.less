@@ -1,0 +1,63 @@
+.header() {
+  .gitmaster-main-icons {
+    position: absolute;
+    display: flex;
+    flex-flow: row-reverse;
+    align-items: center;
+    top: 16px;
+    right: 6px;
+    z-index: 1;
+
+    a {
+      margin-left: 4px;
+    }
+  }
+
+  a.gitmaster-settings,
+  a.gitmaster-pin,
+  a.gitmaster-spin {
+    text-align: center;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1; // these are float, show above header view
+
+    & > span {
+      line-height: 1;
+      display: inline-block;
+      text-decoration: none;
+    }
+  }
+
+  a.gitmaster-pin,
+  a.gitmaster-spin {
+    z-index: 2;
+  }
+
+  a.gitmaster-pin {
+    width: @icon-size;
+    height: @icon-size;
+    margin-left: 1.3px !important;
+
+    .gitmaster-icon-pin {
+      .icon-v2(@octicons-pin, @font-size: @icon-size, @color: @gray, @hover-color: white);
+    }
+
+    &.gitmaster-pinned .gitmaster-icon-pin:before {
+      transform: rotate(-45deg) scale(0.9);
+      color: white;
+    }
+  }
+
+  a.gitmaster-settings {
+    width: @icon-size;
+    height: @icon-size;
+
+    .gitmaster-icon-settings {
+      .icon-v2(@octicons-gear, @font-size: @icon-size, @color: @gray, @hover-color: white);
+    }
+
+    &.selected .gitmaster-icon-settings:before {
+      color: white;
+    }
+  }
+}
