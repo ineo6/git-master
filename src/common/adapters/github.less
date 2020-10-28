@@ -1,0 +1,7 @@
+@import '../../common/styles/vars';
+@import './style/mixins/sidebar-height';
+
+// set header height when wide screen
+@media (min-width: 768px) {
+  .createSideBarHeight(@github-header-height - 2, @github-header-bg-color);
+}
