@@ -118,7 +118,7 @@ class Gitlab extends PjaxAdapter {
     const replacePath = pathname.replace(/\/-\/([^/]+)?/, '/$1');
 
     // dynamic regex
-    let match = replacePath.match(new RegExp(`((?:[^/]+\\/)+)${projectName}(?:\\/([^/]+))?`));
+    let match = replacePath.match(new RegExp(`((?:[^/]+\\/)+)${projectName}(?:\\/([^/]+))`));
 
     if (!match) {
       return cb();
