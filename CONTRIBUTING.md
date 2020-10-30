@@ -25,7 +25,7 @@ $ npm run dev:chrome
 
 2. Click **'Load unpack'** (when Developer mode is open) and choose folder **'extensions/chrome'**.
 
-![load-extension](./materiel/load-extension-en.png)
+![load-extension](https://i.loli.net/2020/10/30/94gn5swiYh76BfU.png)
 
 ## Build（Production）
 

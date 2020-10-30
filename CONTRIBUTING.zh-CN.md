@@ -26,7 +26,7 @@ $ npm run dev:chrome
 2. 点击 **'加载已解压的扩展程序'** (开发者模式
 启用时可见)，然后选择文件夹 **'extensions/chrome'**。
 
-![load-extension](./materiel/load-extension-zh.png)
+![load-extension](https://i.loli.net/2020/10/30/yQukvV4BCPFmezX.png)
 
 ## 构建（生产模式）
 
