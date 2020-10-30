@@ -53,7 +53,11 @@
 
 进一步了解可以访问 [keymaster](https://github.com/madrobby/keymaster#supported-keys).
 
-## 咖啡或者星星
+## 参与贡献
+
+请先阅读 [CONTRIBUTING.md](./CONTRIBUTING.zh-CN.md)。
+
+## 咖啡或者好评
 
 如果觉得`GitMaster`帮到你了，请给它一颗 ⭐️。
 
