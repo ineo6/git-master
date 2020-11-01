@@ -183,7 +183,7 @@ class GitHubRepoInfo extends RepoInfoBase {
             </div>`;
           item.append(html);
         } else {
-          item.append('<div class="download"></div>');
+          item.append('<div class="download" style="width: 100px;margin-left: 16px;"></div>');
         }
       }
     });
