@@ -1,3 +1,12 @@
+## [1.11.2](https://github.com/ineo6/git-master/compare/v1.11.1...v1.11.2) (2020-11-01)
+
+
+### Bug Fixes
+
+* add default style for download space ([d6bf172](https://github.com/ineo6/git-master/commit/d6bf1728e3f4db908d38eb240d2a3597ea8654d8))
+* remove more times regex match for gitalb url ([2785e05](https://github.com/ineo6/git-master/commit/2785e05d0406c7e0024e0b61a61eda242bef687f))
+* remove more times regex match for gitalb url ([c5203f5](https://github.com/ineo6/git-master/commit/c5203f5c2c4dbee606777ab053d54f417424cf8a))
+
 ## [1.11.1](https://github.com/ineo6/git-master/compare/v1.11.0...v1.11.1) (2020-09-29)
 
 
