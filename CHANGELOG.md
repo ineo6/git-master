@@ -1,3 +1,10 @@
+## [1.11.3](https://github.com/ineo6/git-master/compare/v1.11.2...v1.11.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* improve code for get gitlab repo info ([5ff49f5](https://github.com/ineo6/git-master/commit/5ff49f5f07d06b4882e6c436ebb940c19f36696e))
+
 ## [1.11.2](https://github.com/ineo6/git-master/compare/v1.11.1...v1.11.2) (2020-11-01)
 
 
