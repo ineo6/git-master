@@ -113,12 +113,21 @@ class Gitlab extends PjaxAdapter {
 
     let pathname = window.location.pathname;
     // get project name first
-    const { group, project } = $('body').data();
+    const { project } = $('body').data();
 
-    const replacePath = pathname.replace(/\/-\/([^/]+)?/, '/$1');
+    const issueBtn = $('.shortcuts-issues');
+
+    const groupAndRepo = issueBtn.length ? issueBtn.attr('href') || '' : '';
+
+    // fallback is use pathname
+    let replacePath = pathname.replace(/\/-\/([^/]+)?/, '/$1');
+
+    if (groupAndRepo) {
+      replacePath = groupAndRepo.replace(/\/-\/([^/]+)?/, '/$1');
+    }
 
     // dynamic regex
-    let match = replacePath.match(new RegExp(`((?:[^/]+\\/)+)${group}/${project}(\\/([^/]+))?`));
+    let match = replacePath.match(new RegExp(`((?:[^/]+\\/)+)${project}(\\/([^/]+))?`));
 
     if (!match) {
       return cb();
@@ -127,7 +136,7 @@ class Gitlab extends PjaxAdapter {
     let reponame = project;
 
     const usernameArr = match[1].split('/').filter(Boolean);
-    usernameArr.push(group);
+
     const username = usernameArr.join('/');
 
     let type = match[2] || '';
