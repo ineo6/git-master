@@ -158,7 +158,7 @@ class GiteeRepoInfo extends RepoInfoBase {
 
         item.append(html);
       } else if (matchFile && fileType === 'icon-folders') {
-        fileIcon.replaceWith('<i class="gm-navigation-item-icon" role="presentation"></i>');
+        fileIcon.replaceWith('<i class="gm-navigation-item-icon gm-folder-icon" role="presentation"></i>');
 
         // eslint-disable-next-line max-len
         let html = `
