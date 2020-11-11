@@ -1,3 +1,11 @@
+## [1.11.4](https://github.com/ineo6/git-master/compare/v1.11.3...v1.11.4) (2020-11-11)
+
+
+### Bug Fixes
+
+* improve regex math for gitlab url ([d814ca6](https://github.com/ineo6/git-master/commit/d814ca69d8c52b7686a6e64d5701016606e99369))
+* show folder icon（[#41](https://github.com/ineo6/git-master/issues/41)） ([4a95974](https://github.com/ineo6/git-master/commit/4a959746ed6a045afb0357f2fbbfdddc72919053))
+
 ## [1.11.3](https://github.com/ineo6/git-master/compare/v1.11.2...v1.11.3) (2020-11-05)
 
 
