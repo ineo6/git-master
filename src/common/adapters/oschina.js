@@ -287,20 +287,7 @@ class Oschina extends PjaxAdapter {
       return true;
     }
 
-    const isGlobalLazyLoad = await extStore.get(STORE.LAZYLOAD);
-    if (isGlobalLazyLoad) {
-      return false;
-    }
-
-    // Else, return true only if it isn't in a huge repo list, which we must lazy load
-    const key = `${repo.username}/${repo.reponame}`;
-    const hugeRepos = await extStore.get(STORE.HUGE_REPOS);
-    if (hugeRepos[key] && isValidTimeStamp(hugeRepos[key])) {
-      // Update the last load time of the repo
-      hugeRepos[key] = new Date().getTime();
-      await extStore.set(STORE.HUGE_REPOS, hugeRepos);
-    }
-    return !hugeRepos[key];
+    return false;
   }
 
   _getPatch(opts, cb) {
