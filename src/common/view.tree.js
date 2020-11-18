@@ -197,6 +197,16 @@ class TreeView {
     return '';
   }
 
+  parserGiteeRepoPath(path) {
+    const match = path.match(/(?:[^/]+\/)+branch\/(?:[^/]+\/)(.*)/);
+
+    if (match && match.length === 2) {
+      return match[1];
+    }
+
+    return '';
+  }
+
   parserRepoPath(path) {
     const match = path.match(/(?:[^/]+\/){4}(.*)/);
 
@@ -212,6 +222,8 @@ class TreeView {
 
     if (this.adapter.whoami() === DICT.GITLAB) {
       return this.parserGitLabRepoPath(path);
+    } else if (this.adapter.whoami() === DICT.GITEA) {
+      return this.parserGiteeRepoPath(path);
     }
 
     return this.parserRepoPath(path);
