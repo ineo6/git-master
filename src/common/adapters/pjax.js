@@ -1,4 +1,4 @@
-import 'jquery-pjax';
+import '../libs/jquery.pjax';
 import Adapter from './adapter';
 import { EVENT } from '../core.constants';
 
@@ -8,9 +8,9 @@ class PjaxAdapter extends Adapter {
     this._pjaxContainerSel = pjaxContainerSel;
 
     $(document)
-      .on('pjax:start', (e) => this._handlePjaxEvent(e, EVENT.REQ_START, 'pjax:start'))
-      .on('pjax:end', (e) => this._handlePjaxEvent(e, EVENT.REQ_END, 'pjax:end'))
-      .on('pjax:timeout', (e) => e.preventDefault());
+      .on('pjax:start', e => this._handlePjaxEvent(e, EVENT.REQ_START, 'pjax:start'))
+      .on('pjax:end', e => this._handlePjaxEvent(e, EVENT.REQ_END, 'pjax:end'))
+      .on('pjax:timeout', e => e.preventDefault());
   }
 
   // @override
@@ -27,8 +27,7 @@ class PjaxAdapter extends Adapter {
     const pageChangeObserver = new window.MutationObserver(() => {
       // Trigger location change, can't just relayout as Octotree might need to
       // Hide/show depending on whether the current page is a code page or not.
-      return $(document)
-        .trigger(EVENT.LOC_CHANGE);
+      return $(document).trigger(EVENT.LOC_CHANGE);
     });
 
     if (pjaxContainer) {
@@ -53,8 +52,7 @@ class PjaxAdapter extends Adapter {
             firstLoad = false;
           } else {
             setTimeout(() => {
-              $(document)
-                .trigger(EVENT.LOC_CHANGE);
+              $(document).trigger(EVENT.LOC_CHANGE);
             }, 300); // Wait a bit for pjax DOM change
           }
         }
@@ -107,8 +105,7 @@ class PjaxAdapter extends Adapter {
     this._isDispatching = true;
 
     try {
-      $(document)
-        .trigger(gitmasterEventName);
+      $(document).trigger(gitmasterEventName);
 
       // Only dispatch to native DOM if the event is started by gitmaster. If the event is started in the DOM, jQuery
       // wraps it in the originalEvent property, that's what we use to check. Fixes #864.
@@ -140,9 +137,11 @@ class PjaxAdapter extends Adapter {
   _dispatchPjaxEventInDom(type) {
     const pjaxContainer = $(this._pjaxContainerSel)[0];
     if (pjaxContainer) {
-      pjaxContainer.dispatchEvent(new Event(type, {
-        bubbles: true,
-      }));
+      pjaxContainer.dispatchEvent(
+        new Event(type, {
+          bubbles: true,
+        })
+      );
     }
   }
 
