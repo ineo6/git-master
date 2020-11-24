@@ -1,3 +1,12 @@
+## [1.11.5](https://github.com/ineo6/git-master/compare/v1.11.4...v1.11.5) (2020-11-24)
+
+
+### Bug Fixes
+
+* disable gitee layload ([dfb4cce](https://github.com/ineo6/git-master/commit/dfb4cce5d50ea857c3e724339d35fcf73396b072))
+* pjax error on youtube page ([8d782d5](https://github.com/ineo6/git-master/commit/8d782d5dae7ce0fee0ee2c033e9f978da923a804))
+* support gitee selectPath ([8f1c3a0](https://github.com/ineo6/git-master/commit/8f1c3a04c07917767ba9fdfc4a25c744205b1b70))
+
 ## [1.11.4](https://github.com/ineo6/git-master/compare/v1.11.3...v1.11.4) (2020-11-11)
 
 
