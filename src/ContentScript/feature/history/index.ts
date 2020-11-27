@@ -3,6 +3,10 @@ import { isButtonInsertedGithub, isButtonInsertedGitlab } from './history';
 
 export default (ctx: GitMaster) => {
   const register = () => {
+    if (process.env.TARGET_BROWSER === 'safari') {
+      return;
+    }
+
     ctx.helper.documentLoadedPlugins.register('github-history', {
       async handle() {
         isButtonInsertedGithub(document.URL);
