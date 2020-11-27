@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const wextManifest = require('wext-manifest');
 const ZipPlugin = require('zip-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -11,7 +10,7 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const ExtensionReloader = require('webpack-extension-reloader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { argv } = require('yargs');
-
+const wextManifest = require('./scripts/wext-manifest');
 const manifestInput = require('./src/manifest');
 
 const viewsPath = path.join(__dirname, 'views');
@@ -67,6 +66,7 @@ const extPath = {
   chrome: 'chrome-extension://__MSG_@@extension_id__',
   firefox: 'moz-extension://__MSG_@@extension_id__',
   opera: 'chrome-extension://__MSG_@@extension_id__',
+  safari: 'chrome-extension://__MSG_@@extension_id__',
 };
 
 function getLessVar() {
@@ -104,6 +104,8 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: {
       'webextension-polyfill-ts': path.resolve(path.join(__dirname, 'node_modules', 'webextension-polyfill-ts')),
+      'webextension-polyfill': path.resolve(path.join(__dirname, './src/common/libs/webextension-polyfill.js')),
+      'webextension-polyfill-origin': path.resolve(path.join(__dirname, 'node_modules', 'webextension-polyfill')),
       key: path.resolve(path.join(__dirname, './src/common/libs/keymaster.js')),
       '@': path.resolve(__dirname, 'src'),
     },
