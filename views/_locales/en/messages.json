@@ -68,16 +68,16 @@
   "notify_github_sound": {
     "message": "Enable notification sound"
   },
-  "notify_github_reuse_tab":{
+  "notify_github_reuse_tab": {
     "message": "Reuse notifications tabs when possible"
   },
-  "notify_github_update_count":{
+  "notify_github_update_count": {
     "message": "Update notification count after opening a notification"
   },
-  "download_url_use_mirror":{
+  "download_url_use_mirror": {
     "message": "Use jsDelivr"
   },
-  "download_url_use_mirror_desc":{
+  "download_url_use_mirror_desc": {
     "message": "Download GitHub file via jsDelivr CDN。"
   },
   "github_notifications": {
@@ -106,5 +106,11 @@
   },
   "config_analysis": {
     "message": "Send analysis info"
+  },
+  "build_in_dark": {
+    "message": "Extension DarkMode"
+  },
+  "config_build_in_dark_tip": {
+    "message": "When this option is off, extension's dark mode will be controlled by website self."
   }
 }

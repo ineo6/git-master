@@ -89,6 +89,16 @@ export const subscribeDarkMode = (cb: (prefersDarkMode: any) => void) => {
   }
 };
 
+export const isGitHubInDark = () => {
+  const dataSet = document.documentElement.dataset;
+
+  if (dataSet && dataSet.colorMode) {
+    return dataSet.colorMode === 'dark';
+  }
+
+  return false;
+};
+
 export async function getFileIcon(fileName: string) {
   if (await extStore.get(STORE.ICONS)) {
     const className = FileIcons.getClass(fileName);

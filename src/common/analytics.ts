@@ -35,6 +35,11 @@ export const GaEvent = {
     eventAction: '',
     eventLabel: 'feature usage',
   },
+  DISABLE_BUILD_IN_DARK: {
+    eventCategory: 'dark-mode',
+    eventAction: '',
+    eventLabel: 'close build in',
+  },
   VIEW_POSITION: {
     eventCategory: 'view-position',
     eventAction: '',

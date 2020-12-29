@@ -28,6 +28,7 @@ export const STORE = {
   DARKMODE: 'gitmaster.dark_mode',
   FILESIZE: 'gitmaster.show_file_size',
   ANALYSIS: 'gitmaster.ga',
+  BUILD_IN_DARK: 'gitmaster.build_in_dark',
 };
 
 export const DICT = {
@@ -58,6 +59,7 @@ export const DEFAULTS = {
   DARKMODE: false,
   FILESIZE: true,
   ANALYSIS: true,
+  BUILD_IN_DARK: true,
 };
 
 export const EVENT = {

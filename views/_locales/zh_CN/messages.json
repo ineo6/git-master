@@ -106,5 +106,11 @@
   },
   "config_analysis": {
     "message": "允许发送统计信息"
+  },
+  "build_in_dark": {
+    "message": "内置黑暗模式"
+  },
+  "config_build_in_dark_tip": {
+    "message": "取消内置模式后，将禁用扩展黑暗模式，并跟随网站主题设置"
   }
 }
