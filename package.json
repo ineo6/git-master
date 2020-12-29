@@ -34,6 +34,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.4",
     "@ineo6/file-icons": "1.2.0",
+    "@ineo6/github-dark-theme": "^1.0.0",
     "antd": "^4.1.2",
     "classnames": "^2.2.6",
     "clipboard": "^2.0.6",
@@ -99,6 +100,7 @@
     "husky": "^4.2.3",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
+    "less-plugin-sass2less": "^1.2.0",
     "magic-lint": "^1.2.0",
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",

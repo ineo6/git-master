@@ -1,26 +1,31 @@
+@theme-path: '~@ineo6/github-dark-theme/lib';
+
+@import '@{theme-path}/variables.less';
+
 .gm-default-theme-github,
 .gm-default-theme-gist {
-  @import 'variables.less';
-  @import 'layout.less';
-  @import 'elements.less';
-  @import 'code.less';
-  @import 'codemirror-theme.less';
-  @import 'codemirror.less';
-  @import 'diff.less';
-  @import 'markdown.less';
-  @import 'discussions.less';
-  @import 'plugins.less';
-  @import 'repo.less';
-  @import 'files.less';
-  @import 'profile.less';
-  @import 'misc.less';
-  @import 'notifications.less';
-  @import 'organization.less';
-  @import 'issues.less';
-  @import 'auth.less';
-  @import 'developer.less';
+  @import '@{theme-path}/layout.less';
+  @import '@{theme-path}/elements.less';
+  @import '@{theme-path}/code.less';
+  @import '@{theme-path}/codemirror-theme.less';
+  @import '@{theme-path}/codemirror.less';
+  @import '@{theme-path}/diff.less';
+  @import '@{theme-path}/markdown.less';
+  @import '@{theme-path}/discussions.less';
+  @import '@{theme-path}/repo.less';
+  @import '@{theme-path}/files.less';
+  @import '@{theme-path}/profile.less';
+  @import '@{theme-path}/misc.less';
+  @import '@{theme-path}/notifications.less';
+  @import '@{theme-path}/organization.less';
+  @import '@{theme-path}/issues.less';
+  @import '@{theme-path}/auth.less';
+  @import '@{theme-path}/developer.less';
+  @import '@{theme-path}/alert.less';
+  @import '@{theme-path}/license.less';
+  @import '@{theme-path}/override.less';
+}
+
+.gm-default-theme-for-sidebar {
   @import 'extensions/git-master-ext.less';
-  @import 'alert.less';
-  @import 'license.less';
-  @import '404.less';
 }
