@@ -1,5 +1,9 @@
 const pkg = require('../../package.json');
 
+const devMatches = ['https://github.com/*', 'https://gitlab.com/*', 'https://try.gitea.io/*', '*://gitee.com/*'];
+
+const prodMatches = ['http://*/*', 'https://*/*'];
+
 const manifestInput = {
   manifest_version: 2,
   name: '__MSG_name__',
@@ -65,7 +69,7 @@ const manifestInput = {
   content_scripts: [
     {
       run_at: 'document_start',
-      matches: ['http://*/*', 'https://*/*'],
+      matches: process.env.NODE_ENV === 'production' ? prodMatches : devMatches,
       js: ['js/contentScript.bundle.js'],
       css: ['css/contentScript.css'],
     },
