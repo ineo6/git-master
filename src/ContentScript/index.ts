@@ -10,8 +10,8 @@ import './ui/toast/index.less';
 import './ui/toast/toast';
 import './theme/app.less';
 import '../common/libs/master-font.less';
-import { isGitHubInDark, whichSite } from '@/ContentScript/util';
-import { DICT, STORE } from '@/common/core.constants';
+import { inSystemDarkMode, isGitHubInDark, subscribeDarkModeAndChange, whichSite } from '@/ContentScript/util';
+import { DICT, shareClassName, STORE } from '@/common/core.constants';
 import extStore from '@/common/core.storage';
 import { browser } from 'webextension-polyfill-ts';
 import GitMaster from './PageLife/core/GitMaster';
@@ -20,7 +20,6 @@ async function loadNow() {
   const siteType = await whichSite();
 
   const darkClassName = 'gm-default-theme-' + siteType;
-  const sidebarDarkCls = 'gm-default-theme-for-sidebar';
 
   if (siteType === DICT.GITHUB || siteType === DICT.GIST) {
     const isDarkMode = await extStore.get(STORE.DARKMODE);
@@ -32,7 +31,7 @@ async function loadNow() {
       if (isDarkMode) {
         $('html')
           .addClass(darkClassName)
-          .addClass(sidebarDarkCls);
+          .addClass(shareClassName.sidebarDarkCls);
       } else {
         // if githubIsDark enable to disable or make toast
       }
@@ -40,9 +39,11 @@ async function loadNow() {
       // use github dark mode
       // only enable sidebar dark mode
       // eslint-disable-next-line no-lonely-if
-      if (githubIsDark) {
-        $('html').addClass(sidebarDarkCls);
+      if (githubIsDark || inSystemDarkMode()) {
+        $('html').addClass(shareClassName.sidebarDarkCls);
       }
+
+      subscribeDarkModeAndChange();
     }
   }
 }

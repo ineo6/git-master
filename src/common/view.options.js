@@ -1,6 +1,7 @@
 import { report } from '@/ContentScript/feature/util';
-import { isGitHubInDark } from '@/ContentScript/util';
-import { DICT, EVENT, SIDEBAR_RIGHT, STORE } from './core.constants';
+import { isGitHubInDark, subscribeDarkModeAndChange, unSubscribeDarkMode } from '@/ContentScript/util';
+import { shareClassName, DICT, EVENT, SIDEBAR_RIGHT, STORE } from '@/common/core.constants';
+
 import extStore from './core.storage';
 import { parallel } from './util.misc';
 
@@ -110,7 +111,6 @@ class OptionsView {
       [1],
       async (elm, cb) => {
         const mode = 'gm-default-theme-' + this.whoami;
-        const sidebarDarkCls = 'gm-default-theme-for-sidebar';
 
         let value = await extStore.get(STORE.DARKMODE);
 
@@ -121,9 +121,9 @@ class OptionsView {
         }
 
         if (value) {
-          $('html').addClass([mode, sidebarDarkCls].join(' '));
+          $('html').addClass([mode, shareClassName.sidebarDarkCls].join(' '));
         } else {
-          $('html').removeClass([mode, sidebarDarkCls].join(' '));
+          $('html').removeClass([mode, shareClassName.sidebarDarkCls].join(' '));
         }
 
         report.send(report.event.DARK_MODE, {
@@ -136,15 +136,12 @@ class OptionsView {
   }
 
   async clearBuildInDarkMode() {
-    // 清除旧状态，并检查github是否开启并应用
-    // 按钮不可见，同时清除当前状态（已经亮了就取消，）
     const value = await extStore.get(STORE.DARKMODE);
     const mode = 'gm-default-theme-' + this.whoami;
-    const sidebarDarkCls = 'gm-default-theme-for-sidebar';
 
     if (value) {
       // dark mode off
-      $('html').removeClass([mode, sidebarDarkCls].join(' '));
+      $('html').removeClass([mode, shareClassName.sidebarDarkCls].join(' '));
 
       await extStore.set(STORE.DARKMODE, !value);
     }
@@ -153,7 +150,7 @@ class OptionsView {
     const githubIsDark = isGitHubInDark();
 
     if (githubIsDark) {
-      $('html').addClass(sidebarDarkCls);
+      $('html').addClass(shareClassName.sidebarDarkCls);
     }
 
     report.send(report.event.DISABLE_BUILD_IN_DARK, {
@@ -231,7 +228,7 @@ class OptionsView {
         cb();
       },
       () => {
-        this.initDarkModeBtn(true);
+        this.initDarkModeBtn(false);
       }
     );
   }
@@ -250,16 +247,21 @@ class OptionsView {
     );
   }
 
-  async initDarkModeBtn(init = false) {
+  async initDarkModeBtn(init = true) {
     // disable when build-in is false
     const isBuildInDark = await extStore.get(STORE.BUILD_IN_DARK);
 
     if ([DICT.GITHUB, DICT.GIST].includes(this.whoami) && isBuildInDark) {
+      !init && unSubscribeDarkMode();
+
       this.$darkMode.show();
     } else {
+      if (!isBuildInDark && !init) {
+        subscribeDarkModeAndChange();
+      }
+
       this.$darkMode.hide();
-      console.log(init);
-      init && this.clearBuildInDarkMode();
+      !init && this.clearBuildInDarkMode();
     }
   }
 }

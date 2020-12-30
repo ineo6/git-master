@@ -82,6 +82,10 @@ export const MessageType = {
   PAGE_RENDERED: 'pageRendered',
 };
 
+export const shareClassName = {
+  sidebarDarkCls: 'gm-default-theme-for-sidebar',
+};
+
 window.STORE = STORE;
 window.DEFAULTS = DEFAULTS;
 window.EVENT = EVENT;

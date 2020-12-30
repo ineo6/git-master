@@ -1,7 +1,7 @@
 // @ts-ignore
 import FileIcons from '@ineo6/file-icons';
 import extStore from '@/common/core.storage';
-import { DICT, STORE } from '@/common/core.constants';
+import { DICT, shareClassName, STORE } from '@/common/core.constants';
 
 export async function whichSite() {
   const currentUrl = `${window.location.protocol}//${window.location.host}`;
@@ -75,17 +75,38 @@ export const inSystemDarkMode = (): boolean => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
+let subscribeDarkCloseFunction: any;
+
 export const subscribeDarkMode = (cb: (prefersDarkMode: any) => void) => {
   let media = window.matchMedia('(prefers-color-scheme: dark)');
-  let callback = (e: { matches: any }) => {
+  let callback = function(e: { matches: any }) {
     let prefersDarkMode = e.matches;
 
     cb && cb(prefersDarkMode);
   };
-  if (typeof media.addEventListener === 'function') {
-    media.addEventListener('change', callback);
-  } else if (typeof media.addListener === 'function') {
-    media.addListener(callback);
+
+  media.addEventListener('change', callback);
+
+  subscribeDarkCloseFunction = function() {
+    media.removeEventListener('change', callback);
+  };
+};
+
+export const unSubscribeDarkMode = () => {
+  subscribeDarkCloseFunction && subscribeDarkCloseFunction();
+
+  subscribeDarkCloseFunction = null;
+};
+
+export const subscribeDarkModeAndChange = () => {
+  if (!subscribeDarkCloseFunction) {
+    subscribeDarkMode(function(isDark) {
+      if (isDark) {
+        $('html').addClass(shareClassName.sidebarDarkCls);
+      } else {
+        $('html').removeClass(shareClassName.sidebarDarkCls);
+      }
+    });
   }
 };
 
