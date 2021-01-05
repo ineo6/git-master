@@ -112,5 +112,8 @@
   },
   "config_build_in_dark_tip": {
     "message": "When this option is off, extension's dark mode will be controlled by website self."
+  },
+  "guide_gif_url": {
+    "message": "https://i.loli.net/2021/01/05/bS7Os6deuRQW4zx.gif"
   }
 }

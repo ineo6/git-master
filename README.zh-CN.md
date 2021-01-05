@@ -16,7 +16,7 @@
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/git-master/klmeolbcejnhefkapdchfhlhhjgobhmo)
 - [Edge Web Store](https://microsoftedge.microsoft.com/addons/detail/pcpkfgepcjdmdfelbabogmgoadgmiocg)
-- [Firefox Addon](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
+- [~~Firefox Addon~~](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
 
 ## 特性
 
@@ -28,6 +28,25 @@
 - 📋 代码片段复制
 - ⬇️ `GitHub`支持文件、目录下载
 - 📦 展示`GitHub`仓库和文件大小
+
+## 使用
+
+访问以下网站时会自动启用扩展：
+
+- github.com
+- gitlab.com
+- git.oschina.net、gitee.com
+- try.gitea.io
+
+如果你访问的网站是私有部署，需要你手动标记网站类型，具体操作过程如下：
+
+### 设置扩展长显
+
+![guide-pin-zh.png](https://i.loli.net/2021/01/05/JCAVEv1uqr4InPo.png)
+
+### 标记域名
+
+![guide-mark-zh.png](https://i.loli.net/2021/01/05/Lk2EdQGBSaKWCAN.png)
 
 ## 设置
 

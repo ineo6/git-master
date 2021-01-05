@@ -112,5 +112,8 @@
   },
   "config_build_in_dark_tip": {
     "message": "取消内置模式后，将禁用扩展黑暗模式，并跟随网站主题设置"
+  },
+  "guide_gif_url": {
+    "message": "https://i.loli.net/2021/01/05/gxViNhUMk3zTEdu.gif"
   }
 }

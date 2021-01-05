@@ -27,6 +27,23 @@ English | [简体中文](./README.zh-CN.md)
 - Code Snippet
 - Browse the history of files (GitHub && GitLab)
 
+## Usage
+
+By default, the extension only loads on domains below. You can manually enable the extension for your custom domain by clicking the extension icon and choosing Enable xxx.
+
+- github.com
+- gitlab.com
+- git.oschina.net、gitee.com
+- try.gitea.io
+
+### Pin first
+
+![guide-pin-en.png](https://i.loli.net/2021/01/05/1o7BywXICP3zb5k.png)
+
+### Mark site
+
+![guide-mark-en.png](https://i.loli.net/2021/01/05/DeX82mFdBtnVHiG.png)
+
 ## Settings
 
 ### Access Token

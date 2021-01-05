@@ -1,8 +1,11 @@
 import React from 'react';
-import {browser} from 'webextension-polyfill-ts';
+import { browser } from 'webextension-polyfill-ts';
 import Switch from 'rc-switch';
+import { Modal, Row, Col } from 'antd';
+
 import optionsStorage from '@/Background/options-storage';
-import {requestPermission} from '@/Background/lib/permissions-service';
+import localStore from '@/Background/lib/local-store';
+import { requestPermission } from '@/Background/lib/permissions-service';
 import Message from './Message';
 import Section from './Section';
 import SectionOption from './SectionOption';
@@ -19,6 +22,7 @@ interface OptionsState {
   reuseTabs: boolean;
   updateCountOnNavigation: boolean;
   useJsDelivr: boolean;
+  visible: boolean;
 }
 
 class Options extends React.Component<any, OptionsState> {
@@ -34,6 +38,7 @@ class Options extends React.Component<any, OptionsState> {
       reuseTabs: false,
       updateCountOnNavigation: false,
       useJsDelivr: false,
+      visible: false,
     };
   }
 
@@ -43,10 +48,17 @@ class Options extends React.Component<any, OptionsState> {
     const optionData = await optionsStorage.getAll();
 
     this.setState(optionData);
+
+    const isGuideRead = await localStore.get('isGuideRead');
+
+    if (!isGuideRead) {
+      this.showGuide();
+      await localStore.set('isGuideRead', true);
+    }
   }
 
   saveField = (fieldName: string, fieldValue: any) => {
-    const updateData = {[fieldName]: fieldValue};
+    const updateData = { [fieldName]: fieldValue };
 
     // @ts-ignore
     this.setState(updateData);
@@ -97,98 +109,136 @@ class Options extends React.Component<any, OptionsState> {
     this.saveField('rootUrl', e.target.value);
   };
 
+  showGuide = () => {
+    this.setState({ visible: true });
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+
+    localStore.set('isGuideRead', true);
+  };
+
+  handleGuideClick = () => {
+    this.setState({ visible: true });
+  };
+
   render() {
-    const {rootUrl, token, onlyParticipating, showDesktopNotif, playNotifSound, reuseTabs, updateCountOnNavigation, useJsDelivr} = this.state;
+    const {
+      rootUrl,
+      token,
+      onlyParticipating,
+      showDesktopNotif,
+      playNotifSound,
+      reuseTabs,
+      updateCountOnNavigation,
+      useJsDelivr,
+      visible,
+    } = this.state;
 
     return (
-      <form
-        id="options-form"
-        ref={ins => {
-          this.form = ins;
-        }}
-      >
-        <div className="header">
-          <h1>Git Master</h1>
-        </div>
-        <Section title={<Message i18n="github_notifications" />}>
-          <SectionOption
-            title="Root URL"
-            description={
-              <div className="small">
-                <Message i18n="notify_github_host_tip" />
-              </div>
-            }
-          >
-            <label>
-              <input
-                className="master-input github-url"
-                value={rootUrl}
-                onChange={this.handleUrlChange}
-                type="url"
-                name="rootUrl"
-                placeholder="e.g. https://github.yourco.com/"
-              />
-            </label>
-          </SectionOption>
-
-          <SectionOption
-            title="Token"
-            description={
-              <>
-                <div className="small">
-                  <Message i18n="notify_github_token_tip" />
+      <div>
+        <form
+          id="options-form"
+          ref={ins => {
+            this.form = ins;
+          }}
+        >
+          <div className="header">
+            <Row>
+              <Col span={5}>
+                <h1>Git Master</h1>
+              </Col>
+              <Col span={4}>
+                <div className="guide" onClick={this.handleGuideClick}>
+                  guide
                 </div>
+              </Col>
+            </Row>
+          </div>
+          <Section title={<Message i18n="github_notifications" />}>
+            <SectionOption
+              title="Root URL"
+              description={
                 <div className="small">
-                  <Message i18n="notify_github_token_private_tip" />
+                  <Message i18n="notify_github_host_tip" />
                 </div>
-              </>
-            }
-          >
-            <label>
-              <input
-                value={token}
-                onChange={this.handleTokenChange}
-                type="text"
-                name="token"
-                className="master-input github-token"
-                placeholder="a1b2c3d4e5f6g7h8i9j0a1b2c3d4e5f6g7h8i9j0"
-                pattern="[a-z\d]{40}"
-                spellCheck="false"
-              />
-            </label>
-          </SectionOption>
+              }
+            >
+              <label>
+                <input
+                  className="master-input github-url"
+                  value={rootUrl}
+                  onChange={this.handleUrlChange}
+                  type="url"
+                  name="rootUrl"
+                  placeholder="e.g. https://github.yourco.com/"
+                />
+              </label>
+            </SectionOption>
 
-          <SectionOption title={<Message i18n="notify_github_issue" />} layout="horizontal">
-            <Switch checked={onlyParticipating} onClick={this.handleParticipatingChange} />
-          </SectionOption>
+            <SectionOption
+              title="Token"
+              description={
+                <>
+                  <div className="small">
+                    <Message i18n="notify_github_token_tip" />
+                  </div>
+                  <div className="small">
+                    <Message i18n="notify_github_token_private_tip" />
+                  </div>
+                </>
+              }
+            >
+              <label>
+                <input
+                  value={token}
+                  onChange={this.handleTokenChange}
+                  type="text"
+                  name="token"
+                  className="master-input github-token"
+                  placeholder="a1b2c3d4e5f6g7h8i9j0a1b2c3d4e5f6g7h8i9j0"
+                  pattern="[a-z\d]{40}"
+                  spellCheck="false"
+                />
+              </label>
+            </SectionOption>
 
-          <SectionOption title={<Message i18n="notify_github_desktop" />} layout="horizontal">
-            <Switch checked={showDesktopNotif} onClick={this.handleNotifyInputChange} />
-          </SectionOption>
+            <SectionOption title={<Message i18n="notify_github_issue" />} layout="horizontal">
+              <Switch checked={onlyParticipating} onClick={this.handleParticipatingChange} />
+            </SectionOption>
 
-          <SectionOption title={<Message i18n="notify_github_sound" />} layout="horizontal">
-            <Switch checked={playNotifSound} onClick={this.handleSoundChange} />
-          </SectionOption>
+            <SectionOption title={<Message i18n="notify_github_desktop" />} layout="horizontal">
+              <Switch checked={showDesktopNotif} onClick={this.handleNotifyInputChange} />
+            </SectionOption>
 
-          <SectionOption title={<Message i18n="notify_github_reuse_tab" />} layout="horizontal">
-            <Switch checked={reuseTabs} onClick={this.handleReuseTabsChange} />
-          </SectionOption>
+            <SectionOption title={<Message i18n="notify_github_sound" />} layout="horizontal">
+              <Switch checked={playNotifSound} onClick={this.handleSoundChange} />
+            </SectionOption>
 
-          <SectionOption title={<Message i18n="notify_github_update_count" />} layout="horizontal">
-            <Switch checked={updateCountOnNavigation} onClick={this.handleTabUpdateChange} />
-          </SectionOption>
-        </Section>
+            <SectionOption title={<Message i18n="notify_github_reuse_tab" />} layout="horizontal">
+              <Switch checked={reuseTabs} onClick={this.handleReuseTabsChange} />
+            </SectionOption>
 
-        <Section title="其他">
-          <SectionOption
-            title={<Message i18n="download_url_use_mirror" />}
-            layout="horizontal"
-            description={<Message i18n="download_url_use_mirror_desc" />}
-          >
-            <Switch checked={useJsDelivr} onClick={this.handleUseJsDelivrChange} />
-          </SectionOption>
-        </Section>
-      </form>
+            <SectionOption title={<Message i18n="notify_github_update_count" />} layout="horizontal">
+              <Switch checked={updateCountOnNavigation} onClick={this.handleTabUpdateChange} />
+            </SectionOption>
+          </Section>
+
+          <Section title="其他">
+            <SectionOption
+              title={<Message i18n="download_url_use_mirror" />}
+              layout="horizontal"
+              description={<Message i18n="download_url_use_mirror_desc" />}
+            >
+              <Switch checked={useJsDelivr} onClick={this.handleUseJsDelivrChange} />
+            </SectionOption>
+          </Section>
+        </form>
+        <Modal width={900} centered visible={visible} onOk={this.showGuide} onCancel={this.handleCancel} footer={null}>
+          <img width="100%" src={browser.i18n.getMessage('guide_gif_url')} alt="" />
+        </Modal>
+      </div>
     );
   }
 }
