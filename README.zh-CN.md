@@ -42,7 +42,7 @@
 
 ### 设置扩展长显
 
-![guide-pin-zh.png](https://i.loli.net/2021/01/05/JCAVEv1uqr4InPo.png)
+![guide-pin-zh.png](https://i.loli.net/2021/01/05/1o7BywXICP3zb5k.png)
 
 ### 标记域名
 

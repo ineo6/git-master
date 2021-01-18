@@ -38,7 +38,7 @@ By default, the extension only loads on domains below. You can manually enable t
 
 ### Pin first
 
-![guide-pin-en.png](https://i.loli.net/2021/01/05/1o7BywXICP3zb5k.png)
+![guide-pin-en.png](https://i.loli.net/2021/01/05/JCAVEv1uqr4InPo.png)
 
 ### Mark site
 
