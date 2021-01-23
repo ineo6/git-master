@@ -42,6 +42,12 @@
         "tsx": "never"
       }
     ],
-    "no-useless-concat": "off"
+    "no-useless-concat": "off",
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "prop": false
+      }
+    ]
   }
 }
