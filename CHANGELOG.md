@@ -1,3 +1,19 @@
+# [1.12.0](https://github.com/ineo6/git-master/compare/v1.11.5...v1.12.0) (2021-01-23)
+
+
+### Features
+
+* add usage tips ([5c69189](https://github.com/ineo6/git-master/commit/5c69189427f994c6c32ab19d37be549d19875364))
+* add version tips ([87eed46](https://github.com/ineo6/git-master/commit/87eed4696cd16e9dfa82d58fbae2a283a81540c1))
+* change loading style ([b1aa643](https://github.com/ineo6/git-master/commit/b1aa643cdd374c4988c8d08401ee73493af457aa))
+* disable git history in safari ([f304752](https://github.com/ineo6/git-master/commit/f304752097496c58894256e053effb53c2067cea))
+* load entire tree for gitee again ([65de99e](https://github.com/ineo6/git-master/commit/65de99edfe2743296be4af56fccfabbcc114784b))
+* support safari 14 ([d24a92c](https://github.com/ineo6/git-master/commit/d24a92c0a52520d3a3c65654c1fe5e88b4c792c1))
+* unSubscribe dark mode when build-in enabled ([a651813](https://github.com/ineo6/git-master/commit/a65181363b8c862848478a7538424ab36bc63122))
+* update github dark mode style ([3314566](https://github.com/ineo6/git-master/commit/3314566b31a2298a2fba8ba30a6dfc1550c061d4))
+* update xcode project version ([2ed01ec](https://github.com/ineo6/git-master/commit/2ed01ece74566452dd43da856a65322532728841))
+* work with github official dark mode ([d0031f4](https://github.com/ineo6/git-master/commit/d0031f4a72017c48db4afa8d0ce8aac9a91bd4ed))
+
 ## [1.11.5](https://github.com/ineo6/git-master/compare/v1.11.4...v1.11.5) (2020-11-24)
 
 
