@@ -29,6 +29,7 @@ export const STORE = {
   FILESIZE: 'gitmaster.show_file_size',
   ANALYSIS: 'gitmaster.ga',
   BUILD_IN_DARK: 'gitmaster.build_in_dark',
+  CURRENT_VERSION: 'gitmaster.current_version',
 };
 
 export const DICT = {
@@ -60,6 +61,7 @@ export const DEFAULTS = {
   FILESIZE: true,
   ANALYSIS: true,
   BUILD_IN_DARK: true,
+  CURRENT_VERSION: '0',
 };
 
 export const EVENT = {

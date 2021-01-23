@@ -3,8 +3,10 @@ import key from 'key';
 import { browser } from 'webextension-polyfill-ts';
 import { ADDON_CLASS, DICT, EVENT, PINNED_CLASS, SHOW_CLASS, STORE } from '@/common/core.constants';
 import { whichSite } from '@/ContentScript/util';
-import octotree from '../common/core.api';
+import tippy from 'tippy.js';
+import compareVersions from 'compare-versions';
 
+import octotree from '../common/core.api';
 import TreeView from '../common/view.tree';
 import OptionsView from '../common/view.options';
 import HelpPopup from '../common/view.help';
@@ -15,6 +17,10 @@ import Gitlab from '../common/adapters/gitlab';
 import Oschina from '../common/adapters/oschina';
 import Gitea from '../common/adapters/gitea';
 import Gist from '../common/adapters/gist';
+import changelog from '../../views/changelog';
+
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/themes/light.css';
 
 async function createAdapter() {
   const siteType = await whichSite();
@@ -56,6 +62,8 @@ class CodeTree {
 
   $pinner: any;
 
+  $version: any;
+
   treeView: any;
 
   errorView: any;
@@ -69,6 +77,8 @@ class CodeTree {
   repoMeta: any = {};
 
   adapterMap: any = {};
+
+  shouldUpdateVersion: boolean = false;
 
   instance: CodeTreeInstance = {
     load: () => {},
@@ -120,6 +130,47 @@ class CodeTree {
     }
 
     return adapter;
+  }
+
+  generateLog(title: string, logs: any, lang: string) {
+    if (!logs.length) {
+      return '';
+    }
+
+    let logHtml = `<h5>${title}</h5><ul>`;
+
+    logs.forEach((feat: { text: any; description: any }) => {
+      logHtml += `<li><p>${feat.text[lang]}</p>`;
+
+      if (feat.description && feat.description[lang]) {
+        logHtml += `<p class="gitmaster-changelog-description">${feat.description[lang]}</p>`;
+      }
+
+      logHtml += '</li>';
+    });
+
+    logHtml += '</ul>';
+
+    return logHtml;
+  }
+
+  generateChangelog(version: string, lang: string) {
+    let features = this.generateLog('🚀 Features', changelog.feature, lang);
+    let fixes = this.generateLog('🐛 Bug fixes', changelog.fix, lang);
+
+    return `
+           <div class="gitmaster-changelog">
+              <div class="gitmaster-changelog-title">
+                <h3>${version}</h3>
+              </div>
+              <div class="gitmaster-changelog-features">
+               ${features}
+              </div>
+                <div class="gitmaster-changelog-fixes">
+               ${fixes}
+              </div>
+           </div>
+          `;
   }
 
   async loadGistExtension(adapter: any, activationOpts = {}) {
@@ -226,6 +277,7 @@ class CodeTree {
     this.$views = this.$sidebar.find('.gitmaster-view');
     const $spinner = this.$sidebar.find('.gitmaster-spin');
     this.$pinner = this.$sidebar.find('.gitmaster-pin');
+    this.$version = this.$sidebar.find('#gitmaster-version');
     this.treeView = new TreeView($dom, adapter);
     const optsView = new OptionsView($dom, adapter, this.$sidebar);
     const helpPopup = new HelpPopup($dom);
@@ -249,6 +301,7 @@ class CodeTree {
     const $document = this.$document;
     const treeView = this.treeView;
 
+    const self = this;
     for (const view of [this.treeView, this.errorView, optsView]) {
       $(view)
         // eslint-disable-next-line no-loop-func
@@ -260,6 +313,10 @@ class CodeTree {
 
             if (adapter.isOnPRPage && (await extStore.get(STORE.PR))) {
               treeView.$tree.jstree('open_all');
+            }
+
+            if (this === self.treeView && self.shouldUpdateVersion) {
+              await self.setChangelogVersion();
             }
           }
           showView(this);
@@ -309,7 +366,45 @@ class CodeTree {
       activationOpts
     );
 
+    await this.initChangelog();
+
     return this.instance.tryLoad();
+  }
+
+  async setChangelogVersion() {
+    const { version } = browser.runtime.getManifest();
+
+    setTimeout(async () => {
+      await extStore.set(STORE.CURRENT_VERSION, version);
+    }, 10 * 1000);
+  }
+
+  async initChangelog() {
+    const { version } = browser.runtime.getManifest();
+    const lang = browser.i18n.getMessage('@@ui_locale');
+
+    const lastVersion = await extStore.get(STORE.CURRENT_VERSION);
+
+    $(`<span>v${version}</span>`).appendTo(this.$version);
+
+    if (compareVersions(version, lastVersion || '0') > 0) {
+      $('<span style="color:#ff4d4f">(New)</span>').appendTo(this.$version);
+      this.shouldUpdateVersion = true;
+    }
+
+    tippy(this.$version.get(0), {
+      content: this.generateChangelog(version, lang),
+      allowHTML: true,
+      interactive: true,
+      maxWidth: 400,
+      trigger: 'click',
+      zIndex: 1000000002,
+      offset: [0, 20],
+      theme: 'light',
+      popperOptions: {
+        strategy: 'fixed',
+      },
+    });
   }
 
   /**

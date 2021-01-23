@@ -1,0 +1,55 @@
+@import './theme';
+
+@changelog-prefix-cls: ~'@{gm-prefix}-changelog';
+
+.@{changelog-prefix-cls} {
+  min-width: 300px;
+  max-width: 500px;
+  padding: 10px;
+
+  h3 {
+    margin: 0;
+  }
+
+  ul {
+    padding-left: 22px;
+    list-style: none;
+
+    & > li {
+      margin-bottom: 10px;
+      list-style: decimal;
+    }
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  &-title {
+    margin-bottom: 15px;
+
+    h3 {
+      font-size: 20px;
+    }
+  }
+
+  &-features,
+  &-fixes {
+    margin-bottom: 10px;
+
+    h5 {
+      margin-top: 24px;
+      margin-bottom: 15px;
+    }
+  }
+
+  &-features {
+  }
+
+  &-fixes {
+  }
+
+  &-description {
+    color: #757575;
+  }
+}

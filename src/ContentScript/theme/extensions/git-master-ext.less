@@ -84,6 +84,36 @@
   background-color: @head-bg !important;
   border: 0 solid !important;
   border-right: 1px solid @border-color !important;
+
+  .tippy-box {
+    color: @bright-text-color;
+    background-color: @head-bg !important;
+    box-shadow: inset 0 1px 0 @border-color !important;
+  }
+
+  .tippy-box[data-placement^='top'] > .tippy-arrow:before {
+    border-top-color: @border-color;
+  }
+
+  .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
+    border-bottom-color: @border-color;
+  }
+
+  .tippy-box[data-placement^='left'] > .tippy-arrow:before {
+    border-left-color: @border-color;
+  }
+
+  .tippy-box[data-placement^='right'] > .tippy-arrow:before {
+    border-right-color: @border-color;
+  }
+
+  .tippy-box > .tippy-backdrop {
+    background-color: @head-bg !important;
+  }
+
+  .tippy-box > .tippy-svg-arrow {
+    fill: @head-bg;
+  }
 }
 
 .gm-clipboard-wrapper {

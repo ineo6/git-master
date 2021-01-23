@@ -38,6 +38,7 @@
     "antd": "^4.1.2",
     "classnames": "^2.2.6",
     "clipboard": "^2.0.6",
+    "compare-versions": "^3.6.0",
     "delay": "^4.3.0",
     "dom-loaded": "^2.0.0",
     "eventemitter2": "^6.3.1",
@@ -54,6 +55,7 @@
     "react-dom": "^16.12.0",
     "save-file": "^2.3.1",
     "select-dom": "^6.0.1",
+    "tippy.js": "^6.2.7",
     "webextension-polyfill-ts": "^0.12.0",
     "whatwg-fetch": "^3.0.0"
   },

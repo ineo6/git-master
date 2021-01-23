@@ -1,6 +1,5 @@
 import { browser } from 'webextension-polyfill-ts';
 import { DEFAULTS, EVENT, STORE } from './core.constants';
-import { isSafari, promisify } from './util.misc';
 
 function _parse(val) {
   try {
