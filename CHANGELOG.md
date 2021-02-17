@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/ineo6/git-master/compare/v1.12.0...v1.12.1) (2021-02-17)
+
+
+### Bug Fixes
+
+* give gm toggle icon correct size ([9ac03e1](https://github.com/ineo6/git-master/commit/9ac03e1ee9d824652142ad6034a5e14da5ebd37a))
+
 # [1.12.0](https://github.com/ineo6/git-master/compare/v1.11.5...v1.12.0) (2021-01-23)
 
 
