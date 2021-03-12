@@ -42,6 +42,8 @@ abstract class RepoInfoBase {
       this.useJsDelivr = !!options.useJsDelivr;
     }
 
+    $(document).off('click', '.gm-download-file');
+
     $(document).on('click', '.gm-download-file', function(e) {
       e.preventDefault();
       e.stopPropagation();

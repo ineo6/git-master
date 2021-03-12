@@ -30,6 +30,8 @@ async function appendGistDownload(adapter: any) {
     const gistHeaders = $('.js-task-list-container .file-header');
 
     if (gistHeaders.length) {
+      $(document).off('click', '.master-gist-file-download');
+
       $(document).on('click', '.master-gist-file-download', function() {
         const btnData = $(this).data();
 
