@@ -1,3 +1,11 @@
+## [1.12.2](https://github.com/ineo6/git-master/compare/v1.12.1...v1.12.2) (2021-03-12)
+
+
+### Bug Fixes
+
+* avoid multi file download by once click ([2557587](https://github.com/ineo6/git-master/commit/2557587968d292dc8b1d77f74440fbbb36b5e9d6))
+* disable unsafe-eval in production ([01ed739](https://github.com/ineo6/git-master/commit/01ed739b9799a6b8a1fc4be9e0565286eaef663e))
+
 ## [1.12.1](https://github.com/ineo6/git-master/compare/v1.12.0...v1.12.1) (2021-02-17)
 
 
