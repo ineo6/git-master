@@ -4,6 +4,12 @@ const devMatches = ['https://github.com/*', 'https://gitlab.com/*', 'https://try
 
 const prodMatches = ['http://*/*', 'https://*/*'];
 
+let csp = "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'";
+
+if (process.env.NODE_ENV === 'production') {
+  csp = "script-src 'self' https://ssl.google-analytics.com; object-src 'self'";
+}
+
 const manifestInput = {
   manifest_version: 2,
   name: '__MSG_name__',
@@ -26,7 +32,7 @@ const manifestInput = {
 
   web_accessible_resources: ['*.woff2', '*.png', '*.gif', 'inject.js'],
 
-  content_security_policy: "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'",
+  content_security_policy: csp,
 
   '__chrome|firefox__author': 'neo',
   __opera__developer: {

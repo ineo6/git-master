@@ -20,18 +20,6 @@ function executeHandle(type, handle) {
   }
 }
 
-// 通过postMessage调用content-script
-function invokeContentScript(code) {
-  window.postMessage(
-    {
-      cmd: 'invoke',
-      code: code,
-      from: gmPageId,
-    },
-    '*'
-  );
-}
-
 // 发送普通消息到content-script
 function sendMessageToContentScriptByPostMessage(data) {
   window.postMessage(
@@ -51,10 +39,7 @@ window.addEventListener(
       return;
     }
 
-    if (e.data && e.data.cmd === 'invoke') {
-      // eslint-disable-next-line no-eval
-      eval('(' + e.data.code + ')');
-    } else if (e.data && e.data.cmd === 'message') {
+    if (e.data && e.data.cmd === 'message') {
       const data = e.data.data;
 
       if (data.type && data.handle) {
