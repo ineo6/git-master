@@ -3,10 +3,10 @@ export default {
   fix: [
     {
       text: {
-        en: 'Fix GM svg file size problem.',
-        zh_CN: '修复GM图标尺寸过大显示问题',
+        en: 'Avoid multi-file downloaded by one click',
+        zh_CN: '修复某些情况下同时下载多个文件的问题',
       },
     },
   ],
-  version: '1.12.1',
+  version: '1.12.2',
 };
