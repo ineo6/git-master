@@ -110,11 +110,23 @@ export const subscribeDarkModeAndChange = () => {
   }
 };
 
+const isGitHubDarkTheme = (theme: string) => {
+  return theme.indexOf('dark') >= 0;
+};
+
 export const isGitHubInDark = () => {
   const dataSet = document.documentElement.dataset;
 
   if (dataSet && dataSet.colorMode) {
-    return dataSet.colorMode === 'dark';
+    const isDarkTheme = inSystemDarkMode();
+
+    if (isGitHubDarkTheme(dataSet.colorMode)) {
+      return true;
+    }
+
+    const githubTheme = dataSet[`${isDarkTheme ? 'dark' : 'light'}Theme`] || '';
+
+    return isGitHubDarkTheme(dataSet.colorMode) || (dataSet.colorMode === 'auto' && isGitHubDarkTheme(githubTheme));
   }
 
   return false;
