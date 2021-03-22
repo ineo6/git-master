@@ -393,23 +393,23 @@ class GitHubRepoInfo extends RepoInfoBase {
   }
 
   createFolderDownloadWrapper(): void {
-    const target = this.createFolderDownload();
+    const isFolderPage = this.isFolderPage();
 
     this.removeDom('.master-download-folder');
 
-    if (target) {
+    if (isFolderPage) {
       const downloadBtn = $('<a class="btn mr-2 d-none d-md-block master-download-folder">Download </a>');
 
       downloadBtn.on('click', async () => {
         await this.downloadFolder(this.repo);
       });
 
-      target.prepend(downloadBtn);
+      $('.file-navigation>.d-flex').prepend(downloadBtn);
     }
   }
 
-  createFolderDownload(): JQuery {
-    return $('.file-navigation>.d-flex');
+  isFolderPage(): Boolean {
+    return !!($('.file-navigation>.d-flex').length && $('.js-repo-root>.final-path').length);
   }
 }
 

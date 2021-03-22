@@ -5,6 +5,7 @@ import injectJs from './injectJs';
 import copyFile from './copy-file';
 import attachCopy from './attachCopy';
 import gistDownload from './gist-download';
+import mirror from './mirror';
 
 export default {
   i18n,
@@ -14,4 +15,5 @@ export default {
   copyFile,
   attachCopy,
   gistDownload,
+  mirror,
 };
