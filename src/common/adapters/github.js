@@ -198,8 +198,9 @@ class GitHub extends PjaxAdapter {
     const branch =
       // Use the commit ID when showing a particular commit
       (type === 'commit' && typeId) ||
-      // Use 'master' when viewing repo's releases or tags
-      ((type === 'releases' || type === 'tags') && 'master') ||
+      // set empty branch when viewing repo's releases or tags
+      // need to fetch default_branch after
+      ((type === 'releases' || type === 'tags') && '') ||
       // Get commit ID or branch name from the DOM
       branchFromSummary ||
       ($('.overall-summary .numbers-summary .commits a').attr('href') || '').replace(`/${username}/${reponame}/commits/`, '') ||
