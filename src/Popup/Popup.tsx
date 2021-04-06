@@ -52,13 +52,15 @@ async function toggleSite(type: string, active: boolean, load: boolean = false) 
   const currentTab = tabs[0];
 
   // @ts-ignore
-  const domain = `${new URL(currentTab.url).origin}`;
+  const domain = `${new URL(currentTab.url).host}`;
 
   let storeKey = getStoreKey(type);
 
   const urls = await extStore.get(storeKey);
 
   let urlArr = urls ? urls.split('\n') : [];
+
+  urlArr = urlArr.map((item: string) => item.replace(/https?:\/\//, ''));
 
   // todo catch error
 
@@ -97,7 +99,7 @@ function isDefaultSite(url: string) {
 
 async function isCurrentTabActive(url: string, type: string) {
   // @ts-ignore
-  const domain = `${new URL(url).origin}`;
+  const domain = `${new URL(url).host}`;
 
   // const result = browser.permissions.contains({ origins: [domain] });
   let storeKey = getStoreKey(type);

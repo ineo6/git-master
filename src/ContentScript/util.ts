@@ -4,7 +4,7 @@ import extStore from '@/common/core.storage';
 import { DICT, shareClassName, STORE } from '@/common/core.constants';
 
 export async function whichSite() {
-  const currentUrl = `${window.location.protocol}//${window.location.host}`;
+  const currentUrl = `${window.location.host}`;
 
   const sites = {
     async isGitLab() {
@@ -12,7 +12,7 @@ export async function whichSite() {
 
       const domainArr = customDomains ? customDomains.split('\n') : [];
 
-      const urls = ['https://gitlab.com'].concat(domainArr);
+      const urls = ['gitlab.com'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
 
       return urls.indexOf(currentUrl) >= 0;
     },
@@ -21,7 +21,7 @@ export async function whichSite() {
 
       const domainArr = customDomains ? customDomains.split('\n') : [];
 
-      const urls = ['http://git.oschina.net', 'https://git.oschina.net', 'http://gitee.com', 'https://gitee.com'].concat(domainArr);
+      const urls = ['git.oschina.net', 'gitee.com'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
 
       return urls.indexOf(currentUrl) >= 0;
     },
@@ -30,7 +30,7 @@ export async function whichSite() {
 
       const domainArr = customDomains ? customDomains.split('\n') : [];
 
-      const urls = ['https://github.com'].concat(domainArr);
+      const urls = ['github.com'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
 
       return urls.indexOf(currentUrl) >= 0;
     },
@@ -39,12 +39,12 @@ export async function whichSite() {
 
       const domainArr = customDomains ? customDomains.split('\n') : [];
 
-      const urls = ['https://try.gitea.io'].concat(domainArr);
+      const urls = ['try.gitea.io'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
 
       return urls.indexOf(currentUrl) >= 0;
     },
     async isGist() {
-      const urls = ['https://gist.github.com'];
+      const urls = ['gist.github.com'];
 
       return urls.indexOf(currentUrl) >= 0;
     },
