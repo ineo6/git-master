@@ -80,6 +80,12 @@
   "download_url_use_mirror_desc": {
     "message": "下载GitHub文件使用jsDelivr加速"
   },
+  "github_mirror": {
+    "message": "GitHub下载加速"
+  },
+  "github_mirror_desc": {
+    "message": "GitHub克隆和Release下载加速"
+  },
   "github_notifications": {
     "message": "GitHub 通知"
   },

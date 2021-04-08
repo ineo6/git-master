@@ -78,7 +78,13 @@
     "message": "Use jsDelivr"
   },
   "download_url_use_mirror_desc": {
-    "message": "Download GitHub file via jsDelivr CDN。"
+    "message": "Download GitHub file via jsDelivr CDN"
+  },
+  "github_mirror": {
+    "message": "GitHub download acceleration"
+  },
+  "github_mirror_desc": {
+    "message": "Clone and release download for GitHub, Only required by users in China"
   },
   "github_notifications": {
     "message": "GitHub Notifications"

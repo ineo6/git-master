@@ -22,6 +22,7 @@ interface OptionsState {
   reuseTabs: boolean;
   updateCountOnNavigation: boolean;
   useJsDelivr: boolean;
+  githubUseMirror: boolean;
   visible: boolean;
 }
 
@@ -38,6 +39,7 @@ class Options extends React.Component<any, OptionsState> {
       reuseTabs: false,
       updateCountOnNavigation: false,
       useJsDelivr: false,
+      githubUseMirror: false,
       visible: false,
     };
   }
@@ -101,6 +103,10 @@ class Options extends React.Component<any, OptionsState> {
     this.saveField('useJsDelivr', checked);
   };
 
+  handleGitHubMirrorChange = (checked: boolean) => {
+    this.saveField('githubUseMirror', checked);
+  };
+
   handleTokenChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     this.saveField('token', e.target.value);
   };
@@ -133,6 +139,7 @@ class Options extends React.Component<any, OptionsState> {
       reuseTabs,
       updateCountOnNavigation,
       useJsDelivr,
+      githubUseMirror,
       visible,
     } = this.state;
 
@@ -232,6 +239,9 @@ class Options extends React.Component<any, OptionsState> {
               description={<Message i18n="download_url_use_mirror_desc" />}
             >
               <Switch checked={useJsDelivr} onClick={this.handleUseJsDelivrChange} />
+            </SectionOption>
+            <SectionOption title={<Message i18n="github_mirror" />} layout="horizontal" description={<Message i18n="github_mirror_desc" />}>
+              <Switch checked={githubUseMirror} onClick={this.handleGitHubMirrorChange} />
             </SectionOption>
           </Section>
         </form>

@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import OptionsSync from './webext-options-sync';
 
 export const storageName = 'options';
@@ -12,10 +13,9 @@ const optionsStorage = new OptionsSync({
     reuseTabs: false,
     updateCountOnNavigation: false,
     useJsDelivr: false,
+    githubUseMirror: false,
   },
-  migrations: [
-    OptionsSync.migrations.removeUnused,
-  ],
+  migrations: [OptionsSync.migrations.removeUnused],
   storageName,
 });
 
