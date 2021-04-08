@@ -1,3 +1,17 @@
+# [1.13.0](https://github.com/ineo6/git-master/compare/v1.12.2...v1.13.0) (2021-04-08)
+
+
+### Bug Fixes
+
+* use default branch when viewing releases or tags ([59e7064](https://github.com/ineo6/git-master/commit/59e70642b1da3ecbd819e6134317a71992aa97b1))
+
+
+### Features
+
+* add mirror for github clone, release and tags ([4f5046a](https://github.com/ineo6/git-master/commit/4f5046a70ef901509b2cb0e45d8a916e54c8de1e))
+* add option for github mirror feature ([f4c5985](https://github.com/ineo6/git-master/commit/f4c5985473bb9d2679cc7adfcd4e87a343f622ad))
+* support GitHub more dark theme and auto mode ([f8e9f4f](https://github.com/ineo6/git-master/commit/f8e9f4fee8a763ebc441b64a284b769eedfc3598))
+
 ## [1.12.2](https://github.com/ineo6/git-master/compare/v1.12.1...v1.12.2) (2021-03-12)
 
 
