@@ -1,5 +1,7 @@
 import { isReleasesOrTags } from 'github-url-detection';
-import GitMaster from '../PageLife/core/GitMaster';
+import { rocketSvg } from '@/common/svg';
+import GitMaster from '../../PageLife/core/GitMaster';
+import './index.less';
 
 const zipDownload = {
   fastgit: 'https://download.fastgit.org',
@@ -98,7 +100,7 @@ function addTags(commits: JQuery<HTMLElement>) {
 
         $(this)
           .parent()
-          .attr('href', mirrorUrl.toString());
+          .after(`<a title="mirror for speed" class="git-master-mirror-tags-btn" href="${mirrorUrl}">${rocketSvg}</a>`);
       });
   });
 }
@@ -109,22 +111,31 @@ function addRelease() {
   if (normalRelease && normalRelease.length) {
     addTags(normalRelease.find('.release-main-section>.commit'));
   } else {
+    $('.git-master-mirror-release-download').remove();
     $('.Box.Box--condensed').each(function() {
       $(this)
-        .find('.d-flex.Box-body>a,.d-block.Box-body>a')
+        .find('.d-flex.Box-body,.d-block.Box-body')
         .each(function() {
-          let href = $(this).attr('href');
+          const aLink = $(this).find('a');
 
-          downloadMirror[0].url += href;
-          downloadMirror[1].url = downloadMirror[1].url + '/https://github.com' + href;
+          if (aLink && aLink.length) {
+            const downArea = $('<div></div>')
+              .addClass(aLink.attr('class') || '')
+              .append(aLink);
 
-          const html = `<div style="display: flex;justify-content: flex-end;">
+            let href = aLink.attr('href');
+
+            downloadMirror[0].url += href;
+            downloadMirror[1].url = downloadMirror[1].url + '/https://github.com' + href;
+
+            const html = `<div class="git-master-mirror-release-download" style="display: flex;justify-content: flex-end;">
 <div><a class="btn btn-sm ml-2" href="${downloadMirror[0].url}" rel="noreferrer noopener nofollow">${downloadMirror[0].name}</a></div>
 <div><a class="btn btn-sm ml-2" href="${downloadMirror[1].url}" rel="noreferrer noopener nofollow">${downloadMirror[1].name}</a></div>
 </div>`;
-          $(this)
-            .next()
-            .after(html);
+            downArea.append(html);
+
+            $(this).prepend(downArea);
+          }
         });
 
       document
