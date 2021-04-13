@@ -1,3 +1,15 @@
+# [1.14.0](https://github.com/ineo6/git-master/compare/v1.13.0...v1.14.0) (2021-04-13)
+
+
+### Bug Fixes
+
+* remove github toke validation ([a442673](https://github.com/ineo6/git-master/commit/a442673900919f1f63cf0da039e2a68520d3fff9))
+
+
+### Features
+
+* improve mirror feature ([1841538](https://github.com/ineo6/git-master/commit/184153898b88d211394d16b4fc1412e3b4d430c0))
+
 # [1.13.0](https://github.com/ineo6/git-master/compare/v1.12.2...v1.13.0) (2021-04-08)
 
 
