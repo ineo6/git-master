@@ -7,7 +7,7 @@ export async function getHostname() {
     return 'github.com';
   }
 
-  return (new URL(rootUrl)).hostname;
+  return new URL(rootUrl).hostname;
 }
 
 export async function getTabUrl() {
@@ -29,20 +29,20 @@ export async function getApiUrl() {
 
 export async function getParsedUrl(endpoint, params) {
   const api = await getApiUrl();
-  const query = params ? '?' + (new URLSearchParams(params)).toString() : '';
+  const query = params ? '?' + new URLSearchParams(params).toString() : '';
   return `${api}${endpoint}${query}`;
 }
 
 export async function getHeaders() {
   const { token } = await optionsStorage.getAll();
 
-  if (!(/[a-z\d]{40}/.test(token))) {
+  if (!token) {
     throw new Error('missing token');
   }
 
   return {
     /* eslint-disable quote-props */
-    'Authorization': `token ${token}`,
+    Authorization: `token ${token}`,
     'If-Modified-Since': '',
     /* eslint-enable quote-props */
   };
@@ -110,7 +110,7 @@ export async function getNotificationCount() {
   const { headers, json: notifications } = await getNotificationResponse({ maxItems: 1 });
 
   const interval = Number(headers.get('X-Poll-Interval'));
-  const lastModified = (new Date(headers.get('Last-Modified'))).toISOString();
+  const lastModified = new Date(headers.get('Last-Modified')).toISOString();
   const linkHeader = headers.get('Link');
 
   if (linkHeader === null) {
@@ -121,10 +121,9 @@ export async function getNotificationCount() {
     };
   }
 
-  const lastlink = linkHeader.split(', ')
-    .find(link => {
-      return link.endsWith('rel="last"');
-    });
+  const lastlink = linkHeader.split(', ').find(link => {
+    return link.endsWith('rel="last"');
+  });
 
   // We get notification count by asking the API to give us only one notificaion
   // for each page, then the last page number gives us the count
