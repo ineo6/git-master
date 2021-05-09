@@ -1,5 +1,6 @@
 import { STORE } from '@/common/core.constants';
 import extStore from '@/common/core.storage';
+import { browser } from 'webextension-polyfill-ts';
 
 export interface IEvent {
   eventCategory: string;
@@ -70,7 +71,7 @@ export default class Analytics {
       const ga = document.createElement('script');
       ga.type = 'text/javascript';
       ga.async = true;
-      ga.src = 'https://ssl.google-analytics.com/ga.js';
+      ga.src = browser.extension.getURL('/ga.js');
       const s = document.getElementsByTagName('script')[0];
       // @ts-ignore
       s.parentNode.insertBefore(ga, s);

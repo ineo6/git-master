@@ -238,6 +238,10 @@ module.exports = {
         to: 'inject.js',
       },
       {
+        from: 'views/ga.js',
+        to: 'ga.js',
+      },
+      {
         from: 'node_modules/@ineo6/file-icons/lib/fonts',
         to: 'fonts',
       },
