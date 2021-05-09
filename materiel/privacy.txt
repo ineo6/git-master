@@ -1,0 +1,14 @@
+Privacy Policy
+
+Information we collect and how we use it
+The Extension use Google Analytics to collect website traffic data that help us improve our service.
+
+When using the Extension, GitHub personal access tokens and/or GitHub OAuth tokens might be needed to access private repositories. These tokens are stored in the browser's storage area. On Safari, these tokens are stored in the browser's local storage. The Extension uses these tokens to authenticate the requests with GitHub (https://github.com). We don’t transmit or store GitHub tokens on our servers. You must take necessary safeguard to ensure your GitHub tokens are secure.
+
+And GitLab、Gitee、Gitea have same behavior.
+
+Security
+We are committed to ensuring that your personal information is secure. We maintain or use third parties to maintain physical, electronic and managerial procedures designed to safeguard the information we collect through the Site. However, no information can be absolutely secure, and we can’t guarantee the security of any information that is the subject of this Privacy Policy or any information that is submitted to us via the Internet.
+
+Third Parties
+Third parties may operate or host the Site or the computers that operate the Site, store or process data for us, and provide services related to the information requests that you have submitted or communications we provide to you. We do not sell personally identifiable information collected via the Site to third party marketers.
