@@ -13,9 +13,9 @@ import { isChrome, isNotificationTargetPage } from './util';
 
 let currentUrl = '';
 let tabId: number;
-const ga = new Analytics();
 
-ga.initialize('UA-39288503-7');
+const ga = new Analytics('UA-39288503-7', process.env.TARGET_BROWSER === 'firefox');
+ga.initialize();
 
 browser.runtime.onInstalled.addListener((details): void => {
   const manifest = browser.runtime.getManifest();

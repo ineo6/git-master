@@ -4,10 +4,14 @@ const devMatches = ['https://github.com/*', 'https://gitlab.com/*', 'https://try
 
 const prodMatches = ['http://*/*', 'https://*/*'];
 
-let csp = "script-src 'self' 'unsafe-eval'; object-src 'self'";
+let csp = "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'";
 
 if (process.env.NODE_ENV === 'production') {
-  csp = "script-src 'self'; object-src 'self'";
+  csp = "script-src 'self' https://ssl.google-analytics.com; object-src 'self'";
+}
+
+if (process.env.TARGET_BROWSER === 'firefox') {
+  csp.replace(' https://ssl.google-analytics.com', '');
 }
 
 const manifestInput = {

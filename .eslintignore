@@ -6,4 +6,3 @@ extension/
 typings
 **/*.d.ts
 src/common/template/template.js
-views/ga.js

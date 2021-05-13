@@ -1,6 +1,6 @@
 import { STORE } from '@/common/core.constants';
 import extStore from '@/common/core.storage';
-import { browser } from 'webextension-polyfill-ts';
+import GoogleAnalyticsService from './ga';
 
 export interface IEvent {
   eventCategory: string;
@@ -59,9 +59,27 @@ export const GaEvent = {
 };
 
 export default class Analytics {
-  constructor() {
-    window._gaq = window._gaq || [];
-    this.register();
+  private readonly isFirefox: boolean;
+
+  private ga: any;
+
+  private readonly trackingId: string;
+
+  private readonly disableFirefox: boolean;
+
+  constructor(trackingId: string, disableFirefox: boolean) {
+    this.isFirefox = process.env.TARGET_BROWSER === 'firefox';
+
+    this.trackingId = trackingId;
+    this.disableFirefox = disableFirefox;
+
+    if (!this.isFirefox) {
+      window._gaq = window._gaq || [];
+      this.register();
+    } else if (!disableFirefox) {
+      // @ts-ignore
+      this.ga = new GoogleAnalyticsService();
+    }
   }
 
   event = GaEvent;
@@ -71,22 +89,30 @@ export default class Analytics {
       const ga = document.createElement('script');
       ga.type = 'text/javascript';
       ga.async = true;
-      ga.src = browser.extension.getURL('/ga.js');
+      ga.src = 'https://ssl.google-analytics.com/ga.js';
       const s = document.getElementsByTagName('script')[0];
       // @ts-ignore
       s.parentNode.insertBefore(ga, s);
     })();
   }
 
-  initialize(trackingId: string) {
-    window._gaq.push(['_setAccount', trackingId]);
-    window._gaq.push(['_trackPageview']);
+  pushQueue(queue: any[]) {
+    if (this.isFirefox && this.disableFirefox) {
+      this.ga.send(queue);
+    } else {
+      window._gaq.push(queue);
+    }
+  }
+
+  initialize() {
+    this.pushQueue(['_setAccount', this.trackingId]);
+    this.pushQueue(['_trackPageview']);
   }
 
   page(page: string) {
     if (page) {
       if (process.env.NODE_ENV === 'production') {
-        window._gaq.push(['_trackPageview', page]);
+        this.pushQueue(['_trackPageview', page]);
       }
     }
   }
@@ -104,7 +130,7 @@ export default class Analytics {
     if (process.env.NODE_ENV === 'production') {
       extStore.get(STORE.ANALYSIS).then((result: boolean) => {
         if (result) {
-          window._gaq.push(['_trackEvent', ...eventArr]);
+          this.pushQueue(['_trackEvent', ...eventArr]);
         }
       });
     } else {

@@ -27,7 +27,8 @@
     "location": true,
     "chrome": true,
     "TEMPLATE": true,
-    "safari": true
+    "safari": true,
+    "Components": true
   },
   "rules": {
     "no-bitwise": 0,
