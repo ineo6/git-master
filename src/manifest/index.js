@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (process.env.TARGET_BROWSER === 'firefox') {
-  csp.replace(' https://ssl.google-analytics.com', '');
+  csp = csp.replace(' https://ssl.google-analytics.com', '');
 }
 
 const manifestInput = {
