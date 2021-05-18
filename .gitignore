@@ -112,6 +112,3 @@ dist/
 !.yarn/plugins
 .pnp.*
 /.idea/
-
-yarn.lock
-package-lock.json
