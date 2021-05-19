@@ -15,7 +15,7 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/git-master/klmeolbcejnhefkapdchfhlhhjgobhmo)
 - [Edge Web Store](https://microsoftedge.microsoft.com/addons/detail/pcpkfgepcjdmdfelbabogmgoadgmiocg)
-- [~~Firefox Addon~~](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
+- [Firefox Addon](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
 
 ## Features
 
