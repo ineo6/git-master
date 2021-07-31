@@ -343,7 +343,7 @@ const Popup = () => {
                 });
               }}
             >
-              <img className="site-logo" src="../assets/gitea.png" alt="gitea" />
+              <img className="site-logo" src="../assets/gogs.png" alt="gitea" />
               <span>{type === DICT.GOGS ? 'Disable' : 'Enable'}</span>
               <span>&nbsp;&nbsp;Gogs</span>
             </a>
