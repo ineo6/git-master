@@ -1,6 +1,6 @@
 const pkg = require('../../package.json');
 
-const devMatches = ['https://github.com/*', 'https://gitlab.com/*', 'https://try.gitea.io/*', '*://gitee.com/*'];
+const devMatches = ['https://github.com/*', 'https://gitlab.com/*', 'https://try.gitea.io/*', 'https://try.gogs.io/*', '*://gitee.com/*'];
 
 const prodMatches = ['http://*/*', 'https://*/*'];
 

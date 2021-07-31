@@ -17,6 +17,7 @@ import Gitlab from '../common/adapters/gitlab';
 import Oschina from '../common/adapters/oschina';
 import Gitea from '../common/adapters/gitea';
 import Gist from '../common/adapters/gist';
+import Gogs from '../common/adapters/gogs';
 import changelog from '../../views/changelog';
 
 import 'tippy.js/dist/tippy.css';
@@ -37,6 +38,8 @@ async function createAdapter() {
       return new Gitea();
     case DICT.GIST:
       return new Gist();
+    case DICT.GOGS:
+      return new Gogs();
     default:
       return null;
   }
@@ -106,6 +109,10 @@ class CodeTree {
       [DICT.GIST]: {
         load: this.loadGistExtension.bind(this),
         tryLoad: this.tryLoadGist.bind(this),
+      },
+      [DICT.GOGS]: {
+        load: this.loadExtension.bind(this),
+        tryLoad: this.tryLoadRepo.bind(this),
       },
     };
   }
@@ -210,6 +217,7 @@ class CodeTree {
         // eslint-disable-next-line no-loop-func
         .on(EVENT.VIEW_READY, async function() {
           if (this !== optsView) {
+            console.log('reday');
             $document.trigger(EVENT.REQ_END);
 
             optsView.$toggler.removeClass('selected');
@@ -423,6 +431,7 @@ class CodeTree {
         case STORE.GITHUB_TOKEN:
         case STORE.GITLAB_TOKEN:
         case STORE.GITEE_TOKEN:
+        case STORE.GOGS_TOKEN:
         case STORE.LAZYLOAD:
         case STORE.ICONS:
         case STORE.FILESIZE:

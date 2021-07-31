@@ -48,6 +48,15 @@ export async function whichSite() {
 
       return urls.indexOf(currentUrl) >= 0;
     },
+    async isGogs() {
+      const customDomains = await extStore.get(STORE.GOGS_ENTERPRICE_URLS);
+
+      const domainArr = customDomains ? customDomains.split('\n') : [];
+
+      const urls = ['try.gogs.io'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
+
+      return urls.indexOf(currentUrl) >= 0;
+    },
   };
 
   const isGitLab = await sites.isGitLab();
@@ -55,6 +64,7 @@ export async function whichSite() {
   const isGitHub = await sites.isGitHub();
   const isGitea = await sites.isGitea();
   const isGist = await sites.isGist();
+  const isGogs = await sites.isGogs();
 
   if (isGitLab) {
     return DICT.GITLAB;
@@ -66,6 +76,8 @@ export async function whichSite() {
     return DICT.GITEA;
   } else if (isGist) {
     return DICT.GIST;
+  } else if (isGogs) {
+    return DICT.GOGS;
   }
 
   return '';

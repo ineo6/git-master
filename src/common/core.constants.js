@@ -10,6 +10,7 @@ export const STORE = {
   GITEE_TOKEN: 'gitmaster.gitee_token.local',
   GITEA_TOKEN: 'gitmaster.gitea_token.local',
   GIST_TOKEN: 'gitmaster.gist_token.local',
+  GOGS_TOKEN: 'gitmaster.gogs_token.local',
   HOVEROPEN: 'gitmaster.hover_open',
   PR: 'gitmaster.prdiff_shown',
   HOTKEYS: 'gitmaster.hotkeys',
@@ -24,6 +25,7 @@ export const STORE = {
   GITLAB_ENTERPRICE_URLS: 'gitmaster.gitlab_custom_url',
   GITEE_ENTERPRICE_URLS: 'gitmaster.gitee_custom_url',
   GITEA_ENTERPRICE_URLS: 'gitmaster.gitea_custom_url',
+  GOGS_ENTERPRICE_URLS: 'gitmaster.gogs_custom_url',
   DIRECTION: 'gitmaster.direction',
   DARKMODE: 'gitmaster.dark_mode',
   FILESIZE: 'gitmaster.show_file_size',
@@ -38,6 +40,7 @@ export const DICT = {
   OSCHINA: 'gitee',
   GITEA: 'gitea',
   GIST: 'gist',
+  GOGS: 'gogs',
 };
 
 export const DEFAULTS = {
@@ -46,6 +49,7 @@ export const DEFAULTS = {
   GITEE_TOKEN: '',
   GITEA_TOKEN: '',
   GIST_TOKEN: '',
+  GOGS_TOKEN: '',
   HOVEROPEN: true,
   PR: true,
   LAZYLOAD: false,

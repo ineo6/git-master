@@ -83,6 +83,7 @@
                     <div class=" master-tabs-tab master-tabs-tab-disabled">Gitee</div>
                     <div class=" master-tabs-tab master-tabs-tab-disabled">Gitea</div>
                     <div class=" master-tabs-tab master-tabs-tab-disabled">Gist</div>
+                    <div class=" master-tabs-tab master-tabs-tab-disabled">Gogs</div>
                   </div>
                   <div
                     class="master-tabs-ink-bar master-tabs-ink-bar-animated"
@@ -197,6 +198,28 @@
                     </a>
                   </div>
                   <input type="text" class="form-control input-block" data-store="GIST_TOKEN" />
+                  <div class="gitmaster-disclaimer text-gray" data-i18n="token_storage_tip"></div>
+                </div>
+              </div>
+
+              <div class="master-tabs-tabpane master-tabs-tabpane-inactive">
+                <div>
+                  <label>Gogs access token</label>
+                  <div class="gitmaster-token-actions">
+                    <a class="gitmaster-create-token" target="_blank" tabindex="-1"
+                    ><!--
+                --><span class="master-tooltip master-tooltip-nw" data-i18n="generate_token_tip" data-i18n-Type="aria-label" aria-label=""
+                    ><i class="gitmaster-icon-key"></i></span
+                    ><!--
+              --></a
+                    >
+                    <a class="gitmaster-help" href="https://github.com/ineo6/git-master#access-token" target="_blank" tabindex="-1">
+                      <span class="master-tooltip master-tooltip-w" aria-label="Learn more">
+                        <i class="gitmaster-icon-help"></i>
+                      </span>
+                    </a>
+                  </div>
+                  <input type="text" class="form-control input-block" data-store="GOGS_TOKEN" />
                   <div class="gitmaster-disclaimer text-gray" data-i18n="token_storage_tip"></div>
                 </div>
               </div>

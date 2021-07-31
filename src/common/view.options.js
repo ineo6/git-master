@@ -11,6 +11,7 @@ const siteCode = {
   [DICT.OSCHINA]: 2,
   [DICT.GITEA]: 3,
   [DICT.GIST]: 4,
+  [DICT.GOGS]: 5,
 };
 
 class OptionsView {
