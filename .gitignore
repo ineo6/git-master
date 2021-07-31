@@ -110,5 +110,7 @@ dist/
 .yarn/*
 !.yarn/releases
 !.yarn/plugins
+yarn.lock
+
 .pnp.*
 /.idea/
