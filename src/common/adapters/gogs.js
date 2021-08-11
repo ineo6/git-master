@@ -2,61 +2,17 @@ import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp, parseGitmodules } from '../util.misc';
-import * as githubDetect from './pageDetect/github';
+import * as detect from './pageDetect/gogs';
 
-const GH_CONTAINERS = '.pagehead > nav, .container, .container-lg, .container-xl, .container-responsive';
-const GH_HEADER = '.js-header-wrapper > header';
+const GH_HEADER = '.full > .bar';
 const GH_MAX_HUGE_REPOS_SIZE = 50;
-const GH_HIDDEN_RESPONSIVE_CLASS = '.d-none';
-const GH_RESPONSIVE_BREAKPOINT = 1010;
-
-const GH_RESERVED_USER_NAMES = [
-  'about',
-  'account',
-  'blog',
-  'business',
-  'contact',
-  'dashboard',
-  'developer',
-  'explore',
-  'features',
-  'gist',
-  'integrations',
-  'issues',
-  'join',
-  'login',
-  'marketplace',
-  'mirrors',
-  'new',
-  'notifications',
-  'open-source',
-  'organizations',
-  'orgs',
-  'personal',
-  'pricing',
-  'pulls',
-  'search',
-  'security',
-  'sessions',
-  'settings',
-  'showcases',
-  'site',
-  'stars',
-  'styleguide',
-  'topics',
-  'trending',
-  'user',
-  'watching',
-  'api',
-];
-const GH_RESERVED_REPO_NAMES = ['followers', 'following', 'repositories'];
 
 class Gogs extends PjaxAdapter {
   constructor() {
     super();
   }
 
-  detect = githubDetect;
+  detect = detect;
 
   // @override
   init($sidebar, repoView) {
@@ -122,11 +78,8 @@ class Gogs extends PjaxAdapter {
 
   // @override
   updateLayout(sidebarPinned, sidebarVisible, sidebarWidth, isSidebarLeft) {
-    const SPACING = 10;
     const $header = $(GH_HEADER);
-    const $containers = $('html').width() <= GH_RESPONSIVE_BREAKPOINT ? $(GH_CONTAINERS).not(GH_HIDDEN_RESPONSIVE_CLASS) : $(GH_CONTAINERS);
 
-    const autoMarginLeft = ($(document).width() - $containers.width()) / 2;
     const shouldPushEverything = sidebarPinned && sidebarVisible;
 
     const direction = isSidebarLeft ? 'left' : 'right';
@@ -136,8 +89,6 @@ class Gogs extends PjaxAdapter {
         [`margin-${direction}`]: sidebarWidth,
         [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
       });
-
-      // $header.attr('style', `padding-left: ${sidebarWidth + SPACING - autoMarginLeft}px !important`);
     } else {
       $('html').css({
         [`margin-${direction}`]: '',
@@ -162,7 +113,8 @@ class Gogs extends PjaxAdapter {
 
     // Not a repository, skip
     // eslint-disable-next-line no-bitwise
-    if (~GH_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame)) {
+
+    if (~detect.GOGS_RESERVED_USER_NAMES.indexOf(username) || ~detect.GOGS_RESERVED_REPO_NAMES.indexOf(reponame)) {
       return cb();
     }
 
@@ -239,7 +191,7 @@ class Gogs extends PjaxAdapter {
   }
 
   async getRepoDataWrap(currentRepo, token) {
-    if (!githubDetect.shouldEnable()) {
+    if (!detect.shouldEnable()) {
       return;
     }
 
@@ -258,7 +210,7 @@ class Gogs extends PjaxAdapter {
 
   // @override
   async getRepoFromPath(currentRepo, token, cb) {
-    if (!githubDetect.shouldEnable()) {
+    if (!detect.shouldEnable()) {
       return cb();
     }
 
