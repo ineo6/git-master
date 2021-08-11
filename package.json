@@ -1,13 +1,13 @@
 {
   "name": "gitmaster",
-  "version": "1.14.1",
+  "version": "1.14.2",
   "description": "Git Master",
   "private": true,
   "repository": "https://github.com/ineo6/git-master.git",
   "author": "neo (http://github.com/ineo6)",
   "license": "MIT",
   "engines": {
-    "node": ">=10 <=12",
+    "node": ">=10",
     "yarn": ">= 1.0.0"
   },
   "scripts": {
