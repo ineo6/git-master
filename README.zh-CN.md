@@ -5,7 +5,6 @@
 <img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/v/klmeolbcejnhefkapdchfhlhhjgobhmo">
 <img alt="Chrome Web Store" src="https://img.shields.io/chrome-web-store/stars/klmeolbcejnhefkapdchfhlhhjgobhmo">
 <img alt="GitHub" src="https://img.shields.io/github/license/ineo6/git-master">
-<a href="https://gitter.im/ineo6/GitMaster?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"><img alt="Gitter" src="https://badges.gitter.im/ineo6/GitMaster.svg" /></a>
 </p>
 
 <h3 align="center">🙋‍♂️ Made by <a href="https://github.com/ineo6">neo</a></h3>
@@ -16,11 +15,11 @@
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/git-master/klmeolbcejnhefkapdchfhlhhjgobhmo)
 - [Edge Web Store](https://microsoftedge.microsoft.com/addons/detail/pcpkfgepcjdmdfelbabogmgoadgmiocg)
-- [~~Firefox Addon~~](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
+- [Firefox Addon](https://addons.mozilla.org/zh-CN/firefox/addon/git-master/)
 
 ## 特性
 
-- 🚀 代码树支持`GitHub`、`GitLab`、`Gitee`、`Gitea`
+- 🚀 代码树支持`GitHub`、`GitLab`、`Gitee`、`Gitea`、`Gogs`
 - 🖊️ 支持私有部署页面，一键标记
 - 🗂️ 支持文件提交历史可视化 (GitHub && GitLab)
 - 🔔 `GitHub`通知提醒
