@@ -1,3 +1,15 @@
+# [1.15.0](https://github.com/ineo6/git-master/compare/v1.14.0...v1.15.0) (2021-08-12)
+
+
+### Features
+
+* improve gogs code ([b939cee](https://github.com/ineo6/git-master/commit/b939ceec547f11858b304c1d232ef3a4d43ada2c))
+* replace gogs.png ([cf3fbd7](https://github.com/ineo6/git-master/commit/cf3fbd7f776bfd4c7e4650539671b3e474eeb976))
+* sanitize html string by dompurify ([249d1dc](https://github.com/ineo6/git-master/commit/249d1dc4bd6c48f5a8d048bfcf46a313d0655007))
+* support gogs ([15e5466](https://github.com/ineo6/git-master/commit/15e5466033fccd72b99308cc24e78218e9fa4087))
+* use easy ga for firefox,but disabled now ([11aef65](https://github.com/ineo6/git-master/commit/11aef6512ec0bc587afc3eeea1a7b4f67e31ebd7))
+* use local ga.js instead ([d32f3fb](https://github.com/ineo6/git-master/commit/d32f3fbf8ffbcc57f251395f56b4127be506a2ae))
+
 # [1.14.0](https://github.com/ineo6/git-master/compare/v1.13.0...v1.14.0) (2021-04-13)
 
 
