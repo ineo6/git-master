@@ -1,3 +1,15 @@
+# [1.16.0](https://github.com/ineo6/git-master/compare/v1.15.0...v1.16.0) (2021-08-12)
+
+
+### Bug Fixes
+
+* mirror url ([89ea5ad](https://github.com/ineo6/git-master/commit/89ea5adefdf58ab2382d8c02871bec4ca3374a26))
+
+
+### Features
+
+* close github copy ([299e7aa](https://github.com/ineo6/git-master/commit/299e7aa26bc0868b039926463a512dac45add4bc))
+
 # [1.15.0](https://github.com/ineo6/git-master/compare/v1.14.0...v1.15.0) (2021-08-12)
 
 
