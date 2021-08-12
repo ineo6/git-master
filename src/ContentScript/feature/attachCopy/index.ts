@@ -1,17 +1,8 @@
 import GitMaster from '../../PageLife/core/GitMaster';
-import { initGitee, initGitHub, initGitLab, initGitea } from './copy';
+import { initGitee, initGitLab, initGitea } from './copy';
 
 export default (ctx: GitMaster) => {
   const register = () => {
-    ctx.helper.documentLoadedPlugins.register('github-attach-copy', {
-      async handle() {
-        initGitHub();
-      },
-      config: [],
-      scope: ['github'],
-      repeatOnAjax: true,
-    });
-
     ctx.helper.documentLoadedPlugins.register('gitlab-attach-copy', {
       async handle() {
         initGitLab();
