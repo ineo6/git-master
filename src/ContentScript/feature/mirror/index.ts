@@ -125,13 +125,18 @@ function addRelease() {
 
             let href = aLink.attr('href');
 
-            downloadMirror[0].url += href;
-            downloadMirror[1].url = downloadMirror[1].url + '/https://github.com' + href;
-
             const html = `<div class="git-master-mirror-release-download" style="display: flex;justify-content: flex-end;">
-<div><a class="btn btn-sm ml-2" href="${downloadMirror[0].url}" rel="noreferrer noopener nofollow">${downloadMirror[0].name}</a></div>
-<div><a class="btn btn-sm ml-2" href="${downloadMirror[1].url}" rel="noreferrer noopener nofollow">${downloadMirror[1].name}</a></div>
-</div>`;
+                  <div>
+                    <a class="btn btn-sm ml-2" href="${downloadMirror[0].url + href}" rel="noreferrer noopener nofollow">
+                    ${downloadMirror[0].name}
+                    </a>
+                    </div>
+                  <div>
+                    <a class="btn btn-sm ml-2" href="${downloadMirror[1].url + '/https://github.com' + href}" rel="noreferrer noopener nofollow">
+                    ${downloadMirror[1].name}
+                    </a>
+                   </div>
+                </div>`;
             downArea.append(html);
 
             $(this).prepend(downArea);
@@ -148,13 +153,18 @@ function addRelease() {
         .each(function() {
           const href = $(this).attr('href');
 
-          downloadMirror[0].url += href;
-          downloadMirror[1].url = downloadMirror[1].url + '/https://github.com' + href;
-
           const html = `<div style="display: flex;justify-content: flex-end;flex-grow: 1;">
-<div><a class="btn btn-sm ml-2" href="${downloadMirror[0].url}" rel="noreferrer noopener nofollow">${downloadMirror[0].name}</a></div>
-<div><a class="btn btn-sm ml-2" href="${downloadMirror[1].url}" rel="noreferrer noopener nofollow">${downloadMirror[1].name}</a></div>
-</div>`;
+              <div>
+                <a class="btn btn-sm ml-2" href="${downloadMirror[0].url + href}" rel="noreferrer noopener nofollow">
+                ${downloadMirror[0].name}
+                </a>
+              </div>
+              <div>
+                <a class="btn btn-sm ml-2" href="${downloadMirror[1].url + '/https://github.com' + href}" rel="noreferrer noopener nofollow">
+                ${downloadMirror[1].name}
+                </a>
+              </div>
+            </div>`;
           $(this).after(html);
         });
     });
