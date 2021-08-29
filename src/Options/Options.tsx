@@ -205,7 +205,6 @@ class Options extends React.Component<any, OptionsState> {
                   name="token"
                   className="master-input github-token"
                   placeholder="a1b2c3d4e5f6g7h8i9j0a1b2c3d4e5f6g7h8i9j0"
-                  pattern="[a-z\d]{40}"
                   spellCheck="false"
                 />
               </label>
