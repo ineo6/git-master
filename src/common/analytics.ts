@@ -97,8 +97,8 @@ export default class Analytics {
   }
 
   pushQueue(queue: any[]) {
-    if (this.isFirefox && this.disableFirefox) {
-      this.ga.send(queue);
+    if (this.isFirefox) {
+      !this.disableFirefox && this.ga.send(queue);
     } else {
       window._gaq.push(queue);
     }
