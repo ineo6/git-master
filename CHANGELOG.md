@@ -1,3 +1,13 @@
+## [1.16.1](https://github.com/ineo6/git-master/compare/v1.16.0...v1.16.1) (2021-09-01)
+
+
+### Bug Fixes
+
+* disableFirefox config for firefox ([8388439](https://github.com/ineo6/git-master/commit/8388439b07024e44f7fd9470c3d30e2dbd9b3f4f))
+* input placeholder color ([111de61](https://github.com/ineo6/git-master/commit/111de618d10fffa36b42908c72469136dee00b99))
+* only enable lazy load for gogs ([c6aa843](https://github.com/ineo6/git-master/commit/c6aa843d65e229631b070d2f9fa5440c1986c889))
+* remove token input pattern rule ([f5be197](https://github.com/ineo6/git-master/commit/f5be197b4c2b4b535b0fc5612d0c3c93a3cea885))
+
 # [1.16.0](https://github.com/ineo6/git-master/compare/v1.15.0...v1.16.0) (2021-08-12)
 
 
