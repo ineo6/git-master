@@ -1,25 +1,24 @@
 export default {
-  feature: [
-    {
-      text: {
-        en: 'Support Gogs',
-        zh_CN: '终于支持了Gogs，目前仅有懒加载模式',
-      },
-    },
-    {
-      text: {
-        en: 'Disable clipboard copy for GitHub',
-        zh_CN: '禁用复制模式，GitHub已有该功能',
-      },
-    },
-  ],
+  feature: [],
   fix: [
     {
       text: {
-        en: 'Fix download mirror url for GitHub',
-        zh_CN: '修复GitHub中镜像加速地址问题',
+        en: 'Fix GitHub notification token problem',
+        zh_CN: '修复GitHub通知token无法配置问题（firefox）',
+      },
+    },
+    {
+      text: {
+        en: 'Only enable lazy load for Gogs',
+        zh_CN: 'Gogs只开启Lazy Load模式',
+      },
+    },
+    {
+      text: {
+        en: 'Others',
+        zh_CN: '其他优化',
       },
     },
   ],
-  version: '1.16.0',
+  version: '1.16.1',
 };
