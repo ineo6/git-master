@@ -23,6 +23,7 @@ interface OptionsState {
   updateCountOnNavigation: boolean;
   useJsDelivr: boolean;
   githubUseMirror: boolean;
+  addFolderInfo: boolean;
   visible: boolean;
 }
 
@@ -40,6 +41,7 @@ class Options extends React.Component<any, OptionsState> {
       updateCountOnNavigation: false,
       useJsDelivr: false,
       githubUseMirror: false,
+      addFolderInfo: true,
       visible: false,
     };
   }
@@ -107,6 +109,10 @@ class Options extends React.Component<any, OptionsState> {
     this.saveField('githubUseMirror', checked);
   };
 
+  handleFolderChange = (checked: boolean) => {
+    this.saveField('addFolderInfo', checked);
+  };
+
   handleTokenChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     this.saveField('token', e.target.value);
   };
@@ -140,6 +146,7 @@ class Options extends React.Component<any, OptionsState> {
       updateCountOnNavigation,
       useJsDelivr,
       githubUseMirror,
+      addFolderInfo,
       visible,
     } = this.state;
 
@@ -241,6 +248,9 @@ class Options extends React.Component<any, OptionsState> {
             </SectionOption>
             <SectionOption title={<Message i18n="github_mirror" />} layout="horizontal" description={<Message i18n="github_mirror_desc" />}>
               <Switch checked={githubUseMirror} onClick={this.handleGitHubMirrorChange} />
+            </SectionOption>
+            <SectionOption title={<Message i18n="github_folder" />} layout="horizontal" description={<Message i18n="github_folder_desc" />}>
+              <Switch checked={addFolderInfo} onClick={this.handleFolderChange} />
             </SectionOption>
           </Section>
         </form>

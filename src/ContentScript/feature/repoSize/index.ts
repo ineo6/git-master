@@ -6,9 +6,17 @@ export default (ctx: GitMaster) => {
   const register = () => {
     ctx.helper.documentLoadedPlugins.register('github-repoSize', {
       async handle() {
-        const repoView = new GitHubRepoInfo(ctx.currentAdapter, ctx.storage);
+        if (ctx.storage) {
+          const options = await ctx.storage.getAll();
 
-        await repoView.init();
+          const enable = !!options.addFolderInfo;
+
+          if (enable) {
+            const repoView = new GitHubRepoInfo(ctx.currentAdapter, ctx.storage);
+
+            await repoView.init();
+          }
+        }
       },
       config: [],
       scope: ['github'],

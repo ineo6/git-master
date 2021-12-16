@@ -86,6 +86,12 @@
   "github_mirror_desc": {
     "message": "GitHub克隆和Release下载加速"
   },
+  "github_folder": {
+    "message": "GitHub 文件列表增强"
+  },
+  "github_folder_desc": {
+    "message": "在GitHub文件列表展示下载按钮和文件大小"
+  },
   "github_notifications": {
     "message": "GitHub 通知"
   },

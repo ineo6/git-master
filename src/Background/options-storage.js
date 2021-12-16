@@ -14,6 +14,7 @@ const optionsStorage = new OptionsSync({
     updateCountOnNavigation: false,
     useJsDelivr: false,
     githubUseMirror: false,
+    addFolderInfo: true,
   },
   migrations: [OptionsSync.migrations.removeUnused],
   storageName,

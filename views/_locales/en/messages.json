@@ -86,6 +86,12 @@
   "github_mirror_desc": {
     "message": "Clone and release download for GitHub, Only required by users in China"
   },
+  "github_folder": {
+    "message": "GitHub file list enhancement"
+  },
+  "github_folder_desc": {
+    "message": "Show download button and file size at github file list view"
+  },
   "github_notifications": {
     "message": "GitHub Notifications"
   },
