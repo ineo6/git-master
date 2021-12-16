@@ -4,6 +4,11 @@
 
 .gm-default-theme-github,
 .gm-default-theme-gist {
+  --color-page-header-bg: @bg-color !important;
+  --color-canvas-default: @block-bg !important;
+  --color-canvas-inset: @bg-color !important;
+  --color-canvas-subtle: @block-bg !important;
+
   @import '@{theme-path}/layout.less';
   @import '@{theme-path}/elements.less';
   @import '@{theme-path}/code.less';
@@ -24,6 +29,11 @@
   @import '@{theme-path}/alert.less';
   @import '@{theme-path}/license.less';
   @import '@{theme-path}/override.less';
+
+  //fix
+  .hx_page-header-bg {
+    background-color: @bg-color !important;
+  }
 }
 
 .gm-default-theme-for-sidebar {
