@@ -1,3 +1,16 @@
+# [1.17.0](https://github.com/ineo6/git-master/compare/v1.16.1...v1.17.0) (2021-12-16)
+
+
+### Bug Fixes
+
+* some dark mode style problems ([a79ea93](https://github.com/ineo6/git-master/commit/a79ea9314df4e6cfedfc556faed07ae3ba831739))
+
+
+### Features
+
+* add option for file size and download ([64c4f7d](https://github.com/ineo6/git-master/commit/64c4f7df1ef52ef45641b3730da1b31875670043))
+* new toggle ui ([bf8131b](https://github.com/ineo6/git-master/commit/bf8131bb47b2c7ef7af5cdab4623c78a981c1e0b))
+
 ## [1.16.1](https://github.com/ineo6/git-master/compare/v1.16.0...v1.16.1) (2021-09-01)
 
 
