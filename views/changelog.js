@@ -1,24 +1,25 @@
 export default {
-  feature: [],
-  fix: [
+  feature: [
     {
       text: {
-        en: 'Fix GitHub notification token problem',
-        zh_CN: '修复GitHub通知token无法配置问题（firefox）',
+        en: 'Add option for file download and size feature',
+        zh_CN: '文件列表的下载和文件大小功能添加配置项，默认开启',
       },
     },
     {
       text: {
-        en: 'Only enable lazy load for Gogs',
-        zh_CN: 'Gogs只开启Lazy Load模式',
-      },
-    },
-    {
-      text: {
-        en: 'Others',
-        zh_CN: '其他优化',
+        en: 'New toggle button UI',
+        zh_CN: '新的切换按钮UI',
       },
     },
   ],
-  version: '1.16.1',
+  fix: [
+    {
+      text: {
+        en: 'Fix dark mode style problems',
+        zh_CN: '修复黑暗模式样式问题',
+      },
+    },
+  ],
+  version: '1.17.0',
 };
