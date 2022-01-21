@@ -35,7 +35,7 @@
 - github.com
 - gitlab.com
 - git.oschina.net、gitee.com
-- try.gitea.io
+- gitea.com、try.gitea.io
 
 如果你访问的网站是私有部署，需要你手动标记网站类型，具体操作过程如下：
 

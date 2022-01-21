@@ -88,7 +88,7 @@ function isDefaultSite(url: string) {
   const githubUrl = ['github.com'];
   const gitlabUrl = ['gitlab.com'];
   const giteeUrl = ['git.oschina.net', 'gitee.com'];
-  const giteaUrl = ['try.gitea.io'];
+  const giteaUrl = ['gitea.com', 'try.gitea.io'];
   const gogsUrl = ['try.gogs.io'];
   const chromeTabUrl = ['newtab'];
 

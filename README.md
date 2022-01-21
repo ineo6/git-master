@@ -32,8 +32,8 @@ By default, the extension only loads on domains below. You can manually enable t
 
 - github.com
 - gitlab.com
-- git.oschina.net、gitee.com
-- try.gitea.io
+- git.oschina.net, gitee.com
+- gitea.com, try.gitea.io
 
 ### Pin first
 
