@@ -86,7 +86,7 @@ class GitHubRepoInfo extends RepoInfoBase {
       return;
     }
 
-    this.removeDom('.download'); // remove before adding new ones
+    this.removeDom('.gm-download'); // remove before adding new ones
 
     let isAnyFilePresent = false;
 
@@ -145,7 +145,7 @@ class GitHubRepoInfo extends RepoInfoBase {
           }
 
           let html = `<div role="gridcell"
-                    class="text-gray-light text-right download tree-file-download-btn"
+                    class="text-gray-light text-right gm-download tree-file-download-btn"
                      style="width: 100px;margin-left: 16px;color: #6a737d;text-align: right;white-space: nowrap;"
                      >
                 <span style="margin-right: 5px;">
@@ -165,7 +165,7 @@ class GitHubRepoInfo extends RepoInfoBase {
           item.append(html);
         } else if (matchFile && fileType === 'Directory') {
           let html = `<div role="gridcell"
-                    class="text-gray-light text-right download tree-file-download-btn"
+                    class="text-gray-light text-right gm-download tree-file-download-btn"
                      style="width: 100px;margin-left: 16px;color: #6a737d;text-align: right;white-space: nowrap;">
                <span style="margin-right: 5px;">
             </span>
@@ -183,7 +183,7 @@ class GitHubRepoInfo extends RepoInfoBase {
             </div>`;
           item.append(html);
         } else {
-          item.append('<div class="download" style="width: 100px;margin-left: 16px;"></div>');
+          item.append('<div class="gm-download" style="width: 100px;margin-left: 16px;"></div>');
         }
       }
     });

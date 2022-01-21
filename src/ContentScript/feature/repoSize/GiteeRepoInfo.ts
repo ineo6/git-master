@@ -85,7 +85,7 @@ class GiteeRepoInfo extends RepoInfoBase {
       return;
     }
 
-    this.removeDom('.download'); // remove before adding new ones
+    this.removeDom('.gm-download'); // remove before adding new ones
 
     let isAnyFilePresent = false;
 
@@ -141,7 +141,7 @@ class GiteeRepoInfo extends RepoInfoBase {
         }
 
         // eslint-disable-next-line max-len
-        let html = `<div class="two wide column tree_download download tree-file-download-btn"
+        let html = `<div class="two wide column tree_download gm-download tree-file-download-btn"
           style="padding-right: 10px;color: #6a737d;text-align: right;white-space: nowrap;">
             <span style="margin-right: 5px;">
             </span>
@@ -162,7 +162,7 @@ class GiteeRepoInfo extends RepoInfoBase {
 
         // eslint-disable-next-line max-len
         let html = `
-          <div class="two wide column tree_download download tree-file-download-btn"
+          <div class="two wide column tree_download gm-download tree-file-download-btn"
           style="padding-right: 10px;color: #6a737d;text-align: right;white-space: nowrap;">
            <span style="margin-right: 5px;">
             </span>
@@ -180,7 +180,7 @@ class GiteeRepoInfo extends RepoInfoBase {
           </div>`;
         item.append(html);
       } else {
-        item.append('<td class="download"></td>');
+        item.append('<td class="gm-download"></td>');
       }
     });
 
