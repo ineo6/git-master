@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/ineo6/git-master/compare/v1.17.0...v1.17.1) (2022-01-24)
+
+
+### Bug Fixes
+
+* add prefix for download class ([a84d9cb](https://github.com/ineo6/git-master/commit/a84d9cb1081f55c422e2ced85105aa1dce601ed8))
+
 # [1.17.0](https://github.com/ineo6/git-master/compare/v1.16.1...v1.17.0) (2021-12-16)
 
 
