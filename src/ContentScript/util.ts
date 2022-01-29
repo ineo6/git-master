@@ -39,7 +39,7 @@ export async function whichSite() {
 
       const domainArr = customDomains ? customDomains.split('\n') : [];
 
-      const urls = ['try.gitea.io'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
+      const urls = ['gitea.com', 'try.gitea.io'].concat(domainArr.map((item: string) => item.replace(/https?:\/\//, '')));
 
       return urls.indexOf(currentUrl) >= 0;
     },
