@@ -4,11 +4,10 @@ import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp, parseGitmodules } from '../util.misc';
 import * as giteaDetect from './pageDetect/gitea';
 
-const GH_CONTAINERS = '.container, .container-lg, .container-xl, .container-responsive';
-const GH_HEADER = '.js-header-wrapper > header';
+const GH_CONTAINERS = '.full>.page-content';
+const GH_HEADER = '.full>.main';
+const GH_FOOTER = 'footer > .container';
 const GH_MAX_HUGE_REPOS_SIZE = 50;
-const GH_HIDDEN_RESPONSIVE_CLASS = '.d-none';
-const GH_RESPONSIVE_BREAKPOINT = 1010;
 
 const GH_RESERVED_USER_NAMES = [
   'about',
@@ -122,29 +121,22 @@ class Gitea extends PjaxAdapter {
 
   // @override
   updateLayout(sidebarPinned, sidebarVisible, sidebarWidth, isSidebarLeft) {
-    const SPACING = 10;
     const $header = $(GH_HEADER);
-    const $containers = $('html').width() <= GH_RESPONSIVE_BREAKPOINT ? $(GH_CONTAINERS).not(GH_HIDDEN_RESPONSIVE_CLASS) : $(GH_CONTAINERS);
+    const $footer = $(GH_FOOTER);
+    const $containers = $(GH_CONTAINERS);
 
-    const autoMarginLeft = ($(document).width() - $containers.width()) / 2;
     const shouldPushEverything = sidebarPinned && sidebarVisible;
 
     const direction = isSidebarLeft ? 'left' : 'right';
 
     if (shouldPushEverything) {
-      $('html').css({
-        [`margin-${direction}`]: sidebarWidth,
-        [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
-      });
-
-      // $header.attr('style', `padding-left: ${sidebarWidth + SPACING - autoMarginLeft}px !important`);
+      $header.attr('style', `padding-${direction}: ${sidebarWidth}px !important`);
+      $containers.attr('style', `padding-${direction}: ${sidebarWidth}px !important`);
+      $footer.attr('style', `padding-${direction}: ${sidebarWidth}px !important`);
     } else {
-      $('html').css({
-        [`margin-${direction}`]: '',
-        [`margin-${direction === 'left' ? 'right' : 'left'}`]: '',
-      });
-
       $header.removeAttr('style');
+      $containers.removeAttr('style');
+      $footer.removeAttr('style');
     }
   }
 
@@ -160,28 +152,10 @@ class Gitea extends PjaxAdapter {
 
     const isPR = type === 'pulls';
 
-    // Not a repository, skip
-    // eslint-disable-next-line no-bitwise
     if (~GH_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame)) {
       return cb();
     }
 
-    // Get branch by inspecting URL or DOM, quite fragile so provide multiple fallbacks.
-    // TODO would be great if there's a more robust way to do this
-    /**
-     * Github renders the branch name in one of below structure depending on the length
-     * of branch name. We're using this for default code page or tree/blob.
-     *
-     * Option 1: when the length is short enough
-     * <summary title="Switch branches or tags">
-     *   <span class="css-truncate-target">feature/1/2/3</span>
-     * </summary>
-     *
-     * Option 2: when the length is too long
-     * <summary title="feature/1/2/3/4/5/6/7/8">
-     *   <span class="css-truncate-target">feature/1/2/3...</span>
-     * </summary>
-     */
     const branchFromSummary = $('.choose strong').text();
 
     const branch =
@@ -284,7 +258,7 @@ class Gitea extends PjaxAdapter {
 
   // @override
   getItemHref(repo, type, encodedPath, encodedBranch) {
-    return `/${repo.username}/${repo.reponame}/src/${encodedBranch}/${encodedPath}`;
+    return `/${repo.username}/${repo.reponame}/src/branch/${encodedBranch}/${encodedPath}`;
   }
 
   get isOnPRPage() {
