@@ -6,7 +6,7 @@ import { whichSite } from '@/ContentScript/util';
 import tippy from 'tippy.js';
 import compareVersions from 'compare-versions';
 
-import octotree from '../common/core.api';
+import gitMaster from '../common/core.api';
 import TreeView from '../common/view.tree';
 import OptionsView from '../common/view.options';
 import HelpPopup from '../common/view.help';
@@ -258,7 +258,7 @@ class CodeTree {
     adapter.init(this.$sidebar);
     await helpPopup.init();
 
-    await octotree.activate(
+    await gitMaster.activate(
       {
         adapter,
         $document: this.$document,
@@ -359,7 +359,7 @@ class CodeTree {
     adapter.init(this.$sidebar);
     await helpPopup.init();
 
-    await octotree.activate(
+    await gitMaster.activate(
       {
         adapter,
         $document: this.$document,
@@ -452,7 +452,7 @@ class CodeTree {
       }
     });
 
-    if (await octotree.applyOptions(changes)) {
+    if (await gitMaster.applyOptions(changes)) {
       reload = true;
     }
 

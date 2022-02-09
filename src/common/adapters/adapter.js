@@ -1,4 +1,4 @@
-import octotree from '../core.api';
+import gitMaster from '../core.api';
 import { NODE_PREFIX } from '../core.constants';
 import { convertSizeToHumanReadableFormat, deXss, isSafari } from '../util.misc';
 
@@ -111,7 +111,7 @@ class Adapter {
             item.icon = type;
 
             // eslint-disable-next-line no-await-in-loop
-            await octotree.setNodeIconAndText(this, item);
+            await gitMaster.setNodeIconAndText(this, item);
 
             if (item.patch) {
               item.text += `<span class="gitmaster-patch">${this.buildPatchHtml(item)}</span>`;
@@ -215,7 +215,7 @@ class Adapter {
         break;
       case 401:
         error = 'Invalid token';
-        message = await octotree.getInvalidTokenMessage({
+        message = await gitMaster.getInvalidTokenMessage({
           responseStatus: jqXHR.status,
           requestHeaders: settings.headers,
         });
@@ -256,7 +256,7 @@ class Adapter {
   }
 
   /**
-   * Returns the CSS class to be added to the Octotree sidebar.
+   * Returns the CSS class to be added to sidebar.
    * @api public
    */
   getCssClass() {
@@ -469,19 +469,6 @@ class Adapter {
           const onlyChild = item.children[0];
           const path = item.a_attr['data-download-filename'];
 
-          /**
-           * Using a_attr rather than item.text to concat in order to
-           * avoid the duplication of <div class="octotree-patch">
-           *
-           * For example:
-           *
-           * - item.text + onlyChild.text
-           * 'src/adapters/<span class="octotree-patch">+1</span>' + 'github.js<span class="octotree-patch">+1</span>'
-           *
-           * - path + onlyChild.text
-           * 'src/adapters/' + 'github.js<span class="octotree-patch">+1</span>'
-           *
-           */
           onlyChild.text = path + '/' + onlyChild.text;
 
           return onlyChild;

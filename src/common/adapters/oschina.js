@@ -2,7 +2,7 @@ import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { isValidTimeStamp } from '../util.misc';
-import octotree from '../core.api';
+import gitMaster from '../core.api';
 import * as giteeDetect from './pageDetect/gitee';
 import './oschina.less';
 
@@ -486,7 +486,7 @@ class Oschina extends PjaxAdapter {
         break;
       case 401:
         error = 'Invalid token';
-        message = await octotree.getInvalidTokenMessage({
+        message = await gitMaster.getInvalidTokenMessage({
           responseStatus: jqXHR.status,
           requestHeaders: settings.headers,
         });

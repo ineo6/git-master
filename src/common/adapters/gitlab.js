@@ -2,7 +2,7 @@ import PjaxAdapter from './pjax';
 import extStore from '../core.storage';
 import { DICT, EVENT, STORE } from '../core.constants';
 import { sendMessageToContentScriptByPostMessage } from '../util.ext';
-import octotree from '../core.api';
+import gitMaster from '../core.api';
 import './gitlab.less';
 
 const GL_RESERVED_USER_NAMES = ['u', 'dashboard', 'projects', 'users', 'help', 'explore', 'profile', 'public', 'groups', 'abuse_reports'];
@@ -348,7 +348,7 @@ class Gitlab extends PjaxAdapter {
         break;
       case 401:
         error = 'Invalid token';
-        message = await octotree.getInvalidTokenMessage({
+        message = await gitMaster.getInvalidTokenMessage({
           responseStatus: jqXHR.status,
           requestHeaders: settings.headers,
         });
