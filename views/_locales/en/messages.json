@@ -92,6 +92,9 @@
   "github_folder_desc": {
     "message": "Show download button and file size at github file list view"
   },
+  "github_notifications_switch": {
+    "message": "Status"
+  },
   "github_notifications": {
     "message": "GitHub Notifications"
   },

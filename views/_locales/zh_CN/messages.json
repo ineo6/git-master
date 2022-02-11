@@ -92,6 +92,9 @@
   "github_folder_desc": {
     "message": "在GitHub文件列表展示下载按钮和文件大小"
   },
+  "github_notifications_switch": {
+    "message": "状态"
+  },
   "github_notifications": {
     "message": "GitHub 通知"
   },

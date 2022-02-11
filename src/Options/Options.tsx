@@ -14,6 +14,7 @@ import './styles.less';
 import 'rc-switch/assets/index.css';
 
 interface OptionsState {
+  noticeOpen: boolean;
   token: string;
   rootUrl: string;
   playNotifSound: boolean;
@@ -32,6 +33,7 @@ class Options extends React.Component<any, OptionsState> {
     super(props);
 
     this.state = {
+      noticeOpen: true,
       token: '',
       rootUrl: '',
       playNotifSound: false,
@@ -72,6 +74,9 @@ class Options extends React.Component<any, OptionsState> {
 
     browser.runtime.sendMessage({
       type: 'update',
+      data: {
+        updated: updateData,
+      },
     });
   };
 
@@ -83,6 +88,10 @@ class Options extends React.Component<any, OptionsState> {
     }
 
     this.saveField('showDesktopNotif', isChecked);
+  };
+
+  handleNoticeSwitchChange = (checked: boolean) => {
+    this.saveField('noticeOpen', checked);
   };
 
   handleParticipatingChange = (checked: boolean) => {
@@ -137,6 +146,7 @@ class Options extends React.Component<any, OptionsState> {
 
   render() {
     const {
+      noticeOpen,
       rootUrl,
       token,
       onlyParticipating,
@@ -171,6 +181,9 @@ class Options extends React.Component<any, OptionsState> {
             </Row>
           </div>
           <Section title={<Message i18n="github_notifications" />}>
+            <SectionOption title={<Message i18n="github_notifications_switch" />} layout="horizontal">
+              <Switch checked={noticeOpen} onClick={this.handleNoticeSwitchChange} />
+            </SectionOption>
             <SectionOption
               title="Root URL"
               description={

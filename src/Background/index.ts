@@ -166,35 +166,75 @@ function handleUrlLoad() {
 
 async function onMessage(message: { type: String; data?: any; tabId?: number }) {
   if (message.type === 'update') {
-    await addHandlers();
-    await update();
+    const updateData = message.data?.updated;
+
+    const statusChanged = Object.prototype.hasOwnProperty.call(updateData, 'noticeOpen');
+
+    // eslint-disable-next-line no-use-before-define
+    await initNotice(statusChanged, message.data?.updated?.noticeOpen);
   } else if (message.type === 'report') {
     // report to ga
     ga.sendEvent(message.data);
   }
 }
 
-function init() {
+export function initGitHubNotification() {
   window.addEventListener('online', handleConnectionStatus);
   window.addEventListener('offline', handleConnectionStatus);
 
   browser.alarms.onAlarm.addListener(update);
-  browser.alarms.create({ when: Date.now() + 2000 });
+  browser.alarms.create('notify-alarm', { when: Date.now() + 2000 });
 
-  browser.runtime.onMessage.addListener(onMessage);
-  browser.runtime.onInstalled.addListener(handleInstalled);
-
-  // Chrome specific API
   if (isChrome()) {
     // @ts-ignore
     browser.permissions.onAdded.addListener(addHandlers);
   }
 
   browser.browserAction.onClicked.addListener(handleBrowserActionClick);
+}
 
-  addHandlers();
-  update();
-  handleUrlLoad();
+export function destroyGitHubNotification() {
+  window.removeEventListener('online', handleConnectionStatus);
+  window.removeEventListener('offline', handleConnectionStatus);
+
+  browser.alarms.onAlarm.removeListener(update);
+  browser.alarms.clear('notify-alarm');
+
+  if (isChrome()) {
+    // @ts-ignore
+    browser.permissions.onAdded.removeListener(addHandlers);
+  }
+
+  browser.browserAction.onClicked.removeListener(handleBrowserActionClick);
+}
+
+async function initNotice(statusChanged: boolean, noticeOpen: boolean) {
+  const hasAlarm = browser.alarms.onAlarm.hasListener(update);
+
+  if (statusChanged) {
+    if (noticeOpen && !hasAlarm) {
+      initGitHubNotification();
+
+      addHandlers();
+      update();
+    } else {
+      destroyGitHubNotification();
+    }
+  } else {
+    addHandlers();
+    update();
+  }
+}
+
+// normal init
+browser.runtime.onMessage.addListener(onMessage);
+browser.runtime.onInstalled.addListener(handleInstalled);
+handleUrlLoad();
+
+async function init() {
+  const { noticeOpen } = await optionsStorage.getAll();
+
+  await initNotice(true, noticeOpen);
 }
 
 init();
