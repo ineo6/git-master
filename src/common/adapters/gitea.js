@@ -105,7 +105,7 @@ class Gitea extends PjaxAdapter {
     }
 
     // Else, return true only if it isn't in a huge repo list, which we must lazy load
-    const key = `${repo.username}/${repo.reponame}`;
+    const key = `${repo.subpath}/${repo.username}/${repo.reponame}`;
     const hugeRepos = await extStore.get(STORE.HUGE_REPOS);
     if (hugeRepos[key] && isValidTimeStamp(hugeRepos[key])) {
       // Update the last load time of the repo
@@ -149,14 +149,21 @@ class Gitea extends PjaxAdapter {
   }
 
   async getRepoData(currentRepo, token, cb) {
-    // (username)/(reponame)[/(type)][/(typeId)]
+    // [(subpath)*3]/(username)/(reponame)[/(type)][/(typeId)]
     // eslint-disable-next-line no-useless-escape
-    const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
-
-    const username = match[1];
-    const reponame = match[2];
-    const type = match[3];
-    const typeId = match[4];
+    const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?/);
+    const username = window.document.getElementsByClassName('repo-title')[0].getElementsByTagName('a')[0].innerHTML;
+    const reponame = window.document.getElementsByClassName('repo-title')[0].getElementsByTagName('a')[1].innerHTML;
+    let flag = 0;
+    match.forEach(function(e, i, v) {
+      if (e === username) flag = i;
+    });
+    let subpath = '';
+    for (let i = 1; i < flag; i++) {
+      subpath = subpath === '' ? match[i] : subpath + '/' + match[i];
+    }
+    const type = match[flag + 2];
+    const typeId = match[flag + 3];
 
     const isPR = type === 'pulls';
 
@@ -191,7 +198,7 @@ class Gitea extends PjaxAdapter {
       ((type === 'releases' || type === 'tags') && 'master') ||
       // Get commit ID or branch name from the DOM
       branchFromSummary ||
-      ($('.overall-summary .numbers-summary .commits a').attr('href') || '').replace(`/${username}/${reponame}/commits/`, '') ||
+      ($('.overall-summary .numbers-summary .commits a').attr('href') || '').replace(`/${subpath}/${username}/${reponame}/commits/`, '') ||
       // The above should work for tree|blob, but if DOM changes, fallback to use ID from URL
       ((type === 'tree' || type === 'blob') && typeId) ||
       // Use target branch in a PR page
@@ -205,13 +212,14 @@ class Gitea extends PjaxAdapter {
       // Reuse last selected branch if exist
       (currentRepo.username === username && currentRepo.reponame === reponame && currentRepo.branch) ||
       // Get default branch from cache
-      this._defaultBranch[username + '/' + reponame];
+      this._defaultBranch[subpath + '/' + username + '/' + reponame];
 
     const showOnlyChangedInPR = await extStore.get(STORE.PR);
     const pullNumber = isPR && showOnlyChangedInPR ? typeId : null;
     const pullHead = isPR ? ($('.commit-ref.head-ref').attr('title') || ':').match(/:(.*)/)[1] : null;
     const displayBranch = isPR && pullHead ? `${branch} < ${pullHead}` : null;
     const repo = {
+      subpath,
       username,
       reponame,
       branch,
@@ -231,7 +239,7 @@ class Gitea extends PjaxAdapter {
         (err, data) => {
           if (err) return cb(err);
           // eslint-disable-next-line no-multi-assign
-          repo.branch = this._defaultBranch[username + '/' + reponame] = data.default_branch || 'master';
+          repo.branch = this._defaultBranch[subpath + '/' + username + '/' + reponame] = data.default_branch || 'master';
           cb(null, repo);
         }
       );
@@ -284,7 +292,7 @@ class Gitea extends PjaxAdapter {
 
   // @override
   getItemHref(repo, type, encodedPath, encodedBranch) {
-    return `/${repo.username}/${repo.reponame}/src/${encodedBranch}/${encodedPath}`;
+    return `/${repo.subpath}/${repo.username}/${repo.reponame}/src/${encodedBranch}/${encodedPath}`;
   }
 
   get isOnPRPage() {
@@ -438,7 +446,10 @@ class Gitea extends PjaxAdapter {
   }
 
   async getContent(path, opts) {
-    const host = window.location.protocol + '//' + (window.location.host === 'github.com' ? 'api.github.com' : window.location.host + '/api/v1');
+    const host =
+      window.location.protocol +
+      '//' +
+      (window.location.host === 'github.com' ? 'api.github.com' : window.location.host + '/' + opts.repo.subpath + '/api/v1');
     const url = `${host}/repos/${opts.repo.username}/${opts.repo.reponame}`;
 
     const contentPath = path || this.getContentPath() || '';
@@ -478,7 +489,7 @@ class Gitea extends PjaxAdapter {
     if (path && path.startsWith('http')) {
       url = path;
     } else {
-      const host = window.location.protocol + '//' + window.location.host + '/api/v1';
+      const host = window.location.protocol + '//' + window.location.host + '/' + opts.repo.subpath + '/api/v1';
       url = `${host}/repos/${opts.repo.username}/${opts.repo.reponame}${path || ''}`;
     }
 
@@ -498,7 +509,7 @@ class Gitea extends PjaxAdapter {
           if (path && path.indexOf('/git/trees') === 0 && data.truncated) {
             try {
               const hugeRepos = await extStore.get(STORE.HUGE_REPOS);
-              const repo = `${opts.repo.username}/${opts.repo.reponame}`;
+              const repo = `${opts.repo.subpath}/${opts.repo.username}/${opts.repo.reponame}`;
               const repos = Object.keys(hugeRepos).filter(hugeRepoKey => isValidTimeStamp(hugeRepos[hugeRepoKey]));
               if (!hugeRepos[repo]) {
                 // If there are too many repos memoized, delete the oldest one
