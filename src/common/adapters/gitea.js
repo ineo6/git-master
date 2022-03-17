@@ -152,8 +152,9 @@ class Gitea extends PjaxAdapter {
     // [(subpath)*3]/(username)/(reponame)[/(type)][/(typeId)]
     // eslint-disable-next-line no-useless-escape
     const match = window.location.pathname.match(/([^\/]+)\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?(?:\/([^\/]+))?/);
-    const username = window.document.getElementsByClassName('repo-title')[0].getElementsByTagName('a')[0].innerHTML;
-    const reponame = window.document.getElementsByClassName('repo-title')[0].getElementsByTagName('a')[1].innerHTML;
+    const htmlTag = window.document.getElementsByClassName('repo-title')[0].getElementsByTagName('a');
+    const username = htmlTag[0].innerHTML;
+    const reponame = htmlTag[1].innerHTML;
     let flag = 0;
     match.forEach(function(e, i, v) {
       if (e === username) flag = i;
