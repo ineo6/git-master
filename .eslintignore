@@ -6,3 +6,5 @@ extension/
 typings
 **/*.d.ts
 src/common/template/template.js
+src/common/libs/keymaster.js
+src/ContentScript/ui/toast/toast.js

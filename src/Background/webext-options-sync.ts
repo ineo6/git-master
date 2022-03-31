@@ -37,18 +37,19 @@ class OptionsSync<TOptions extends Options> {
     },
   };
 
-  storageName: string;
+  private readonly storageName: string;
 
-  defaults: TOptions;
+  private defaults: TOptions;
 
-  _migrations: Promise<void>;
+  private _migrations: Promise<void>;
 
   /**
    @constructor Returns an instance linked to the chosen storage.
    @param setup - Configuration for `webext-options-sync`
    */
-  constructor({
+  public constructor({
     // `as` reason: https://github.com/fregante/webext-options-sync/pull/21#issuecomment-500314074
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     defaults = {} as TOptions,
     storageName = 'options',
     migrations = [],
@@ -58,8 +59,7 @@ class OptionsSync<TOptions extends Options> {
     this.defaults = defaults;
 
     if (logging === false) {
-      this._log = () => {
-      };
+      this._log = () => {};
     }
 
     this._migrations = this._runMigrations(migrations);
@@ -76,7 +76,7 @@ class OptionsSync<TOptions extends Options> {
 		document.body.style.color = color;
 	}
    */
-  async getAll(): Promise<TOptions> {
+  public async getAll(): Promise<TOptions> {
     await this._migrations;
     return this._getAll();
   }
@@ -85,7 +85,7 @@ class OptionsSync<TOptions extends Options> {
    Overrides **all** the options stored with your `options`.
    @param newOptions - A map of default options as strings or booleans. The keys will have to match the form fields' `name` attributes.
    */
-  async setAll(newOptions: TOptions): Promise<void> {
+  public async setAll(newOptions: TOptions): Promise<void> {
     await this._migrations;
     return this._setAll(newOptions);
   }
@@ -94,11 +94,13 @@ class OptionsSync<TOptions extends Options> {
    Merges new options with the existing stored options.
    @param newOptions - A map of default options as strings or booleans. The keys will have to match the form fields' `name` attributes.
    */
-  async set(newOptions: Partial<TOptions>): Promise<void> {
+  public async set(newOptions: Partial<TOptions>): Promise<void> {
     return this.setAll({ ...(await this.getAll()), ...newOptions });
   }
 
+  // eslint-disable-next-line no-undef
   private _log(method: keyof Console, ...args: any[]): void {
+    // @ts-ignore
     console[method](...args);
   }
 

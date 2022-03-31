@@ -13,37 +13,37 @@ import { EVENT } from '@/common/core.constants';
 // @ts-ignore
 function bind(obj: any, eventStr: string, callback: Function) {
   if (obj.addEventListener) {
-    //大部分浏览器兼容方式
+    // 大部分浏览器兼容方式
     obj.addEventListener(eventStr, callback, false);
   } else {
-    //IE8以下兼容方式;手动添加on
+    // IE8以下兼容方式;手动添加on
     obj.attachEvent('on' + eventStr, function() {
-      //在匿名函数中调用回调函数
+      // 在匿名函数中调用回调函数
       callback.call(obj);
     });
   }
 }
 
 class GitMaster extends EventEmitter2 {
+  public helper: Helper;
+
+  public log: Logger;
+
+  public storage: Storage;
+
+  public pluginLoader: PluginLoader | undefined;
+
+  public currentAdapter: any;
+
+  public eventKey = {
+    pjaxEnd: 'pjac-end',
+  };
+
   private lifecycle: Lifecycle | undefined = undefined;
 
   private config: Config | undefined = undefined;
 
-  helper: Helper;
-
-  log: Logger;
-
-  storage: Storage;
-
-  pluginLoader: PluginLoader | undefined;
-
-  currentAdapter: any;
-
-  eventKey = {
-    pjaxEnd: 'pjac-end',
-  };
-
-  constructor() {
+  public constructor() {
     super();
     this.helper = {
       beforeDocumentLoadedPlugins: new LifecyclePlugins('beforeDocumentLoadedPlugins', this),
@@ -62,30 +62,17 @@ class GitMaster extends EventEmitter2 {
     this.initConfig();
   }
 
-  setCurrentPluginName(name: string): void {
-    LifecyclePlugins.currentPlugin = name;
-  }
-
-  setCurrentAdapterName(name: string): void {
+  public setCurrentAdapterName(name: string): void {
     LifecyclePlugins.currentAdapterName = name;
   }
 
-  setCurrentAdapter(name: string, adapter: any): void {
+  public setCurrentAdapter(name: string, adapter: any): void {
     LifecyclePlugins.currentAdapterName = name;
     LifecyclePlugins.currentAdapter = adapter;
     this.currentAdapter = adapter;
   }
 
-  initConfig(): void {
-    const production = process.env.NODE_ENV === 'production';
-
-    this.config = {
-      debug: !production,
-      logLevel: production ? 'error' : 'all',
-    };
-  }
-
-  async init(): Promise<any> {
+  public async init(): Promise<any> {
     try {
       // load self plugins
       this.pluginLoader = new PluginLoader(this);
@@ -101,21 +88,26 @@ class GitMaster extends EventEmitter2 {
 
       await this.lifecycle.start();
     } catch (e) {
+      // @ts-ignore
       this.log.error(e);
       this.emit('failed', e);
       throw e;
     }
   }
 
-  initEvents(): void {
-    const ctx = this;
-    $(document).on(EVENT.LOC_CHANGE, () => {
-      ctx.emit(ctx.eventKey.pjaxEnd, ctx);
-    });
+  // save to db
+  public saveConfig(config: Config): void {
+    this.setConfig(config);
+  }
+
+  // remove from db
+  public removeConfig(key: string, propName: string): void {
+    if (!key || !propName) return;
+    this.unsetConfig(key, propName);
   }
 
   // get config
-  getConfig(name: string = ''): any {
+  public getConfig(name = ''): any {
     if (!this.config) return;
     if (name) {
       return get(this.config, name);
@@ -124,26 +116,34 @@ class GitMaster extends EventEmitter2 {
     }
   }
 
-  // save to db
-  saveConfig(config: Config): void {
-    this.setConfig(config);
+  public setCurrentPluginName(name: string): void {
+    LifecyclePlugins.currentPlugin = name;
   }
 
-  // remove from db
-  removeConfig(key: string, propName: string): void {
-    if (!key || !propName) return;
-    this.unsetConfig(key, propName);
+  private initConfig(): void {
+    const production = process.env.NODE_ENV === 'production';
+
+    this.config = {
+      debug: !production,
+      logLevel: production ? 'error' : 'all',
+    };
+  }
+
+  private initEvents(): void {
+    $(document).on(EVENT.LOC_CHANGE, () => {
+      this.emit(this.eventKey.pjaxEnd, this);
+    });
   }
 
   // unset config for ctx but won't be saved to db
-  unsetConfig(key: string, propName: string): void {
+  private unsetConfig(key: string, propName: string): void {
     if (!key || !propName) return;
     unset(this.getConfig(key), propName);
   }
 
   // set config for ctx but will not be saved to db
   // it's more lightweight
-  setConfig(config: Config): void {
+  private setConfig(config: Config): void {
     Object.keys(config).forEach((name: string) => {
       // @ts-ignore
       set(this.config, name, config[name]);

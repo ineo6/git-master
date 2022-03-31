@@ -1,8 +1,7 @@
-/* eslint-disable camelcase */
-
 import GitMaster from './PageLife/core/GitMaster';
 import LifecyclePlugins from './PageLife/lib/LifecyclePlugins';
 
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type Lit = string | number | boolean | undefined | null | void | {};
 export const tuple = <T extends Lit[]>(...args: T) => args;
 
@@ -39,7 +38,8 @@ export interface Config {
  * for plugin
  */
 export interface Plugin {
-  handle(ctx: GitMaster): void | Promise<any>;
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  handle: (ctx: GitMaster) => void | Promise<any>;
 
   [propName: string]: any;
 }

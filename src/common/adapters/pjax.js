@@ -36,9 +36,9 @@ class PjaxAdapter extends Adapter {
       });
     } else {
       // Fall back if DOM has been changed
-      let firstLoad = true,
-        href,
-        hash;
+      let firstLoad = true;
+      let href;
+      let hash;
 
       // eslint-disable-next-line no-inner-declarations
       function detectLocChange() {
@@ -109,7 +109,7 @@ class PjaxAdapter extends Adapter {
 
       // Only dispatch to native DOM if the event is started by gitmaster. If the event is started in the DOM, jQuery
       // wraps it in the originalEvent property, that's what we use to check. Fixes #864.
-      if (event.originalEvent == null) {
+      if (event.originalEvent === null) {
         this._dispatchPjaxEventInDom(pjaxEventName);
       }
     } finally {

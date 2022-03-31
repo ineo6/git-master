@@ -59,6 +59,8 @@ export const GaEvent = {
 };
 
 export default class Analytics {
+  public event = GaEvent;
+
   private readonly isFirefox: boolean;
 
   private ga: any;
@@ -67,7 +69,7 @@ export default class Analytics {
 
   private readonly disableFirefox: boolean;
 
-  constructor(trackingId: string, disableFirefox: boolean) {
+  public constructor(trackingId: string, disableFirefox: boolean) {
     this.isFirefox = process.env.TARGET_BROWSER === 'firefox';
 
     this.trackingId = trackingId;
@@ -82,7 +84,70 @@ export default class Analytics {
     }
   }
 
-  event = GaEvent;
+  public pushQueue(queue: any[]) {
+    if (this.isFirefox) {
+      !this.disableFirefox && this.ga.send(queue);
+    } else {
+      window._gaq.push(queue);
+    }
+  }
+
+  public initialize() {
+    this.pushQueue(['_setAccount', this.trackingId]);
+    this.pushQueue(['_trackPageview']);
+  }
+
+  public page(page: string) {
+    if (page) {
+      if (process.env.NODE_ENV === 'production') {
+        this.pushQueue(['_trackPageview', page]);
+      }
+    }
+  }
+
+  // eslint-disable-next-line max-params
+  public sendEvent(event: IEvent, action?: string, label?: string, value?: number, noninteraction?: boolean) {
+    if (event) {
+      const ev = { ...event };
+      ev.eventAction = action || ev.eventAction;
+      ev.eventLabel = label || ev.eventLabel;
+      ev.eventValue = value || ev.eventValue;
+      ev.noninteraction = noninteraction || ev.noninteraction;
+
+      this.eventCore(ev);
+    }
+  }
+
+  public error(label = 'unknown', action = 'unknownMethod') {
+    const ev = {
+      eventCategory: 'error',
+      eventAction: action,
+      eventLabel: `Err: ${label}`,
+    };
+
+    this.eventCore(ev);
+  }
+
+  public exception(exception: any, message = '') {
+    try {
+      let msg = 'Unknown';
+      if (message) {
+        msg = message;
+      } else if (exception.message) {
+        msg = exception.message;
+      }
+      if (exception.stack) {
+        msg += `\n\n${exception.stack}`;
+      }
+
+      const ev = { ...GaEvent.EXCEPTION };
+
+      ev.eventLabel = msg;
+
+      this.eventCore(ev);
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
+  }
 
   private register() {
     (function() {
@@ -96,28 +161,7 @@ export default class Analytics {
     })();
   }
 
-  pushQueue(queue: any[]) {
-    if (this.isFirefox) {
-      !this.disableFirefox && this.ga.send(queue);
-    } else {
-      window._gaq.push(queue);
-    }
-  }
-
-  initialize() {
-    this.pushQueue(['_setAccount', this.trackingId]);
-    this.pushQueue(['_trackPageview']);
-  }
-
-  page(page: string) {
-    if (page) {
-      if (process.env.NODE_ENV === 'production') {
-        this.pushQueue(['_trackPageview', page]);
-      }
-    }
-  }
-
-  eventCore(event: IEvent) {
+  private eventCore(event: IEvent) {
     const eventArr: any[] = [];
 
     ['eventCategory', 'eventAction', 'eventLabel', 'eventValue', 'noninteraction'].forEach((key: string) => {
@@ -137,48 +181,5 @@ export default class Analytics {
       // eslint-disable-next-line no-console
       console.log(event);
     }
-  }
-
-  public sendEvent(event: IEvent, action?: string, label?: string, value?: number, noninteraction?: boolean) {
-    if (event) {
-      const ev = { ...event };
-      ev.eventAction = action || ev.eventAction;
-      ev.eventLabel = label || ev.eventLabel;
-      ev.eventValue = value || ev.eventValue;
-      ev.noninteraction = noninteraction || ev.noninteraction;
-
-      this.eventCore(ev);
-    }
-  }
-
-  error(label = 'unknown', action = 'unknownMethod') {
-    const ev = {
-      eventCategory: 'error',
-      eventAction: action,
-      eventLabel: `Err: ${label}`,
-    };
-
-    this.eventCore(ev);
-  }
-
-  exception(exception: any, message: string = '') {
-    try {
-      let msg = 'Unknown';
-      if (message) {
-        msg = message;
-      } else if (exception.message) {
-        msg = exception.message;
-      }
-      if (exception.stack) {
-        msg += `\n\n${exception.stack}`;
-      }
-
-      const ev = { ...GaEvent.EXCEPTION };
-
-      ev.eventLabel = msg;
-
-      this.eventCore(ev);
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
   }
 }

@@ -14,7 +14,9 @@ export async function getTabUrl() {
   const { onlyParticipating } = await optionsStorage.getAll();
   const useParticipating = onlyParticipating ? '/participating' : '';
 
-  return `https://${await getHostname()}/notifications${useParticipating}`;
+  const hostName = await getHostname();
+
+  return `https://${hostName}/notifications${useParticipating}`;
 }
 
 export async function getApiUrl() {

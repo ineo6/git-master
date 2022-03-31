@@ -44,7 +44,7 @@ function getStoreKey(type: string) {
   return storeKey;
 }
 
-async function toggleSite(type: string, active: boolean, load: boolean = false) {
+async function toggleSite(type: string, active: boolean, load = false) {
   const tabs = await browser.tabs.query({
     active: true,
     currentWindow: true,
@@ -69,7 +69,7 @@ async function toggleSite(type: string, active: boolean, load: boolean = false) 
 
   if (active) {
     hasChange = true;
-    urlArr = urlArr.filter((url: string) => url != domain);
+    urlArr = urlArr.filter((url: string) => url !== domain);
   } else {
     hasChange = true;
     urlArr.push(domain);

@@ -1,6 +1,5 @@
 import { GaEvent, IEvent } from '@/common/analytics';
 
-// eslint-disable-next-line import/prefer-default-export
 export function dataURItoArraybuffer(dataURI: string): ArrayBuffer {
   // convert base64/URLEncoded data component to raw binary data held in a string
   let byteString;

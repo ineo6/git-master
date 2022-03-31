@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import key from 'key';
 import { browser } from 'webextension-polyfill-ts';
 import { ADDON_CLASS, DICT, EVENT, PINNED_CLASS, SHOW_CLASS, STORE } from '@/common/core.constants';
@@ -51,44 +50,49 @@ interface CodeTreeInstance {
 }
 
 class CodeTree {
-  $html: any;
+  public static getSiteType = async () => {
+    return await whichSite();
+  };
 
-  $document: any;
+  private $html: any;
 
-  $sidebar: any;
+  private $document: any;
 
-  $toggler: any;
+  private $sidebar: any;
 
-  $views: any;
+  private $toggler: any;
 
-  $spinner: any;
+  private $views: any;
 
-  $pinner: any;
+  private $spinner: any;
 
-  $version: any;
+  private $pinner: any;
 
-  treeView: any;
+  private $version: any;
 
-  errorView: any;
+  private treeView: any;
 
-  adapter: any;
+  private errorView: any;
 
-  currRepo: any;
+  private adapter: any;
 
-  hasError: any;
+  private currRepo: any;
 
-  repoMeta: any = {};
+  private hasError: any;
 
-  adapterMap: any = {};
+  // @ts-ignore
+  private repoMeta: any = {};
 
-  shouldUpdateVersion: boolean = false;
+  private adapterMap: any = {};
 
-  instance: CodeTreeInstance = {
+  private shouldUpdateVersion = false;
+
+  private instance: CodeTreeInstance = {
     load: () => {},
     tryLoad: () => {},
   };
 
-  constructor() {
+  public constructor() {
     this.adapterMap = {
       [DICT.GITHUB]: {
         load: this.loadExtension.bind(this),
@@ -117,11 +121,7 @@ class CodeTree {
     };
   }
 
-  static getSiteType = async () => {
-    return await whichSite();
-  };
-
-  async init() {
+  public async init() {
     const adapter = await createAdapter();
 
     this.adapter = adapter;
@@ -139,7 +139,7 @@ class CodeTree {
     return adapter;
   }
 
-  generateLog(title: string, logs: any, lang: string) {
+  private generateLog(title: string, logs: any, lang: string) {
     if (!logs.length) {
       return '';
     }
@@ -149,7 +149,7 @@ class CodeTree {
     logs.forEach((feat: { text: any; description: any }) => {
       logHtml += `<li><p>${feat.text[lang]}</p>`;
 
-      if (feat.description && feat.description[lang]) {
+      if (feat.description?.[lang]) {
         logHtml += `<p class="gitmaster-changelog-description">${feat.description[lang]}</p>`;
       }
 
@@ -161,7 +161,7 @@ class CodeTree {
     return logHtml;
   }
 
-  generateChangelog(version: string, lang: string) {
+  private generateChangelog(version: string, lang: string) {
     let features = this.generateLog('🚀 Features', changelog.feature, lang);
     let fixes = this.generateLog('🐛 Bug fixes', changelog.fix, lang);
 
@@ -180,14 +180,14 @@ class CodeTree {
           `;
   }
 
-  async loadGistExtension(adapter: any, activationOpts = {}) {
+  private async loadGistExtension(adapter: any, activationOpts = {}) {
     this.$html = $('html');
     this.$document = $(document);
     const $dom = $(TEMPLATE);
     this.$sidebar = $dom.find('.gitmaster-sidebar');
     this.$toggler = this.$sidebar.find('.gitmaster-toggle').hide();
     this.$views = this.$sidebar.find('.gitmaster-view');
-    const $spinner = this.$sidebar.find('.gitmaster-spin');
+    this.$spinner = this.$sidebar.find('.gitmaster-spin');
     this.$pinner = this.$sidebar.find('.gitmaster-pin');
     this.treeView = new TreeView($dom, adapter);
     const optsView = new OptionsView($dom, adapter, this.$sidebar);
@@ -216,6 +216,7 @@ class CodeTree {
       $(view)
         // eslint-disable-next-line no-loop-func
         .on(EVENT.VIEW_READY, async function() {
+          // eslint-disable-next-line @typescript-eslint/no-invalid-this
           if (this !== optsView) {
             console.log('reday');
             $document.trigger(EVENT.REQ_END);
@@ -226,10 +227,11 @@ class CodeTree {
               treeView.$tree.jstree('open_all');
             }
           }
+          // eslint-disable-next-line @typescript-eslint/no-invalid-this
           showView(this);
         })
         .on(EVENT.VIEW_CLOSE, (_event: any, data: any) => {
-          if (data && data.showSettings) {
+          if (data?.showSettings) {
             optsView.toggle(true);
           } else {
             showView(this.hasError ? this.errorView : this.treeView);
@@ -241,11 +243,11 @@ class CodeTree {
     $(extStore).on(EVENT.STORE_CHANGE, this.optionsChanged);
 
     this.$document
-      .on(EVENT.REQ_START, () => $spinner.addClass('gitmaster-spin--loading'))
-      .on(EVENT.REQ_END, () => $spinner.removeClass('gitmaster-spin--loading'))
+      .on(EVENT.REQ_START, () => this.$spinner.addClass('gitmaster-spin--loading'))
+      .on(EVENT.REQ_END, () => this.$spinner.removeClass('gitmaster-spin--loading'))
       .on(EVENT.LAYOUT_CHANGE, this.layoutChanged)
       .on(EVENT.TOGGLE_PIN, this.layoutChanged)
-      .on(EVENT.LOC_CHANGE, (_event: any, reload: boolean = false) => this.instance.tryLoad(reload));
+      .on(EVENT.LOC_CHANGE, (_event: any, reload = false) => this.instance.tryLoad(reload));
 
     this.$sidebar
       .addClass(adapter.getCssClass())
@@ -276,14 +278,14 @@ class CodeTree {
     return this.instance.tryLoad();
   }
 
-  async loadExtension(adapter: any, activationOpts = {}) {
+  private async loadExtension(adapter: any, activationOpts = {}) {
     this.$html = $('html');
     this.$document = $(document);
     const $dom = $(TEMPLATE);
     this.$sidebar = $dom.find('.gitmaster-sidebar');
     this.$toggler = this.$sidebar.find('.gitmaster-toggle').hide();
     this.$views = this.$sidebar.find('.gitmaster-view');
-    const $spinner = this.$sidebar.find('.gitmaster-spin');
+    this.$spinner = this.$sidebar.find('.gitmaster-spin');
     this.$pinner = this.$sidebar.find('.gitmaster-pin');
     this.$version = this.$sidebar.find('#gitmaster-version');
     this.treeView = new TreeView($dom, adapter);
@@ -309,11 +311,13 @@ class CodeTree {
     const $document = this.$document;
     const treeView = this.treeView;
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     for (const view of [this.treeView, this.errorView, optsView]) {
       $(view)
         // eslint-disable-next-line no-loop-func
         .on(EVENT.VIEW_READY, async function() {
+          // eslint-disable-next-line @typescript-eslint/no-invalid-this
           if (this !== optsView) {
             $document.trigger(EVENT.REQ_END);
 
@@ -323,14 +327,16 @@ class CodeTree {
               treeView.$tree.jstree('open_all');
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-invalid-this
             if (this === self.treeView && self.shouldUpdateVersion) {
               await self.setChangelogVersion();
             }
           }
+          // eslint-disable-next-line @typescript-eslint/no-invalid-this
           showView(this);
         })
         .on(EVENT.VIEW_CLOSE, (_event: any, data: any) => {
-          if (data && data.showSettings) {
+          if (data?.showSettings) {
             optsView.toggle(true);
           } else {
             showView(this.hasError ? this.errorView : this.treeView);
@@ -342,11 +348,11 @@ class CodeTree {
     $(extStore).on(EVENT.STORE_CHANGE, this.optionsChanged);
 
     this.$document
-      .on(EVENT.REQ_START, () => $spinner.addClass('gitmaster-spin--loading'))
-      .on(EVENT.REQ_END, () => $spinner.removeClass('gitmaster-spin--loading'))
+      .on(EVENT.REQ_START, () => this.$spinner.addClass('gitmaster-spin--loading'))
+      .on(EVENT.REQ_END, () => this.$spinner.removeClass('gitmaster-spin--loading'))
       .on(EVENT.LAYOUT_CHANGE, this.layoutChanged)
       .on(EVENT.TOGGLE_PIN, this.layoutChanged)
-      .on(EVENT.LOC_CHANGE, (_event: any, reload: boolean = false) => this.instance.tryLoad(reload));
+      .on(EVENT.LOC_CHANGE, (_event: any, reload = false) => this.instance.tryLoad(reload));
 
     this.$sidebar
       .addClass(adapter.getCssClass())
@@ -379,7 +385,7 @@ class CodeTree {
     return this.instance.tryLoad();
   }
 
-  async setChangelogVersion() {
+  private async setChangelogVersion() {
     const { version } = browser.runtime.getManifest();
 
     setTimeout(async () => {
@@ -387,7 +393,7 @@ class CodeTree {
     }, 10 * 1000);
   }
 
-  async initChangelog() {
+  private async initChangelog() {
     const { version } = browser.runtime.getManifest();
     const lang = browser.i18n.getMessage('@@ui_locale');
 
@@ -420,7 +426,7 @@ class CodeTree {
    * @param {!string} event
    * @param {!Object<!string, [(string|boolean), (string|boolean)]>} changes
    */
-  optionsChanged = async (_event: any, changes: any) => {
+  private optionsChanged = async (_event: any, changes: any) => {
     let reload = false;
 
     Object.keys(changes).forEach(storeKey => {
@@ -461,7 +467,7 @@ class CodeTree {
     }
   };
 
-  async tryLoadGist(reload?: boolean) {
+  private async tryLoadGist(reload?: boolean) {
     const token = await this.adapter.getAccessToken();
 
     try {
@@ -510,7 +516,7 @@ class CodeTree {
     } catch (e) {}
   }
 
-  async tryLoadRepo(reload?: boolean) {
+  private async tryLoadRepo(reload?: boolean) {
     const token = await this.adapter.getAccessToken();
     try {
       await this.adapter.getRepoFromPath(this.currRepo, token, async (err: any, repo: any) => {
@@ -565,20 +571,20 @@ class CodeTree {
     } catch (e) {}
   }
 
-  showView = (view: any) => {
+  private showView = (view: any) => {
     this.$views.removeClass('current');
     view.$view.addClass('current');
     $(view).trigger(EVENT.VIEW_SHOW);
   };
 
-  async showError(err: any) {
+  private async showError(err: any) {
     this.hasError = true;
     this.errorView.show(err);
 
     if (await extStore.get(STORE.PINNED)) await this.togglePin(true);
   }
 
-  async toggleSidebar(visibility?: boolean) {
+  private async toggleSidebar(visibility?: boolean) {
     if (visibility !== undefined) {
       if (this.isSidebarVisible() === visibility) return;
       await this.toggleSidebar();
@@ -597,7 +603,7 @@ class CodeTree {
     return visibility;
   }
 
-  togglePin = async (isPinned?: boolean): Promise<boolean> => {
+  private togglePin = async (isPinned?: boolean): Promise<boolean> => {
     if (isPinned !== undefined) {
       if (this.isSidebarPinned() === isPinned) {
         // @ts-ignore
@@ -611,7 +617,7 @@ class CodeTree {
     return sidebarPinned;
   };
 
-  async onPinToggled(isPinned: boolean) {
+  private async onPinToggled(isPinned: boolean) {
     if (isPinned === this.isSidebarPinned()) {
       return;
     }
@@ -627,7 +633,7 @@ class CodeTree {
     await this.toggleSidebar(sidebarPinned);
   }
 
-  layoutChanged = async (save = false) => {
+  private layoutChanged = async (save = false) => {
     const width = this.$sidebar.outerWidth();
 
     const isLeft = await this.isSidebarLeft();
@@ -640,7 +646,7 @@ class CodeTree {
   /**
    * Controls how the sidebar behaves in float mode (i.e. non-pinned).
    */
-  async setupSidebarFloatingBehaviors() {
+  private async setupSidebarFloatingBehaviors() {
     const MOUSE_LEAVE_DELAY = 400;
     const KEY_PRESS_DELAY = 4000;
     let isMouseInSidebar = false;
@@ -699,16 +705,16 @@ class CodeTree {
       });
   }
 
-  onTogglerHovered = () => {
+  private onTogglerHovered = () => {
     this.toggleSidebar(true);
   };
 
-  onTogglerClicked = (event: MouseEvent) => {
+  private onTogglerClicked = (event: MouseEvent) => {
     event.stopPropagation();
     this.toggleSidebar(true);
   };
 
-  handleHoverOpenOption(enableHoverOpen: string) {
+  private handleHoverOpenOption(enableHoverOpen: string) {
     if (enableHoverOpen) {
       this.$toggler.off('click', this.onTogglerClicked);
       this.$toggler.on('mouseenter', this.onTogglerHovered);
@@ -723,7 +729,7 @@ class CodeTree {
    * @param {string} newKeys
    * @param {string?} oldKeys
    */
-  setHotkeys(newKeys: string, oldKeys?: string) {
+  private setHotkeys(newKeys: string, oldKeys?: string) {
     key.filter = () => this.$sidebar.is(':visible');
     if (oldKeys) key.unbind(oldKeys);
     key(newKeys, async () => {
@@ -731,15 +737,15 @@ class CodeTree {
     });
   }
 
-  isSidebarVisible() {
+  private isSidebarVisible() {
     return this.$html.hasClass(SHOW_CLASS);
   }
 
-  isSidebarPinned() {
+  private isSidebarPinned() {
     return this.$pinner.hasClass(PINNED_CLASS);
   }
 
-  async isSidebarLeft() {
+  private async isSidebarLeft() {
     const direction = await extStore.get(STORE.DIRECTION);
     return direction === 'left';
   }

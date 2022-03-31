@@ -63,8 +63,10 @@ class Adapter {
       this._getSubmodules(tree, opts, (err, submodules) => {
         if (err) return cb(err);
 
+        // eslint-disable-next-line no-param-reassign
         submodules = submodules || {};
 
+        // eslint-disable-next-line complexity
         const nextChunk = async (iteration = 0) => {
           const CHUNK_SIZE = 300;
 
@@ -166,7 +168,7 @@ class Adapter {
                 // Fixes #105
                 // Special handling for submodules hosted in GitHub
                 // eslint-disable-next-line no-bitwise
-                if (~moduleUrl.indexOf('github.com')) {
+                if (moduleUrl.indexOf('github.com') !== -1) {
                   moduleUrl =
                     moduleUrl
                       .replace(/^git(:\/\/|@)/, window.location.protocol + '//')
@@ -310,6 +312,7 @@ class Adapter {
    * Updates the layout based on sidebar visibility and width.
    * @api public
    */
+  // eslint-disable-next-line max-params
   updateLayout(sidebarPinned, sidebarVisible, sidebarWidth, isSidebarLeft) {
     throw new Error('Not implemented');
   }
@@ -336,7 +339,7 @@ class Adapter {
     if (!isSafari()) {
       // Smooth scroll to diff file on PR page
       if (path.match(/#diff-\d+$/)) {
-        const index = +path.split('-').slice(-1)[0];
+        const index = Number(path.split('-').slice(-1)[0]);
 
         const matchDom = $('#files .file').eq(index);
 
@@ -433,6 +436,7 @@ class Adapter {
    * Returns item's href value.
    * @api public
    */
+  // eslint-disable-next-line max-params
   getItemHref(repo, type, encodedPath, encodedBranch) {
     return `/${repo.username}/${repo.reponame}/${type}/${encodedBranch}/${encodedPath}`;
   }

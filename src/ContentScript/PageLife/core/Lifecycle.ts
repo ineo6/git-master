@@ -5,15 +5,15 @@ import { Plugin } from '../../interfaces';
 import adapter from './adapter';
 
 class Lifecycle extends EventEmitter2 {
-  ctx: GitMaster;
+  public ctx: GitMaster;
 
-  constructor(ctx: GitMaster) {
+  public constructor(ctx: GitMaster) {
     super();
     this.ctx = ctx;
   }
 
   // @ts-ignore
-  async start(): Promise<GitMaster> {
+  public async start(): Promise<GitMaster> {
     try {
       // lifecycle main
       // detect

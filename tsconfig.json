@@ -14,7 +14,7 @@
     ],
     "removeComments": true,
     /* Do not emit comments to output. */
-    "noEmit": true,
+    "noEmit": false,
     /* Do not emit outputs. */
     "noEmitOnError": true,
     "esModuleInterop": true,
@@ -41,6 +41,7 @@
     "newLine": "lf",
     "stripInternal": true,
     "noUnusedLocals": true,
+    "useUnknownInCatchVariables": false,
     "baseUrl": ".",
     "paths":{
       "@/*": ["./src/*"]
@@ -53,13 +54,6 @@
   "exclude": [
     "node_modules"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "useBabel": true,
-    "babelCore": "@babel/core",
-    // needed for Babel v7,
-    "useCache": true
-    // Use internal file cache to improve warm-up time.
-  },
   "files": [
     "typings/index.d.ts"
   ]

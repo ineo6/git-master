@@ -1,27 +1,8 @@
 {
   "extends": [
-    "magic/react",
-    "magic/typescript"
+    "magic",
+    "magic/react"
   ],
-  "settings": {
-    "import/resolver": {
-      "alias": {
-        "map": [
-          [
-            "@",
-            "./src"
-          ]
-        ],
-        "extensions": [
-          ".ts",
-          ".tsx",
-          ".js",
-          ".jsx",
-          ".json"
-        ]
-      }
-    }
-  },
   "globals": {
     "$": true,
     "location": true,
@@ -34,16 +15,6 @@
     "no-bitwise": 0,
     "import/no-cycle": 0,
     "prefer-arrow-callback": "off",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
     "no-useless-concat": "off",
     "react/jsx-wrap-multilines": [
       "error",
@@ -51,5 +22,18 @@
         "prop": false
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "extends": [
+        "magic/typescript"
+      ],
+      "rules": {
+      }
+    }
+  ]
 }

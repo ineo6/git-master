@@ -7,35 +7,43 @@ import TimeoutQueue from './timeout-queue';
 const timeoutQueue = new TimeoutQueue();
 
 class GoogleAnalytics {
-  constructor(trackingId: string) {
+  private analyticsId = '';
+
+  private xhr: XMLHttpRequest | undefined;
+
+  private userUniqueId = 0;
+
+  public constructor(trackingId: string) {
     this.analyticsId = trackingId;
 
     this.init();
     this.initUserUniqueId();
   }
 
-  analyticsId = '';
+  public send(opts: [string, string, string, string, string, string, string]) {
+    const [type, ...eventOpts] = opts;
 
-  xhr: XMLHttpRequest | undefined;
+    if (type === '_trackEvent') {
+      this.req(['event', ...eventOpts]);
+    }
+  }
 
-  userUniqueId: number = 0;
-
-  storeUniqueId(uniqueId: number) {
+  private storeUniqueId(uniqueId: number) {
     this.userUniqueId = uniqueId;
     extStore.set('_user_unique_id', uniqueId);
   }
 
-  async retrieveUniqueId() {
+  private async retrieveUniqueId() {
     const uid = await extStore.get('_user_unique_id');
 
     return uid;
   }
 
-  makeRandomId() {
+  private makeRandomId() {
     return 1000000000 + Math.floor(Math.random() * (2147483647 - 1000000000));
   }
 
-  async initUserUniqueId() {
+  private async initUserUniqueId() {
     if (this.userUniqueId) {
       return;
     }
@@ -49,11 +57,11 @@ class GoogleAnalytics {
     }
   }
 
-  init() {
+  private init() {
     this.xhr = new XMLHttpRequest();
   }
 
-  qsStringify(obj: any) {
+  private qsStringify(obj: any) {
     const s = [];
     for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key) && obj[key]) {
@@ -63,7 +71,7 @@ class GoogleAnalytics {
     return s.join('&');
   }
 
-  addRequest(opts: any) {
+  private addRequest(opts: any) {
     let url = 'http://www.google-analytics.com/collect';
     let params = this.qsStringify({
       v: 1,
@@ -77,6 +85,7 @@ class GoogleAnalytics {
       z: 1000000000 + Math.floor(Math.random() * (2147483647 - 1000000000)),
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
     timeoutQueue.add(function() {
@@ -91,17 +100,9 @@ class GoogleAnalytics {
     });
   }
 
-  req(args: any) {
+  private req(args: any) {
     if (this.userUniqueId) {
       this.addRequest(args);
-    }
-  }
-
-  send(opts: [string, string, string, string, string, string, string]) {
-    const [type, ...eventOpts] = opts;
-
-    if (type === '_trackEvent') {
-      this.req(['event', ...eventOpts]);
     }
   }
 }

@@ -17,7 +17,7 @@ async function getGists(adapter: any): Promise<IGistFile[]> {
   return data;
 }
 
-function applyAction(gistName: string, cb: Function): string | void {
+function applyAction(gistName: string, cb: Function) {
   const matchGist = globalGistData.find((item: { filename: string }) => item.filename.trim() === gistName.trim());
 
   if (matchGist) {
@@ -26,13 +26,14 @@ function applyAction(gistName: string, cb: Function): string | void {
 }
 
 async function appendGistDownload(adapter: any) {
-  if (adapter && adapter.detect.isGistFile()) {
+  if (adapter?.detect.isGistFile()) {
     const gistHeaders = $('.js-task-list-container .file-header');
 
     if (gistHeaders.length) {
       $(document).off('click', '.master-gist-file-download');
 
       $(document).on('click', '.master-gist-file-download', function() {
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
         const btnData = $(this).data();
 
         applyAction(btnData.gistName.trim(), function(match: any) {
@@ -75,6 +76,7 @@ async function appendGistDownload(adapter: any) {
       });
 
       gistHeaders.each(function() {
+        // eslint-disable-next-line @typescript-eslint/no-invalid-this
         const gistHead = $(this);
 
         const nameInDom = gistHead.find('.gist-blob-name').text();

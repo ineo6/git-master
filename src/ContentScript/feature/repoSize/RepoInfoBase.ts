@@ -11,21 +11,21 @@ function updateStatus(_status: string) {
 }
 
 abstract class RepoInfoBase {
-  public useJsDelivr: boolean = false;
-
-  protected repoSize: number = 0;
-
-  protected adapter: any;
-
-  private storage: any;
+  public useJsDelivr = false;
 
   public repo: any = {};
 
-  protected folderDownloadSize: number = 20;
+  public token = '';
 
-  public token: string = '';
+  protected repoSize = 0;
 
-  constructor(adapter: any, storage: any) {
+  protected adapter: any;
+
+  protected folderDownloadSize = 20;
+
+  private storage: any;
+
+  public constructor(adapter: any, storage: any) {
     this.adapter = adapter;
     this.storage = storage;
 
@@ -33,7 +33,7 @@ abstract class RepoInfoBase {
     this.useJsDelivr = false;
   }
 
-  async init() {
+  public async init() {
     await this.show();
 
     if (this.storage) {
@@ -48,14 +48,16 @@ abstract class RepoInfoBase {
       e.preventDefault();
       e.stopPropagation();
 
+      // eslint-disable-next-line @typescript-eslint/no-invalid-this
       const name = $(this).attr('download');
+      // eslint-disable-next-line @typescript-eslint/no-invalid-this
       const url = $(this).attr('href');
 
       saveAs(url as string, name);
     });
   }
 
-  removeDom(selector: string) {
+  public removeDom(selector: string) {
     if (!selector) {
       return;
     }
@@ -66,25 +68,11 @@ abstract class RepoInfoBase {
     });
   }
 
-  abstract resolveUrl(downloadUrl: string, path: string): string;
-
-  getDownloadUrl(fileInfo: any) {
+  public getDownloadUrl(fileInfo: any) {
     return this.resolveUrl(fileInfo.download_url, fileInfo.path);
   }
 
-  sortOn(arr: any[], key: string) {
-    return arr.sort(function(a, b) {
-      if (a[key] < b[key]) {
-        return -1;
-      }
-      if (a[key] > b[key]) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
-  sortFileStructureAsOnSite(data: any[]) {
+  public sortFileStructureAsOnSite(data: any[]) {
     if (!data || Object.prototype.toString.call(data) !== '[object Array]') {
       return;
     }
@@ -115,7 +103,68 @@ abstract class RepoInfoBase {
     return dataAfterSorting;
   }
 
-  getContentPath(targetPath?: string): string {
+  public async show(): Promise<void> {
+    if (this.adapter.detect.shouldEnable()) {
+      await this.loadBasicData();
+
+      this.appendRepoSizeElement();
+      this.addCopyAndDownloadButton();
+      this.addFileSizeAndDownloadLink();
+      this.createFolderDownloadWrapper();
+    }
+  }
+
+  public async downloadFolder(repo: any, targetPath?: string) {
+    const encodedBranch = encodeURIComponent(decodeURIComponent(repo.branch));
+    const path = encodedBranch + '?recursive=1';
+
+    // @ts-ignore
+    const fetchInfoToastKey = $.toast.init({
+      title: 'GitMaster',
+      content: browser.i18n.getMessage('download_folder_fetch'),
+      type: 'info',
+      delay: 0,
+    });
+
+    const token = await this.refreshToken();
+
+    this.adapter._getTree(
+      path,
+      {
+        repo,
+        token,
+      },
+      (_error: any, result: any) => {
+        // @ts-ignore
+        $.toast.remove(fetchInfoToastKey);
+
+        if (result) {
+          let directory = this.getContentPath(targetPath);
+          if (!directory) return;
+
+          if (!directory.endsWith('/')) {
+            directory += '/';
+          }
+
+          const files = [];
+
+          for (const item of result) {
+            if (item.type === 'blob' && item.path.startsWith(directory)) {
+              files.push(item);
+            }
+          }
+
+          if (files.length <= this.folderDownloadSize) {
+            this.batchDownload(repo, files, directory);
+          } else {
+            alert(browser.i18n.getMessage('download_folder_notify'));
+          }
+        }
+      }
+    );
+  }
+
+  public getContentPath(targetPath?: string): string {
     // Convert /username/reponame/object_type/branch/path to path
     let path = decodeURIComponent(window.location.pathname);
 
@@ -134,64 +183,7 @@ abstract class RepoInfoBase {
     return currentPath;
   }
 
-  abstract isSingleFile(): boolean;
-
-  abstract appendRepoSizeElement(): void;
-
-  // button list
-  abstract async addCopyAndDownloadButton(): Promise<void>;
-
-  // repo main page
-  abstract async addFileSizeAndDownloadLink(): Promise<void>;
-
-  abstract createFolderDownloadWrapper(): void;
-
-  async loadBasicData() {
-    const token = await this.adapter.getAccessToken();
-
-    const repo = await this.adapter.getRepoDataWrap(false, token);
-
-    this.repo = repo;
-    this.token = token;
-
-    if (!this.repoSize) {
-      const result = await this.loadRepoData('', true);
-
-      if (result) {
-        this.repoSize = result.size;
-      }
-    }
-  }
-
-  async show(): Promise<void> {
-    if (this.adapter.detect.shouldEnable()) {
-      await this.loadBasicData();
-
-      this.appendRepoSizeElement();
-      this.addCopyAndDownloadButton();
-      this.addFileSizeAndDownloadLink();
-      this.createFolderDownloadWrapper();
-    }
-  }
-
-  async loadRepoData(path?: string, isRepoMetaData?: boolean) {
-    try {
-      const data = await this.adapter.getContent(path, {
-        repo: this.repo,
-        isRepoMetaData,
-      });
-
-      return data;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  abstract async fetchPublicFile(file: any): Promise<ArrayBuffer>;
-
-  abstract async fetchPrivateFile(file: any): Promise<ArrayBuffer>;
-
-  async batchDownload(repo: any, files: any, dir: string) {
+  public async batchDownload(repo: any, files: any, dir: string) {
     if (files.length === 0) {
       updateStatus('No files to download');
       return;
@@ -248,7 +240,49 @@ abstract class RepoInfoBase {
     }
   }
 
-  async refreshToken() {
+  public async loadBasicData() {
+    const token = await this.adapter.getAccessToken();
+
+    const repo = await this.adapter.getRepoDataWrap(false, token);
+
+    this.repo = repo;
+    this.token = token;
+
+    if (!this.repoSize) {
+      const result = await this.loadRepoData('', true);
+
+      if (result) {
+        this.repoSize = result.size;
+      }
+    }
+  }
+
+  public sortOn(arr: any[], key: string) {
+    return arr.sort(function(a, b) {
+      if (a[key] < b[key]) {
+        return -1;
+      }
+      if (a[key] > b[key]) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+  public async loadRepoData(path?: string, isRepoMetaData?: boolean) {
+    try {
+      const data = await this.adapter.getContent(path, {
+        repo: this.repo,
+        isRepoMetaData,
+      });
+
+      return data;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  public async refreshToken() {
     const token = await this.adapter.getAccessToken();
 
     this.token = token;
@@ -256,55 +290,23 @@ abstract class RepoInfoBase {
     return token;
   }
 
-  async downloadFolder(repo: any, targetPath?: string) {
-    const encodedBranch = encodeURIComponent(decodeURIComponent(repo.branch));
-    const path = encodedBranch + '?recursive=1';
+  public abstract resolveUrl(downloadUrl: string, path: string): string;
 
-    // @ts-ignore
-    const fetchInfoToastKey = $.toast.init({
-      title: 'GitMaster',
-      content: browser.i18n.getMessage('download_folder_fetch'),
-      type: 'info',
-      delay: 0,
-    });
+  public abstract isSingleFile(): boolean;
 
-    const token = await this.refreshToken();
+  public abstract appendRepoSizeElement(): void;
 
-    this.adapter._getTree(
-      path,
-      {
-        repo,
-        token,
-      },
-      (_error: any, result: any) => {
-        // @ts-ignore
-        $.toast.remove(fetchInfoToastKey);
+  // button list
+  public abstract addCopyAndDownloadButton(): Promise<void>;
 
-        if (result) {
-          let directory = this.getContentPath(targetPath);
-          if (!directory) return;
+  // repo main page
+  public abstract addFileSizeAndDownloadLink(): Promise<void>;
 
-          if (!directory.endsWith('/')) {
-            directory += '/';
-          }
+  public abstract createFolderDownloadWrapper(): void;
 
-          const files = [];
+  public abstract fetchPublicFile(file: any): Promise<ArrayBuffer>;
 
-          for (const item of result) {
-            if (item.type === 'blob' && item.path.startsWith(directory)) {
-              files.push(item);
-            }
-          }
-
-          if (files.length <= this.folderDownloadSize) {
-            this.batchDownload(repo, files, directory);
-          } else {
-            alert(browser.i18n.getMessage('download_folder_notify'));
-          }
-        }
-      }
-    );
-  }
+  public abstract fetchPrivateFile(file: any): Promise<ArrayBuffer>;
 }
 
 export default RepoInfoBase;

@@ -2,32 +2,29 @@ import GitMaster from '../core/GitMaster';
 import Plugins from '../../feature';
 
 class PluginLoader {
-  ctx: GitMaster;
+  public ctx: GitMaster;
 
-  list: string[];
+  private list: string[];
 
-  plugins: any;
+  private plugins: any;
 
-  constructor(ctx: GitMaster) {
+  public constructor(ctx: GitMaster) {
     this.ctx = ctx;
     this.list = [];
     this.plugins = Plugins;
     this.init();
   }
 
-  init(): void {
-  }
-
-
   // load all third party plugin
-  load(): void | boolean {
+  public load() {
     const modules = Object.keys(this.plugins);
+    // eslint-disable-next-line guard-for-in
     for (let i in modules) {
       this.registerPlugin(modules[i]);
     }
   }
 
-  registerPlugin(name: string): void {
+  public registerPlugin(name: string): void {
     try {
       this.list.push(name);
       this.ctx.setCurrentPluginName(name);
@@ -42,25 +39,13 @@ class PluginLoader {
     }
   }
 
-  unregisterPlugin(name: string): void {
-    this.list = this.list.filter((item: string) => item !== name);
-    this.ctx.setCurrentPluginName(name);
-    this.ctx.helper.beforeDocumentLoadedPlugins.unregister(name);
-    this.ctx.helper.documentLoadedPlugins.unregister(name);
-    this.ctx.helper.injectPlugins.unregister(name);
-    this.ctx.helper.afterPlugins.unregister(name);
-  }
+  private init(): void {}
 
   // get plugin by name
-  getPlugin(name: string): any {
+  private getPlugin(name: string): any {
     const plugins: any[] = this.plugins;
     // @ts-ignore
     return plugins[name](this.ctx);
-  }
-
-  // get plugin name list
-  getList(): string[] {
-    return this.list;
   }
 }
 
