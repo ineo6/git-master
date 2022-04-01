@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteWebpackPlugin = require('write-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { CheckerPlugin } = require('awesome-typescript-loader');
 const ExtensionReloader = require('webpack-extension-reloader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { argv } = require('yargs');
@@ -23,18 +22,18 @@ const manifest = wextManifest[targetBrowser](manifestInput);
 const extensionReloaderPlugin =
   nodeEnv === 'development'
     ? new ExtensionReloader({
-      port: 9090,
-      reloadPage: true,
-      entries: {
-        // TODO: reload manifest on update
-        contentScript: 'contentScript',
-        background: 'background',
-        extensionPage: ['popup', 'options'],
-      },
-    })
-    : () => {
-      this.apply = () => {};
-    };
+        port: 9090,
+        reloadPage: true,
+        entries: {
+          // TODO: reload manifest on update
+          contentScript: 'contentScript',
+          background: 'background',
+          extensionPage: ['popup', 'options'],
+        },
+      })
+    : {
+        apply: function() {},
+      };
 
 const analyzerPlugin = function() {
   if (nodeEnv === 'production' && !!argv.analyzer) {
@@ -44,8 +43,8 @@ const analyzerPlugin = function() {
       analyzerPort: 9191,
     });
   } else {
-    return () => {
-      this.apply = () => {};
+    return {
+      apply: function() {},
     };
   }
 };
@@ -114,9 +113,25 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|ts|tsx)?$/,
-        loader: 'awesome-typescript-loader',
+        test: /\.(ts|tsx)?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+          },
+        ],
         exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -191,8 +206,6 @@ module.exports = {
   },
 
   plugins: [
-    // for awesome-typescript-loader
-    new CheckerPlugin(),
     // environmental variables
     new webpack.EnvironmentPlugin(['NODE_ENV', 'TARGET_BROWSER']),
     new webpack.ProvidePlugin({
