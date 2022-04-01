@@ -1,0 +1,4 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx --no-install magic-lint --commit --commit.config "$(dirname "$0")/../commitlint.config.js" --commit.edit "$1"

@@ -23,13 +23,8 @@
     "analyzer": "yarn build:chrome -- --analyzer",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "release": "semantic-release"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "magic-lint --staged --eslint --prettier --fix",
-      "commit-msg": "magic-lint --commit"
-    }
+    "release": "semantic-release",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
@@ -98,6 +93,7 @@
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "less-plugin-sass2less": "^1.2.0",
+    "magic-lint": "^2.1.0",
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",
     "resolve-url-loader": "^3.1.1",
