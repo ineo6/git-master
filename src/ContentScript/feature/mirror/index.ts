@@ -10,7 +10,7 @@ const zipDownload = {
 const httpsMirror = [
   {
     name: 'fastgit',
-    url: 'https://hub.fastgit.org',
+    url: 'https://hub.fastgit.xyz',
   },
   {
     name: 'cnpmjs',
