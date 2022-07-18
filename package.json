@@ -41,7 +41,7 @@
     "github-url-detection": "^4.7.0",
     "html2js": "^0.2.0",
     "jquery": "^3.4.1",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.2",
     "jstree": "^3.3.9",
     "jszip": "^3.3.0",
     "lodash.get": "^4.4.2",
