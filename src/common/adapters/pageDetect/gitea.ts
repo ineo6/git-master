@@ -1,42 +1,40 @@
 import { getRepoPath } from './util';
 
-const GH_RESERVED_USER_NAMES = [
-  'about',
-  'account',
-  'blog',
-  'business',
-  'contact',
-  'dashboard',
-  'developer',
+// gitea reserved user names: https://github.com/go-gitea/gitea/blob/release/v1.18/models/user/user.go#L580
+const GT_RESERVED_USER_NAMES = [
+  '.well-known',
+  'admin',
+  'api',
+  'assets',
+  'attachments',
+  'avatar',
+  'avatars',
+  'captcha',
+  'commits',
+  'debug',
+  'error',
   'explore',
-  'features',
-  'gist',
-  'integrations',
+  'favicon.ico',
+  'ghost',
   'issues',
-  'join',
   'login',
-  'marketplace',
-  'mirrors',
+  'manifest.json',
+  'metrics',
+  'milestones',
   'new',
   'notifications',
-  'open-source',
-  'organizations',
-  'orgs',
-  'personal',
-  'pricing',
+  'org',
   'pulls',
+  'raw',
+  'repo',
+  'repo-avatars',
+  'robots.txt',
   'search',
-  'security',
-  'sessions',
-  'settings',
-  'showcases',
-  'site',
-  'stars',
-  'styleguide',
-  'topics',
-  'trending',
-  'users',
-  'watching',
+  'serviceworker.js',
+  'ssh_info',
+  'swagger.v1.json',
+  'user',
+  'v2',
 ];
 const GH_RESERVED_REPO_NAMES = ['followers', 'following', 'repositories'];
 const GH_404_SEL = '#parallax_wrapper';
@@ -70,7 +68,7 @@ export const isRepo = function() {
   const reponame = match[2];
 
   // Not a repository, skip
-  return !(~GH_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame));
+  return !(~GT_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame));
 };
 
 export const shouldEnable = function() {
