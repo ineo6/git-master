@@ -8,45 +8,41 @@ const GH_CONTAINERS = '.full>.page-content';
 const GH_HEADER = '.full>.main';
 const GH_FOOTER = 'footer > .container';
 const GH_MAX_HUGE_REPOS_SIZE = 50;
-
-const GH_RESERVED_USER_NAMES = [
-  'about',
-  'account',
-  'blog',
-  'business',
-  'contact',
-  'dashboard',
-  'developer',
+// gitea reserved user names: https://github.com/go-gitea/gitea/blob/release/v1.18/models/user/user.go#L580
+const GT_RESERVED_USER_NAMES = [
+  '.well-known',
+  'admin',
+  'api',
+  'assets',
+  'attachments',
+  'avatar',
+  'avatars',
+  'captcha',
+  'commits',
+  'debug',
+  'error',
   'explore',
-  'features',
-  'gist',
-  'integrations',
+  'favicon.ico',
+  'ghost',
   'issues',
-  'join',
   'login',
-  'marketplace',
-  'mirrors',
+  'manifest.json',
+  'metrics',
+  'milestones',
   'new',
   'notifications',
-  'open-source',
-  'organizations',
-  'orgs',
-  'personal',
-  'pricing',
+  'org',
   'pulls',
+  'raw',
+  'repo',
+  'repo-avatars',
+  'robots.txt',
   'search',
-  'security',
-  'sessions',
-  'settings',
-  'showcases',
-  'site',
-  'stars',
-  'styleguide',
-  'topics',
-  'trending',
+  'serviceworker.js',
+  'ssh_info',
+  'swagger.v1.json',
   'user',
-  'watching',
-  'api',
+  'v2',
 ];
 const GH_RESERVED_REPO_NAMES = ['followers', 'following', 'repositories'];
 
@@ -152,7 +148,7 @@ class Gitea extends PjaxAdapter {
 
     const isPR = type === 'pulls';
 
-    if (~GH_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame)) {
+    if (~GT_RESERVED_USER_NAMES.indexOf(username) || ~GH_RESERVED_REPO_NAMES.indexOf(reponame)) {
       return cb();
     }
 
