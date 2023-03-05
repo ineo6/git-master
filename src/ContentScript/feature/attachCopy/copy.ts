@@ -17,6 +17,7 @@ export function appendAttachCopy(target: string) {
 
       button
         .click(function() {
+          // eslint-disable-next-line @typescript-eslint/no-invalid-this
           const ele = $(this).find('.masterfont');
 
           if (copyElementContent(pre)) {
@@ -45,53 +46,6 @@ export function appendAttachCopy(target: string) {
         });
     });
   }
-}
-
-export function initGitHub() {
-  appendAttachCopy('.repository-content div#readme article');
-
-  // code in issue
-  appendAttachCopy('#discussion_bucket .js-discussion');
-}
-
-function observeReadme(cb: () => void) {
-  // 选择需要观察变动的节点
-  const targetNode = document.getElementById('tree-holder');
-
-  // 观察器的配置（需要观察什么变动）
-  const config = {
-    childList: true,
-    subtree: true,
-  };
-
-  // 当观察到变动时执行的回调函数
-  const callback = function(mutationsList: any, _observer: any) {
-    for (let mutation of mutationsList) {
-      if (mutation.type === 'childList') {
-        if (mutation.target.classList.value.indexOf('blob-viewer') >= 0) {
-          cb && cb();
-        }
-      }
-    }
-  };
-
-  const observer = new MutationObserver(callback);
-
-  targetNode && observer.observe(targetNode, config);
-}
-
-export function initGitLab() {
-  let flag = false;
-
-  observeReadme(function() {
-    // will trigger many times
-    if (!flag) {
-      appendAttachCopy('#tree-holder .file-holder .file-content');
-      flag = true;
-    }
-  });
-
-  appendAttachCopy('#content-body .issue-details');
 }
 
 export function initGitee() {
