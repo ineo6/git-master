@@ -1,0 +1,21 @@
+name: 'submit'
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2.1.2
+      - name: Install dependencies
+        run: npm install
+      - name: Build package
+        run: |
+          npm run build:chrome
+          npm run build:firefox
+          npm run build:opera
+      - name: Browser Plugin Publish
+        uses: plasmo-corp/bpp@v1
+        with:
+          keys: ${{ secrets.SUBMIT_KEYS }}
